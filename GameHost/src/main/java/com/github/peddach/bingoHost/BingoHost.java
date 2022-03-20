@@ -1,5 +1,13 @@
 package com.github.peddach.bingoHost;
 
-public class BingoHost extends {
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class BingoHost extends JavaPlugin{
+	
+	@Override
+	public void onEnable() {
+		GeneralSettings.plugin = this;
+		GeneralSettings.config = getConfig();
+	}
 
 }

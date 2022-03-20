@@ -1,5 +1,10 @@
 package com.github.peddach.bingoHost;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
 public class GeneralSettings {
-	public static final Java
+	public static JavaPlugin plugin;
+	public static FileConfiguration config;
+	public static String servername;
 }	

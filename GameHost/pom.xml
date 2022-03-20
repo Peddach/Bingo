@@ -11,10 +11,22 @@
 	<version>0.0.1</version>
 	<name>BingoGameHost</name>
 
+	<properties>
+		<maven.compiler.target>16</maven.compiler.target>
+		<maven.compiler.source>16</maven.compiler.source>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<mysql.version>1_1_1</mysql.version>
+	</properties>
+
 	<repositories>
 		<repository>
 			<id>spigot-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+		<repository>
+			<id>OnARandomBox</id>
+			<url>https://repo.onarandombox.com/content/groups/public/</url>
 		</repository>
 	</repositories>
 
@@ -29,6 +41,18 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.28</version>
+		</dependency>
+		<dependency>
+			<groupId>com.onarandombox.multiversecore</groupId>
+			<artifactId>Multiverse-Core</artifactId>
+			<version>4.3.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.onarandombox.multiversenetherportals</groupId>
+			<artifactId>Multiverse-NetherPortals</artifactId>
+			<version>4.2.0</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

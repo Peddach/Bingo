@@ -1,0 +1,10 @@
+name: Bingo
+main: com.github.peddach.bingoHost.BingoHost
+author: Professor_Sam
+softdepend:
+- Multiverse-Core
+version: ${project.version}
+api-version: 1.18
+commands:
+   Bingo:
+      description: Manage Bingo
