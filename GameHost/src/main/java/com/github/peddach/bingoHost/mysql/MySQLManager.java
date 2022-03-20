@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 
@@ -90,58 +91,80 @@ public class MySQLManager {
 	public static void updateArena(Arena arena) {
 		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
 			try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("REPLACE " + version + "_Arenas(ArenaName, ArenaState, Type, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
-
 				stmt.setString(1, arena.getName());
 				stmt.setString(2, arena.getGameState().toString());
 				stmt.setString(3, arena.getMode().toString());
-				stmt.setInt(4, arena.getPlayers());
-				stmt.setString(5, OneVsOne.getServername());
+				stmt.setInt(4, arena.getPlayers().size());
+				stmt.setString(5, GeneralSettings.servername);
 				stmt.execute();
-
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-
 		});
 	}
 
 	public static void addArena(Arena arena) {
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-
-			@Override
-			public void run() {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO " + version + "_Arenas(ArenaName, ArenaState, Kit, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
-
-					stmt.setString(1, arena.getArenaName());
+		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
+				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO " + version + "_Arenas(ArenaName, ArenaState, Type, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
+					stmt.setString(1, arena.getName());
 					stmt.setString(2, arena.getGameState().toString());
-					stmt.setString(3, arena.getArenaMap().getKitName());
-					stmt.setInt(4, arena.getPlayerCount());
-					stmt.setString(5, OneVsOne.getServername());
+					stmt.setString(3, arena.getMode().toString());
+					stmt.setInt(4, arena.getPlayers().size());
+					stmt.setString(5, GeneralSettings.servername);
 					stmt.execute();
-
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-
-			}
 		});
 	}
 
 	public static void deleteArena(String arenaUUID) {
-		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-
-			@Override
-			public void run() {
+		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
 				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM " + version + "_Arenas WHERE ArenaName = ?;")) {
-
 					stmt.setString(1, arenaUUID);
 					stmt.execute();
-
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-
-			}
 		});
+	}
+	
+	public static void purgeDatabase() {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Arenas WHERE Server = ?;")) {
+			stmt.setString(1, GeneralSettings.servername);
+			stmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Teleport WHERE Server = ?;")) {
+			stmt.setString(1, GeneralSettings.servername);
+			stmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static ArrayList<SimpleArenaDatabaseObject> readArenas() {
+
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit, Server FROM "+ version +"_Arenas;")) {
+			ResultSet resultSet = stmt.executeQuery();
+
+			ArrayList<SimpleArenaDatabaseObject> sado = new ArrayList<>();
+
+			while (resultSet.next()) {
+				String arenaName = resultSet.getString("ArenaName");
+				GameState gameState = GameState.valueOf(resultSet.getString("ArenaState"));
+				int players = resultSet.getInt("Players");
+				String kit = resultSet.getString("Kit");
+				String server = resultSet.getString("Server");
+				sado.add(new SimpleArenaDatabaseObject(arenaName, players, gameState, kit, server));
+			}
+			return sado;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 }
