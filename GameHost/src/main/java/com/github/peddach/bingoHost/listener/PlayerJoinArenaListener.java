@@ -25,7 +25,9 @@ public class PlayerJoinArenaListener implements Listener{
 		if(event.getArena().getGameState() == GameState.WAITING) {
 			event.getArena().setGameState(GameState.STARTING);
 		}
-		
+		if(event.getArena().getPlayers().size() == 2) {
+			new GameCountDown(event.getArena());
+		}
 		MySQLManager.updateArena(event.getArena());
 	}
 }

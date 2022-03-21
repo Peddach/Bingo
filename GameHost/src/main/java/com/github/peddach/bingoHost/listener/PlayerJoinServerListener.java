@@ -34,7 +34,7 @@ public class PlayerJoinServerListener implements Listener{
 			for(Arena i : Arena.getArenas()) {
 				if(i.getName().equalsIgnoreCase(arena)) {
 					if(!i.addPlayer(player)) {
-						player.sendMessage("&cDas Spiel welchem du versuchst beizutreten ist voll!");
+						player.sendMessage("&cDas Spiel welchem du versuchst beizutreten ist voll oder schon gestartet!");
 						CloudNetAdapter.sendPlayerToLobbyTask(player);
 					}
 					return;

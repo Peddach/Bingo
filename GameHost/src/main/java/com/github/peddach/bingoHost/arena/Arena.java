@@ -11,6 +11,7 @@ import org.bukkit.World;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
+import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.events.GameStateChangeEvent;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
@@ -78,6 +79,9 @@ public class Arena {
 	}
 
 	public void removePlayer(Player player) {
+		if(!players.contains(player)) {
+			return;
+		}
 		players.remove(player);
 		PlayerLeaveArenaEvent event = new PlayerLeaveArenaEvent(this, player);
 		Bukkit.getPluginManager().callEvent(event);
@@ -107,10 +111,14 @@ public class Arena {
 	}
 
 	public void delete() {
+		for(Player player : players) {
+			CloudNetAdapter.sendPlayerToLobbyTask(player);
+		}
 		netherportals.removeWorldLink(world.getName(), nether.getName(), PortalType.NETHER);
 		netherportals.removeWorldLink(nether.getName(), world.getName(), PortalType.NETHER);
 		worldManager.deleteWorld(world.getName());
 		worldManager.deleteWorld(nether.getName());
+		MySQLManager.deleteArena(name);
 	}
 	
 	public void broadcastMessage(String message) {

@@ -10,11 +10,11 @@ import com.github.peddach.bingoHost.arena.GameState;
 
 public class GameCountDown {
 	private int taskID;
-	private Arena arena;
+	private Arena arena;		
+	int count = 60;
 	
 	public GameCountDown(Arena arena) {
 		this.arena = arena;
-		int count = 60;
 		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(GeneralSettings.plugin, () -> {
 			if(arena.getPlayers().size() <= 1) {
 				for(Player player : arena.getPlayers()) {
@@ -26,6 +26,7 @@ public class GameCountDown {
 			for(Player player : arena.getPlayers()) {
 				showTitle(player, count);
 			}
+			count--;
 		}, 20, 20);
 	}
 	

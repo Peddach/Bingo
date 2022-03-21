@@ -15,5 +15,6 @@ public class PlayerLeaveArenaListener implements Listener{
 		if(event.getArena().getPlayers().size() == 1) {
 			event.getArena().setGameState(GameState.ENDING);
 		}
+		
 	}
 }
