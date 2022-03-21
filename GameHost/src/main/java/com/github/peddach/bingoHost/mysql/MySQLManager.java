@@ -4,13 +4,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
+import com.github.peddach.bingoHost.arena.ArenaMode;
+import com.github.peddach.bingoHost.arena.GameState;
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 public class MySQLManager {
@@ -105,66 +111,105 @@ public class MySQLManager {
 
 	public static void addArena(Arena arena) {
 		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO " + version + "_Arenas(ArenaName, ArenaState, Type, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
-					stmt.setString(1, arena.getName());
-					stmt.setString(2, arena.getGameState().toString());
-					stmt.setString(3, arena.getMode().toString());
-					stmt.setInt(4, arena.getPlayers().size());
-					stmt.setString(5, GeneralSettings.servername);
-					stmt.execute();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+			try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO " + version + "_Arenas(ArenaName, ArenaState, Type, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
+				stmt.setString(1, arena.getName());
+				stmt.setString(2, arena.getGameState().toString());
+				stmt.setString(3, arena.getMode().toString());
+				stmt.setInt(4, arena.getPlayers().size());
+				stmt.setString(5, GeneralSettings.servername);
+				stmt.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		});
 	}
 
 	public static void deleteArena(String arenaUUID) {
 		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
-				try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM " + version + "_Arenas WHERE ArenaName = ?;")) {
-					stmt.setString(1, arenaUUID);
-					stmt.execute();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+			try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM " + version + "_Arenas WHERE ArenaName = ?;")) {
+				stmt.setString(1, arenaUUID);
+				stmt.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		});
 	}
-	
+
 	public static void purgeDatabase() {
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Arenas WHERE Server = ?;")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM " + version + "_Arenas WHERE Server = ?;")) {
 			stmt.setString(1, GeneralSettings.servername);
 			stmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM "+ version +"_Teleport WHERE Server = ?;")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM " + version + "_Teleport WHERE Server = ?;")) {
 			stmt.setString(1, GeneralSettings.servername);
 			stmt.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static ArrayList<SimpleArenaDatabaseObject> readArenas() {
 
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit, Server FROM "+ version +"_Arenas;")) {
+	public static ArrayList<ArenaObject> readArenas() {
+
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit, Server FROM " + version + "_Arenas;")) {
 			ResultSet resultSet = stmt.executeQuery();
-
-			ArrayList<SimpleArenaDatabaseObject> sado = new ArrayList<>();
-
+			ArrayList<ArenaObject> sado = new ArrayList<>();
 			while (resultSet.next()) {
 				String arenaName = resultSet.getString("ArenaName");
 				GameState gameState = GameState.valueOf(resultSet.getString("ArenaState"));
 				int players = resultSet.getInt("Players");
-				String kit = resultSet.getString("Kit");
+				ArenaMode mode = ArenaMode.valueOf(resultSet.getString("Type"));
 				String server = resultSet.getString("Server");
-				sado.add(new SimpleArenaDatabaseObject(arenaName, players, gameState, kit, server));
+				sado.add(new ArenaObject(arenaName, mode, players, gameState, server));
 			}
 			return sado;
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
 
+	public static @Nullable String readPlayerTeleport(Player player) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName FROM " + version + "_Teleport WHERE PlayerName = ?;")) {
+			stmt.setString(1, player.getName());
+			ResultSet resultSet = stmt.executeQuery();
+			String arenaname = null;
+			if (resultSet.next()) {
+				arenaname = resultSet.getString("ArenaName");
+			}
+			if (arenaname == null) {
+				return null;
+			} else {
+				return arenaname;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static void deletePlayerFromTeleport(String player) {
+		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
+			try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("DELETE FROM " + version + "_Teleport WHERE PlayerName = ?;")) {
+				stmt.setString(1, player);
+				stmt.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
+	public static void addPlayerToTeleport(String player, String arena, String server) {
+		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
+			try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO " + version + "_Teleport(PlayerName, ArenaName, Server) VALUES (?, ?, ?)")) {
+				stmt.setString(1, player);
+				stmt.setString(2, arena);
+				stmt.setString(3, server);
+				stmt.execute();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }

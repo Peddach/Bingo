@@ -6,9 +6,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.GeneralSettings;
+import com.github.peddach.bingoHost.arena.Arena;
+import com.github.peddach.bingoHost.mysql.MySQLManager;
+import com.github.peddach.bingoHost.util.MessageUtil;
 
 public class PlayerJoinServerListener implements Listener{
+	
 	
 	@EventHandler
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
@@ -17,6 +22,27 @@ public class PlayerJoinServerListener implements Listener{
 			event.getPlayer().hidePlayer(GeneralSettings.plugin, p);
 			p.hidePlayer(GeneralSettings.plugin, event.getPlayer());
 		}
+		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
+			String arena = MySQLManager.readPlayerTeleport(event.getPlayer());
+			MySQLManager.deletePlayerFromTeleport(event.getPlayer().getName());
+			joinPlayerArenaIfExistsSync(event.getPlayer(), arena);
+		});
+	}
+	
+	private void joinPlayerArenaIfExistsSync(Player player, String arena) {
+		Bukkit.getScheduler().runTask(GeneralSettings.plugin, () -> {
+			for(Arena i : Arena.getArenas()) {
+				if(i.getName().equalsIgnoreCase(arena)) {
+					if(!i.addPlayer(player)) {
+						player.sendMessage("&cDas Spiel welchem du versuchst beizutreten ist voll!");
+						CloudNetAdapter.sendPlayerToLobbyTask(player);
+					}
+					return;
+				}
+			}
+			MessageUtil.sendMessage(player, "&cFehler beim Laden der Daten!");
+			CloudNetAdapter.sendPlayerToLobbyTask(player);
+		});
 	}
 
 }

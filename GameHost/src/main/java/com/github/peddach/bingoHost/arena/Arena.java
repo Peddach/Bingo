@@ -12,8 +12,12 @@ import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.GeneralSettings;
+import com.github.peddach.bingoHost.events.GameStateChangeEvent;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 import com.github.peddach.bingoHost.events.PlayerLeaveArenaEvent;
+import com.github.peddach.bingoHost.mysql.MySQLManager;
+import com.github.peddach.bingoHost.util.InventoryUtil;
+import com.github.peddach.bingoHost.util.MessageUtil;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseNetherPortals.MultiverseNetherPortals;
@@ -47,6 +51,9 @@ public class Arena {
 		world = Bukkit.getWorld(name + "_world");
 		worldManager.addWorld(name + "_nether", World.Environment.NETHER, null, WorldType.NORMAL, true, null);
 		nether = Bukkit.getWorld(name + "_nether");
+		
+		world.getWorldBorder().setSize(10000);
+		nether.getWorldBorder().setSize(10000);
 
 		netherportals = (MultiverseNetherPortals) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-NetherPortals");
 		netherportals.addWorldLink(world.getName(), nether.getName(), PortalType.NETHER);
@@ -65,11 +72,13 @@ public class Arena {
 			maxPlayers = 9*2;
 		}
 		
+		arenas.add(this);
+		MySQLManager.addArena(this);
+		
 	}
 
 	public void removePlayer(Player player) {
 		players.remove(player);
-		
 		PlayerLeaveArenaEvent event = new PlayerLeaveArenaEvent(this, player);
 		Bukkit.getPluginManager().callEvent(event);
 	}
@@ -103,6 +112,21 @@ public class Arena {
 		worldManager.deleteWorld(world.getName());
 		worldManager.deleteWorld(nether.getName());
 	}
+	
+	public void broadcastMessage(String message) {
+		for(Player player : players) {
+			MessageUtil.sendMessage(player, message);
+		}
+	}
+	
+	public void spreadPlayers() {
+		for(Player player : players) {
+			int x = 500 - new Random().nextInt(1000);
+			int z = 500 - new Random().nextInt(1000);
+			player.teleport(new Location(world, x + 0.5, world.getHighestBlockYAt(x, z) + 1, z + 0.5));
+			InventoryUtil.clearInvOfPlayer(player);
+		}
+	}
 
 	public static ArrayList<Arena> getArenas() {
 		return arenas;
@@ -113,6 +137,8 @@ public class Arena {
 	}
 
 	public void setGameState(GameState gameState) {
+		GameStateChangeEvent event = new GameStateChangeEvent(this, this.gameState, gameState);
+		Bukkit.getPluginManager().callEvent(event);
 		this.gameState = gameState;
 	}
 
@@ -138,5 +164,9 @@ public class Arena {
 	
 	public ArrayList<Player> getPlayers() {
 		return players;
+	}
+	
+	public World getWorld() {
+		return world;
 	}
 }

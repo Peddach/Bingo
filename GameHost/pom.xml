@@ -12,8 +12,8 @@
 	<name>BingoGameHost</name>
 
 	<properties>
-		<maven.compiler.target>16</maven.compiler.target>
-		<maven.compiler.source>16</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<maven.compiler.source>17</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<mysql.version>1_1_1</mysql.version>
@@ -67,6 +67,12 @@
 		<dependency>
 			<groupId>de.dytanic.cloudnet</groupId>
 			<artifactId>cloudnet-driver</artifactId>
+			<version>3.4.3-RELEASE</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.dytanic.cloudnet</groupId>
+			<artifactId>cloudnet-bridge</artifactId>
 			<version>3.4.3-RELEASE</version>
 			<scope>provided</scope>
 		</dependency>
