@@ -49,7 +49,7 @@ public class ArenaData {
 			return;
 		}
 		for(ArenaObject arena : allArenas) {
-			if(arena.getPlayers() == 0 && arena.getGamestate() == GameState.WAITING) {
+			if(arena.getPlayers() == 0 && arena.getGamestate() == GameState.WAITING && arena.getMode() == ArenaMode.SINGLE) {
 				currentSignleArena = arena;
 				return;
 			}
@@ -63,7 +63,7 @@ public class ArenaData {
 			return;
 		}
 		for(ArenaObject arena : allArenas) {
-			if(arena.getPlayers() <= 1 && arena.getGamestate() == GameState.WAITING) {
+			if(arena.getPlayers() <= 1 && arena.getGamestate() == GameState.WAITING && arena.getMode() == ArenaMode.TEAM) {
 				currentTeamArena = arena;
 				return;
 			}
