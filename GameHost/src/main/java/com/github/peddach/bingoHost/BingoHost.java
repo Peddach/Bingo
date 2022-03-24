@@ -28,7 +28,7 @@ public class BingoHost extends JavaPlugin {
 		GeneralSettings.setupFile = getResource("dbsetup.sql");
 
 		if (!MySQLManager.setup()) {
-			getLogger().warning("Cloud not Connect to database!!!");
+			getLogger().warning("Could not Connect to database!!!");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
