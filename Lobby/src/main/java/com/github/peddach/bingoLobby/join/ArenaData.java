@@ -22,7 +22,7 @@ public class ArenaData {
 		allArenas = MySQLManager.readArenas();
 		chooseNewCurrenQuickJoinArenaSingle();
 		chooseNewCurrenQuickJoinArenaTeam();
-		visibleArenas = allArenas;
+		visibleArenas = new ArrayList<>(allArenas);
 		if(currentSignleArena != null) {
 			visibleArenas.remove(currentSignleArena);
 		}
