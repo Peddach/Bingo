@@ -153,7 +153,7 @@ public class MySQLManager {
 
 	public static ArrayList<ArenaObject> readArenas() {
 
-		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Kit, Server FROM " + version + "_Arenas;")) {
+		try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("SELECT ArenaName, ArenaState, Players, Type, Server FROM " + version + "_Arenas;")) {
 			ResultSet resultSet = stmt.executeQuery();
 			ArrayList<ArenaObject> sado = new ArrayList<>();
 			while (resultSet.next()) {
