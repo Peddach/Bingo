@@ -46,9 +46,11 @@ public class ArenaData {
 	
 	private static void chooseNewCurrenQuickJoinArenaSingle() {
 		for(ArenaObject arenaObj : allArenas) {
-			if(currentSignleArena.getName().equalsIgnoreCase(arenaObj.getName())) {
-				if(currentSignleArena.getGamestate() == GameState.WAITING || currentSignleArena.getGamestate() == GameState.STARTING) {
-					return;
+			if(currentSignleArena != null) {
+				if(currentSignleArena.getName().equalsIgnoreCase(arenaObj.getName())) {
+					if(currentSignleArena.getGamestate() == GameState.WAITING || currentSignleArena.getGamestate() == GameState.STARTING) {
+						return;
+					}
 				}
 			}
 		}
@@ -64,9 +66,11 @@ public class ArenaData {
 	
 	private static void chooseNewCurrenQuickJoinArenaTeam() {
 		for(ArenaObject arenaObj : allArenas) {
-			if(currentTeamArena.getName().equalsIgnoreCase(arenaObj.getName())) {
-				if(currentTeamArena.getGamestate() == GameState.WAITING || currentTeamArena.getGamestate() == GameState.STARTING) {
-					return;
+			if(currentTeamArena != null) {
+				if(currentTeamArena.getName().equalsIgnoreCase(arenaObj.getName())) {
+					if(currentTeamArena.getGamestate() == GameState.WAITING || currentTeamArena.getGamestate() == GameState.STARTING) {
+						return;
+					}
 				}
 			}
 		}
