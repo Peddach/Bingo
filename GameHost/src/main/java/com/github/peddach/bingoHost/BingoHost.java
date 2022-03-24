@@ -53,8 +53,12 @@ public class BingoHost extends JavaPlugin {
 
 	private void createArenas() {
 		for (int i = 0; i < getConfig().getInt("Arenas"); i++) {
-
-			new Arena(ArenaMode.SINGLE);
+			if(i % 2 == 0) {
+				new Arena(ArenaMode.SINGLE);
+			}
+			else {
+				new Arena(ArenaMode.TEAM);
+			}
 
 		}
 	}
