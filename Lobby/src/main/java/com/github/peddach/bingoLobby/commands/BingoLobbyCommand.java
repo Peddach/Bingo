@@ -48,7 +48,7 @@ public class BingoLobbyCommand implements CommandExecutor {
 			}
 			return false;
 		}
-		if (args.length == 1 && args[0].equalsIgnoreCase("join")) {
+		if (args.length >= 1 && args[0].equalsIgnoreCase("join")) {
 			if (args.length == 2) {
 				new PlayerConnector(args[1], player);
 			} else {
