@@ -1,0 +1,8 @@
+name: BingoLobby
+main: com.github.peddach.bingoLobby.BingoLobby
+author: Professor_Sam
+version: ${project.version}
+api-version: 1.18
+commands:
+   BingoLobby:
+      description: Manage BingoLobby

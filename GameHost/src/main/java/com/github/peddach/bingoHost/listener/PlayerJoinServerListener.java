@@ -37,6 +37,7 @@ public class PlayerJoinServerListener implements Listener{
 						player.sendMessage("&cDas Spiel welchem du versuchst beizutreten ist voll oder schon gestartet!");
 						CloudNetAdapter.sendPlayerToLobbyTask(player);
 					}
+					LobbyDamageListener.players.add(player);
 					return;
 				}
 			}

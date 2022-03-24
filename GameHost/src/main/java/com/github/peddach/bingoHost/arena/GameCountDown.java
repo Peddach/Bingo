@@ -1,12 +1,11 @@
-package com.github.peddach.bingoHost.listener;
+package com.github.peddach.bingoHost.arena;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.GeneralSettings;
-import com.github.peddach.bingoHost.arena.Arena;
-import com.github.peddach.bingoHost.arena.GameState;
+import com.github.peddach.bingoHost.listener.LobbyDamageListener;
 
 public class GameCountDown {
 	private int taskID;
@@ -74,6 +73,9 @@ public class GameCountDown {
 		Bukkit.getScheduler().cancelTask(taskID);
 		arena.spreadPlayers();
 		arena.setGameState(GameState.INGAME);
+		for(Player player : arena.getPlayers()) {
+			LobbyDamageListener.players.remove(player);
+		}
 	}
 
 }

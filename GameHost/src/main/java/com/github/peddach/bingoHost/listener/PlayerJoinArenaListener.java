@@ -6,6 +6,8 @@ import org.bukkit.event.Listener;
 
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
+import com.github.peddach.bingoHost.arena.ArenaMode;
+import com.github.peddach.bingoHost.arena.GameCountDown;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
@@ -19,13 +21,18 @@ public class PlayerJoinArenaListener implements Listener{
 		event.getArena().broadcastMessage(event.getPlayer().getDisplayName() + " &7ist dem Spiel beigetreten");
 		InventoryUtil.clearInvOfPlayer(event.getPlayer());
 		for(Player i : event.getArena().getPlayers()) {
+			GeneralSettings.plugin.getLogger().info("Showing player: " + i.getName() + event.getPlayer().getName());
 			i.showPlayer(GeneralSettings.plugin, event.getPlayer());
 			event.getPlayer().showPlayer(GeneralSettings.plugin, i);
 		}
 		if(event.getArena().getGameState() == GameState.WAITING) {
+			GeneralSettings.plugin.getLogger().info("GameStateCahnge for statring");
 			event.getArena().setGameState(GameState.STARTING);
 		}
-		if(event.getArena().getPlayers().size() == 2) {
+		if(event.getArena().getPlayers().size() == 2 && event.getArena().getMode() == ArenaMode.SINGLE) {
+			new GameCountDown(event.getArena());
+		}
+		if(event.getArena().getPlayers().size() == 3 && event.getArena().getMode() == ArenaMode.TEAM) {
 			new GameCountDown(event.getArena());
 		}
 		MySQLManager.updateArena(event.getArena());

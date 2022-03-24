@@ -5,5 +5,13 @@ Database:
    User: Bingo
    Password: password
    Database: Bingo
+Arenas: 9
+Spawn:
+   X: 100
+   Y: 100
+   Z: 100
+   Yaw: 0
+   Pitch: 0
+   World: world
    
    

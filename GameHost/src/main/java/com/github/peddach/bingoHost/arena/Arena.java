@@ -25,7 +25,7 @@ import com.onarandombox.MultiverseNetherPortals.MultiverseNetherPortals;
 
 public class Arena {
 	private ArenaMode mode;
-	private ArrayList<Player> players;
+	private ArrayList<Player> players = new ArrayList<>();
 	private BingoTeam[] teams = new BingoTeam[9];
 	private HashMap<Player, Board> boards;
 	private GameState gameState;
@@ -37,21 +37,21 @@ public class Arena {
 	private int maxPlayers;
 	
 	private static Location spawn = loadSpawnFromConfig();
-	private static ArrayList<Arena> arenas;
+	private static ArrayList<Arena> arenas = new ArrayList<>();
 
 	public Arena(ArenaMode mode) {
 		this.mode = mode;
 
-		name = "Arena" + new Random().ints(400, 20000);
+		name = getRandomString();
 		setGameState(GameState.WAITING);
 
 		MultiverseCore mvCore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		worldManager = mvCore.getMVWorldManager();
-
-		worldManager.addWorld(name + "_world", World.Environment.NORMAL, null, WorldType.NORMAL, true, null);
-		world = Bukkit.getWorld(name + "_world");
-		worldManager.addWorld(name + "_nether", World.Environment.NETHER, null, WorldType.NORMAL, true, null);
-		nether = Bukkit.getWorld(name + "_nether");
+		
+		worldManager.addWorld(name + "world", World.Environment.NORMAL, null, WorldType.NORMAL, true, null);
+		world = Bukkit.getWorld(name + "world");
+		worldManager.addWorld(name + "nether", World.Environment.NETHER, null, WorldType.NORMAL, true, null);
+		nether = Bukkit.getWorld(name + "nether");
 		
 		world.getWorldBorder().setSize(10000);
 		nether.getWorldBorder().setSize(10000);
@@ -134,6 +134,20 @@ public class Arena {
 			player.teleport(new Location(world, x + 0.5, world.getHighestBlockYAt(x, z) + 1, z + 0.5));
 			InventoryUtil.clearInvOfPlayer(player);
 		}
+	}
+	
+	private String getRandomString() {
+		 int leftLimit = 97; // letter 'a'
+		    int rightLimit = 122; // letter 'z'
+		    int targetStringLength = 5;
+		    Random random = new Random();
+
+		    String generatedString = random.ints(leftLimit, rightLimit + 1)
+		      .limit(targetStringLength)
+		      .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+		      .toString();
+
+		  return generatedString;
 	}
 
 	public static ArrayList<Arena> getArenas() {

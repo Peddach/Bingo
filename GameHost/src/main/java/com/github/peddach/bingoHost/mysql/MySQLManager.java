@@ -25,8 +25,8 @@ public class MySQLManager {
 	private static String version = "1_1_1";
 
 	public static Boolean setup() {
-
 		GeneralSettings.plugin.getLogger().info("§2Starting Database Setup");
+		setupFile = GeneralSettings.setupFile;
 		try {
 			connect();
 		} catch (Exception e) {
@@ -68,6 +68,7 @@ public class MySQLManager {
 		}
 
 	}
+
 
 	private static void setupDB() throws IOException, SQLException {
 		String setup;

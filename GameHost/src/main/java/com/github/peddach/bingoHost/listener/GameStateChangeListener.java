@@ -22,7 +22,7 @@ public class GameStateChangeListener implements Listener{
 				player.getInventory().setItem(5, new ItemStack(Material.BREAD, 0));
 			}
 		}
-		if(event.getBefore() == GameState.INGAME && event.getAfter() == GameState.ENDING) {
+		if(event.getAfter() == GameState.ENDING) {
 			new ScheduledArenaDelete(event.getArena());
 			for(Player player : event.getArena().getPlayers()) {
 				InventoryUtil.clearInvOfPlayer(player);

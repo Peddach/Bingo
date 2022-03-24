@@ -3,6 +3,7 @@ main: com.github.peddach.bingoHost.BingoHost
 author: Professor_Sam
 softdepend:
 - Multiverse-Core
+- Multiverse-NetherPortals
 version: ${project.version}
 api-version: 1.18
 commands:
