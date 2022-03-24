@@ -38,4 +38,53 @@
 			<version>0.0.1</version>
 		</dependency>
 	</dependencies>
+		<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.3.0-SNAPSHOT</version>
+				<configuration>
+					<minimizeJar>true</minimizeJar>
+					<artifactSet>
+						<includes>
+							<include>com.github.peddach:GameHost</include>
+						</includes>
+						<excludes>
+							<exclude>/*.yml</exclude>
+							<exclude>/*.sql</exclude>
+						</excludes>
+					</artifactSet>
+					<filters>
+						<filter>
+							<artifact>com.github.peddach:GameHost</artifact>
+							<excludes>
+								<exclude>META-INF/*.MF</exclude>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+								<exclude>*.yml</exclude>
+								<exclude>*.sql</exclude>
+								<exclude>*.txt</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
