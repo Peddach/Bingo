@@ -17,7 +17,7 @@ public class PlayerJoinServerListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
-		event.setJoinMessage(null);
+		event.joinMessage(null);
 		for(Player p : Bukkit.getOnlinePlayers()) {
 			event.getPlayer().hidePlayer(GeneralSettings.plugin, p);
 			p.hidePlayer(GeneralSettings.plugin, event.getPlayer());

@@ -12,7 +12,7 @@ public class PlayerLeaveArenaListener implements Listener{
 	@EventHandler
 	public void onPlayerLeaveArena(PlayerLeaveArenaEvent event) {
 		MySQLManager.updateArena(event.getArena());
-		if(event.getArena().getPlayers().size() == 1) {
+		if(event.getArena().getPlayers().size() == 1 && event.getArena().getGameState() == GameState.INGAME) {
 			event.getArena().setGameState(GameState.ENDING);
 		}
 		

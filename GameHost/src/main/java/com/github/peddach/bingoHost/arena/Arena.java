@@ -101,7 +101,7 @@ public class Arena {
 	
 	private static Location loadSpawnFromConfig() {
 		double x = GeneralSettings.config.getLong("Spawn.X");
-		double y = GeneralSettings.config.getLong("String.Y");
+		double y = GeneralSettings.config.getLong("Spawn.Y");
 		double z = GeneralSettings.config.getLong("Spawn.Z");
 		long yaw = GeneralSettings.config.getLong("Spawn.Yaw");
 		long pitch = GeneralSettings.config.getLong("Spawn.Pitch");
@@ -111,14 +111,18 @@ public class Arena {
 	}
 
 	public void delete() {
+		
+		MySQLManager.deleteArena(name);
+		
 		for(Player player : players) {
 			CloudNetAdapter.sendPlayerToLobbyTask(player);
 		}
-		netherportals.removeWorldLink(world.getName(), nether.getName(), PortalType.NETHER);
-		netherportals.removeWorldLink(nether.getName(), world.getName(), PortalType.NETHER);
-		worldManager.deleteWorld(world.getName());
-		worldManager.deleteWorld(nether.getName());
-		MySQLManager.deleteArena(name);
+		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
+			netherportals.removeWorldLink(world.getName(), nether.getName(), PortalType.NETHER);
+			netherportals.removeWorldLink(nether.getName(), world.getName(), PortalType.NETHER);
+			worldManager.deleteWorld(world.getName());
+			worldManager.deleteWorld(nether.getName());
+		}, 60);
 	}
 	
 	public void broadcastMessage(String message) {
@@ -129,10 +133,11 @@ public class Arena {
 	
 	public void spreadPlayers() {
 		for(Player player : players) {
-			int x = 500 - new Random().nextInt(1000);
-			int z = 500 - new Random().nextInt(1000);
-			player.teleport(new Location(world, x + 0.5, world.getHighestBlockYAt(x, z) + 1, z + 0.5));
+			int x = 50 - new Random().nextInt(100);
+			int z = 50 - new Random().nextInt(100);
+			player.teleportAsync(new Location(world, x + 0.5, world.getHighestBlockYAt(x, z) + 1, z + 0.5));
 			InventoryUtil.clearInvOfPlayer(player);
+			MessageUtil.sendMessage(player, "§2Du wirst gleich teleportiert");
 		}
 	}
 	

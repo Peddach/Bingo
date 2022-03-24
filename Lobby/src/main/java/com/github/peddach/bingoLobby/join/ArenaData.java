@@ -45,8 +45,12 @@ public class ArenaData {
 	}
 	
 	private static void chooseNewCurrenQuickJoinArenaSingle() {
-		if((allArenas.contains(currentSignleArena) && (currentSignleArena.getGamestate() == GameState.WAITING || currentSignleArena.getGamestate() == GameState.STARTING))) {
-			return;
+		for(ArenaObject arenaObj : allArenas) {
+			if(currentSignleArena.getName().equalsIgnoreCase(arenaObj.getName())) {
+				if(currentSignleArena.getGamestate() == GameState.WAITING || currentSignleArena.getGamestate() == GameState.STARTING) {
+					return;
+				}
+			}
 		}
 		for(ArenaObject arena : allArenas) {
 			if(arena.getPlayers() == 0 && arena.getGamestate() == GameState.WAITING && arena.getMode() == ArenaMode.SINGLE) {
@@ -59,8 +63,12 @@ public class ArenaData {
 	}
 	
 	private static void chooseNewCurrenQuickJoinArenaTeam() {
-		if((allArenas.contains(currentTeamArena) && (currentTeamArena.getGamestate() == GameState.WAITING || currentTeamArena.getGamestate() == GameState.STARTING))) {
-			return;
+		for(ArenaObject arenaObj : allArenas) {
+			if(currentTeamArena.getName().equalsIgnoreCase(arenaObj.getName())) {
+				if(currentTeamArena.getGamestate() == GameState.WAITING || currentTeamArena.getGamestate() == GameState.STARTING) {
+					return;
+				}
+			}
 		}
 		for(ArenaObject arena : allArenas) {
 			if(arena.getPlayers() <= 1 && arena.getGamestate() == GameState.WAITING && arena.getMode() == ArenaMode.TEAM) {

@@ -13,6 +13,7 @@ public class PlayerLeaveServerListener implements Listener{
 		for(Arena arena : Arena.getArenas()) {
 			arena.removePlayer(event.getPlayer());
 		}
+		event.quitMessage(null);
 	}
 
 }

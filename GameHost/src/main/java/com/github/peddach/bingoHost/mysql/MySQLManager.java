@@ -91,7 +91,6 @@ public class MySQLManager {
 
 	private static void disableplugin() {
 		GeneralSettings.plugin.getLogger().warning("Disableing plugins because of a SQL-Exception!");
-		Bukkit.broadcastMessage("§2Disable Bingo caused by an Exception!");
 		Bukkit.getPluginManager().disablePlugin(GeneralSettings.plugin);
 	}
 

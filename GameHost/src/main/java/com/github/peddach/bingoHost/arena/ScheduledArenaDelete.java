@@ -24,6 +24,7 @@ public class ScheduledArenaDelete {
 			if(count == 0) {
 				arena.delete();
 				Bukkit.getScheduler().cancelTask(taskId);
+				new Arena(arena.getMode());
 			}
 			count --;
 		}, 20, 20);
