@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.GeneralSettings;
-import com.github.peddach.bingoHost.mysql.ArenaObject;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 

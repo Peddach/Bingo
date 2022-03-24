@@ -18,21 +18,24 @@ public class BingoLobbyCommand implements CommandExecutor{
 			return false;
 		}
 		Player player = (Player) sender;
-		if(player.hasPermission("Bingo.gui")) {
+		if(!player.hasPermission("Bingo.admin")) {
 			return false;
 		}
 		if(args.length == 1 && args[0].equalsIgnoreCase("ListQuick")) {
 			MessageUtil.sendMessage(player, "§7Team: " + ArenaData.getCurrentTeamArena().getName() + " Single: " + ArenaData.getCurrentSignleArena().getName());
+			return false;
 		}
 		if(args.length == 1 && args[0].equalsIgnoreCase("ListVisible")) {
 			for(ArenaObject arena : ArenaData.getArenas()) {
 				MessageUtil.sendMessage(player, arena.getName() + " | " + arena.getGamestate().name() + " | " + arena.getPlayers());
 			}
+			return false;
 		}
 		if(args.length == 1 && args[0].equalsIgnoreCase("ListAll")) {
 			for(ArenaObject arena : ArenaData.getAllArenas()) {
 				MessageUtil.sendMessage(player, arena.getName() + " | " + arena.getGamestate().name() + " | " + arena.getPlayers());
 			}
+			return false;
 		}
 		if(args.length == 1 && args[0].equalsIgnoreCase("join")) {
 			if(args.length == 2) {
@@ -41,7 +44,9 @@ public class BingoLobbyCommand implements CommandExecutor{
 			else {
 				MessageUtil.sendMessage(player, "§cNutze: join [arena]");
 			}
+			return false;
 		}
+		MessageUtil.sendMessage(player, "§cCommand nicht gefunden!");
 		return false;
 	}
 
