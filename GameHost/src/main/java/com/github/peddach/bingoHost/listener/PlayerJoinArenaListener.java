@@ -13,15 +13,16 @@ import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.InventoryUtil;
 
+import io.papermc.paper.text.PaperComponents;
+
 public class PlayerJoinArenaListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerJoinArenaEvent(PlayerJoinArenaEvent event) {
 		event.getPlayer().teleport(Arena.getSpawn());
-		event.getArena().broadcastMessage(event.getPlayer().getDisplayName() + " &7ist dem Spiel beigetreten");
+		event.getArena().broadcastMessage(PaperComponents.plainTextSerializer().serialize(event.getPlayer().displayName()) + " &7ist dem Spiel beigetreten");
 		InventoryUtil.clearInvOfPlayer(event.getPlayer());
 		for(Player i : event.getArena().getPlayers()) {
-			GeneralSettings.plugin.getLogger().info("Showing player: " + i.getName() + event.getPlayer().getName());
 			i.showPlayer(GeneralSettings.plugin, event.getPlayer());
 			event.getPlayer().showPlayer(GeneralSettings.plugin, i);
 		}
