@@ -1,5 +1,7 @@
 package com.github.peddach.bingoHost.arena;
 
+import java.time.Duration;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -7,17 +9,23 @@ import org.bukkit.entity.Player;
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.listener.LobbyDamageListener;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
+import net.kyori.adventure.title.Title.Times;
+
 public class GameCountDown {
 	private int taskID;
 	private Arena arena;		
 	int count = 60;
 	
 	public GameCountDown(Arena arena) {
+		GeneralSettings.plugin.getLogger().info("§4CREATED GAMECOUNTDOWN FOR: " + arena.getName()); //DEBUG ONLY
 		this.arena = arena;
 		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(GeneralSettings.plugin, () -> {
 			if(arena.getPlayers().size() <= 1) {
 				for(Player player : arena.getPlayers()) {
-					player.sendTitle("§cStart", "§7abgebrochen", 20, 40, 20);
+					player.showTitle(Title.title(Component.text("Start", NamedTextColor.RED), Component.text("abgebrochen", NamedTextColor.GRAY), Times.times(Duration.ofMillis(500), Duration.ofMillis(4000), Duration.ofMillis(500))));
 					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
 					Bukkit.getScheduler().cancelTask(taskID);
 				}
@@ -31,45 +39,50 @@ public class GameCountDown {
 	
 	private void showTitle(Player player, int countdown) {
 		if(countdown == 60) {
-			player.sendTitle("§660", "§7Sekunden", 10, 20, 10);
+			player.showTitle(titlebuilder("60", "Sekunden", 500, 1500, 500));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
 		}
 		if(countdown == 30) {
-			player.sendTitle("§630", "§7Sekunden", 10, 20, 10);
+			player.showTitle(titlebuilder("30", "Sekunden", 500, 1500, 500));;
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
 		}
 		if(countdown == 10) {
-			player.sendTitle("§610", "§7Sekunden", 10, 20, 10);
+			player.showTitle(titlebuilder("10", "Sekunden", 500, 1500, 500));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
 		}
 		if(countdown == 5) {
-			player.sendTitle("§65", "§7Sekunden", 10, 20, 0);
+			player.showTitle(titlebuilder("5", "Sekunden", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
 		}
 		if(countdown == 4) {
-			player.sendTitle("§64", "§7Sekunden", 10, 20, 0);
+			player.showTitle(titlebuilder("4", "Sekunden", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 0.9F);
 		}
 		if(countdown == 3) {
-			player.sendTitle("§63", "§7Sekunden", 0, 20, 0);
+			player.showTitle(titlebuilder("3", "Sekunden", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 0.8F);
 		}
 		if(countdown == 2) {
-			player.sendTitle("§62", "§7Sekunden", 0, 20, 10);
+			player.showTitle(titlebuilder("2", "Sekunden", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 0.7F);
 		}
-		if(countdown == 1) {
-			player.sendTitle("§61", "§7Sekunde", 0, 20, 0);
+		if(countdown == 1) {;
+			player.showTitle(titlebuilder("1", "Sekunde", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 0.6F);
 		}
 		if(countdown == 0) {
-			player.sendTitle("§6Bingo!", "§7Viel Glück", 10, 50, 10);
+			player.showTitle(titlebuilder("Bingo!", "Viel Glück", 500, 2500, 500));
 			player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 1, 1);
 			startGame();
 		}
 	}
 	
+	private Title titlebuilder(String title, String subtitle, int fadein, int stay, int fadeout) {
+		return Title.title(Component.text(title, NamedTextColor.GOLD), Component.text(subtitle, NamedTextColor.GRAY), Times.times(Duration.ofMillis(fadein), Duration.ofMillis(stay), Duration.ofMillis(fadeout)));
+	}
+	
 	public void startGame() {
+		GeneralSettings.plugin.getLogger().info("§4GAME START CALLES FOR: " + arena.getName()); //DEBUG ONLY
 		Bukkit.getScheduler().cancelTask(taskID);
 		arena.spreadPlayers();
 		arena.setGameState(GameState.INGAME);
