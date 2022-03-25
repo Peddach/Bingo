@@ -9,6 +9,7 @@ import com.github.peddach.bingoHost.command.StartCommand;
 import com.github.peddach.bingoHost.listener.GameStateChangeListener;
 import com.github.peddach.bingoHost.listener.LobbyDamageListener;
 import com.github.peddach.bingoHost.listener.PlayerChatListener;
+import com.github.peddach.bingoHost.listener.PlayerDeathListener;
 import com.github.peddach.bingoHost.listener.PlayerJoinArenaListener;
 import com.github.peddach.bingoHost.listener.PlayerJoinServerListener;
 import com.github.peddach.bingoHost.listener.PlayerLeaveArenaListener;
@@ -39,7 +40,7 @@ public class BingoHost extends JavaPlugin {
 		getCommand("Bingo").setExecutor(new BingoCommand());
 		getCommand("start").setExecutor(new StartCommand());
 	}
-	
+
 	@Override
 	public void onDisable() {
 		MySQLManager.purgeDatabase();
@@ -53,14 +54,15 @@ public class BingoHost extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerLeaveServerListener(), this);
 		getServer().getPluginManager().registerEvents(new LobbyDamageListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
+		getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+
 	}
 
 	private void createArenas() {
 		for (int i = 0; i < getConfig().getInt("Arenas"); i++) {
-			if(i % 2 == 0) {
+			if (i % 2 == 0) {
 				new Arena(ArenaMode.SINGLE);
-			}
-			else {
+			} else {
 				new Arena(ArenaMode.TEAM);
 			}
 

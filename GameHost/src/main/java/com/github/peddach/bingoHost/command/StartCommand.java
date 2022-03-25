@@ -28,11 +28,11 @@ public class StartCommand implements CommandExecutor {
 						MessageUtil.sendMessage(player, "§cEs läuft grade kein Countdown");
 						return false;
 					}
-					if(arena.getCountDown().getCountDown() < 15) {
+					if(arena.getCountDown().getCountDown() < 10) {
 						MessageUtil.sendMessage(player, "§cDu kannst jetzt nicht starten");
 						return false;
 					}
-					arena.getCountDown().setCountDown(15);
+					arena.getCountDown().setCountDown(11);
 					arena.broadcastMessage("§7Der Countdown wird verkürzt durch " + player.getName());				}
 			}
 		}
