@@ -79,6 +79,8 @@ public class Arena {
 		arenas.add(this);
 		MySQLManager.addArena(this);
 		
+		applyGameRules();
+		
 	}
 	
 	private void applyGameRules() {
