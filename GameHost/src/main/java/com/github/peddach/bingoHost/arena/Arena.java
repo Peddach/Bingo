@@ -43,7 +43,7 @@ public class Arena {
 		this.mode = mode;
 
 		name = getRandomString();
-		setGameState(GameState.WAITING);
+		gameState = GameState.WAITING;
 
 		MultiverseCore mvCore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 		worldManager = mvCore.getMVWorldManager();
@@ -133,7 +133,6 @@ public class Arena {
 	}
 	
 	public void spreadPlayers() {
-		GeneralSettings.plugin.getLogger().info("§4SPREAD PLAYERS CALLES FOR: " + name); //DEBUG ONLY
 		for(Player player : players) {
 			int x = 50 - new Random().nextInt(100);
 			int z = 50 - new Random().nextInt(100);

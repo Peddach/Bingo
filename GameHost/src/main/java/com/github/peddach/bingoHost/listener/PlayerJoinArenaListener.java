@@ -27,7 +27,6 @@ public class PlayerJoinArenaListener implements Listener{
 			event.getPlayer().showPlayer(GeneralSettings.plugin, i);
 		}
 		if(event.getArena().getGameState() == GameState.WAITING) {
-			GeneralSettings.plugin.getLogger().info("GameStateCahnge for statring");
 			event.getArena().setGameState(GameState.STARTING);
 		}
 		if(event.getArena().getPlayers().size() == 2 && event.getArena().getMode() == ArenaMode.SINGLE) {

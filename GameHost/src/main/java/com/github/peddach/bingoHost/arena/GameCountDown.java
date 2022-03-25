@@ -20,7 +20,6 @@ public class GameCountDown {
 	int count = 60;
 	
 	public GameCountDown(Arena arena) {
-		GeneralSettings.plugin.getLogger().info("§4CREATED GAMECOUNTDOWN FOR: " + arena.getName()); //DEBUG ONLY
 		this.arena = arena;
 		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(GeneralSettings.plugin, () -> {
 			if(arena.getPlayers().size() <= 1) {
@@ -32,6 +31,10 @@ public class GameCountDown {
 			}
 			for(Player player : arena.getPlayers()) {
 				showTitle(player, count);
+			}
+			if(count == 0) {
+				startGame();
+				return;
 			}
 			count--;
 		}, 20, 20);
@@ -73,7 +76,6 @@ public class GameCountDown {
 		if(countdown == 0) {
 			player.showTitle(titlebuilder("Bingo!", "Viel Glück", 500, 2500, 500));
 			player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 1, 1);
-			startGame();
 		}
 	}
 	
@@ -82,7 +84,6 @@ public class GameCountDown {
 	}
 	
 	public void startGame() {
-		GeneralSettings.plugin.getLogger().info("§4GAME START CALLES FOR: " + arena.getName()); //DEBUG ONLY
 		Bukkit.getScheduler().cancelTask(taskID);
 		arena.spreadPlayers();
 		arena.setGameState(GameState.INGAME);
