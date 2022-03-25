@@ -111,6 +111,7 @@ public class MySQLManager {
 
 	public static void addArena(Arena arena) {
 		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
+			GeneralSettings.plugin.getLogger().info("§4ADD ARENA CALLED FOR: " + arena.getName()); //DEBUG ONLY
 			try (Connection conn = datasource.getConnection(); PreparedStatement stmt = conn.prepareStatement("INSERT INTO " + version + "_Arenas(ArenaName, ArenaState, Type, Players, Server) VALUES (?, ?, ?, ?, ?)")) {
 				stmt.setString(1, arena.getName());
 				stmt.setString(2, arena.getGameState().toString());
@@ -121,6 +122,7 @@ public class MySQLManager {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			GeneralSettings.plugin.getLogger().info("§4ADD ARENA CALLED FOR AND FINISHED: " + arena.getName()); //DEBUG ONLY
 		});
 	}
 
