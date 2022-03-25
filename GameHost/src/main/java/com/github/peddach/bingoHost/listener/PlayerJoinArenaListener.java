@@ -30,10 +30,10 @@ public class PlayerJoinArenaListener implements Listener{
 			event.getArena().setGameState(GameState.STARTING);
 		}
 		if(event.getArena().getPlayers().size() == 2 && event.getArena().getMode() == ArenaMode.SINGLE) {
-			new GameCountDown(event.getArena());
+			event.getArena().setCountDown(new GameCountDown(event.getArena()));
 		}
 		if(event.getArena().getPlayers().size() == 3 && event.getArena().getMode() == ArenaMode.TEAM) {
-			new GameCountDown(event.getArena());
+			event.getArena().setCountDown(new GameCountDown(event.getArena()));
 		}
 		MySQLManager.updateArena(event.getArena());
 	}

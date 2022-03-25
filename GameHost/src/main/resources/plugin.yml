@@ -9,3 +9,5 @@ api-version: 1.18
 commands:
    Bingo:
       description: Manage Bingo
+   Start:
+      description: Startet das Spiel

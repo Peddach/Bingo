@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.ArenaMode;
 import com.github.peddach.bingoHost.command.BingoCommand;
+import com.github.peddach.bingoHost.command.StartCommand;
 import com.github.peddach.bingoHost.listener.GameStateChangeListener;
 import com.github.peddach.bingoHost.listener.LobbyDamageListener;
 import com.github.peddach.bingoHost.listener.PlayerChatListener;
@@ -36,6 +37,7 @@ public class BingoHost extends JavaPlugin {
 		registerListener();
 		createArenas();
 		getCommand("Bingo").setExecutor(new BingoCommand());
+		getCommand("start").setExecutor(new StartCommand());
 	}
 	
 	@Override

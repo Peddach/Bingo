@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.PortalType;
 import org.bukkit.World;
@@ -35,6 +37,7 @@ public class Arena {
 	private MVWorldManager worldManager;
 	private MultiverseNetherPortals netherportals;
 	private int maxPlayers;
+	private GameCountDown countDown;
 	
 	private static Location spawn = loadSpawnFromConfig();
 	private static ArrayList<Arena> arenas = new ArrayList<>();
@@ -75,6 +78,16 @@ public class Arena {
 		
 		arenas.add(this);
 		MySQLManager.addArena(this);
+		
+	}
+	
+	private void applyGameRules() {
+		world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+		world.setGameRule(GameRule.DO_FIRE_TICK, false);
+		world.setGameRule(GameRule.KEEP_INVENTORY, false);
+		world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, true);
+		world.setDifficulty(Difficulty.NORMAL);
+
 		
 	}
 
@@ -142,6 +155,7 @@ public class Arena {
 			InventoryUtil.clearInvOfPlayer(player);
 			MessageUtil.sendMessage(player, "§2Du wirst gleich teleportiert");
 		}
+		world.setTime(6000);
 	}
 	
 	private String getRandomString() {
@@ -198,5 +212,13 @@ public class Arena {
 	
 	public World getWorld() {
 		return world;
+	}
+
+	public GameCountDown getCountDown() {
+		return countDown;
+	}
+
+	public void setCountDown(GameCountDown countDown) {
+		this.countDown = countDown;
 	}
 }

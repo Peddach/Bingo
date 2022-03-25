@@ -26,6 +26,7 @@ public class GameCountDown {
 				for(Player player : arena.getPlayers()) {
 					player.showTitle(Title.title(Component.text("Start", NamedTextColor.RED), Component.text("abgebrochen", NamedTextColor.GRAY), Times.times(Duration.ofMillis(500), Duration.ofMillis(4000), Duration.ofMillis(500))));
 					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+					arena.setCountDown(null);
 					Bukkit.getScheduler().cancelTask(taskID);
 				}
 			}
@@ -90,6 +91,16 @@ public class GameCountDown {
 		for(Player player : arena.getPlayers()) {
 			LobbyDamageListener.players.remove(player);
 		}
+	}
+	
+	public void setCountDown(int count) {
+		if(count > this.count) {
+			return;
+		}
+		this.count = count;
+	}
+	public int getCountDown() {
+		return count;
 	}
 
 }
