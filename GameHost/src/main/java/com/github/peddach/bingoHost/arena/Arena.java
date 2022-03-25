@@ -113,6 +113,7 @@ public class Arena {
 	public void delete() {
 		
 		MySQLManager.deleteArena(name);
+		arenas.remove(this);
 		
 		for(Player player : players) {
 			CloudNetAdapter.sendPlayerToLobbyTask(player);
@@ -132,10 +133,13 @@ public class Arena {
 	}
 	
 	public void spreadPlayers() {
+		GeneralSettings.plugin.getLogger().info("§4SPREAD PLAYERS CALLES FOR: " + name); //DEBUG ONLY
 		for(Player player : players) {
 			int x = 50 - new Random().nextInt(100);
 			int z = 50 - new Random().nextInt(100);
-			player.teleportAsync(new Location(world, x + 0.5, world.getHighestBlockYAt(x, z) + 1, z + 0.5));
+			Location spawn = new Location(world, x + 0.5, world.getHighestBlockYAt(x, z) + 1, z + 0.5);
+			player.teleportAsync(spawn);
+			player.setBedSpawnLocation(spawn, true);
 			InventoryUtil.clearInvOfPlayer(player);
 			MessageUtil.sendMessage(player, "§2Du wirst gleich teleportiert");
 		}
