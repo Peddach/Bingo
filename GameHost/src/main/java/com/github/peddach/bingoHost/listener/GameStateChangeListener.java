@@ -19,7 +19,7 @@ public class GameStateChangeListener implements Listener{
 		MySQLManager.updateArena(event.getArena());
 		if(event.getAfter() == GameState.INGAME) {
 			for(Player player : event.getArena().getPlayers()) {
-				player.getInventory().setItem(5, new ItemStack(Material.BREAD, 0));
+				player.getInventory().setItem(0, new ItemStack(Material.BREAD, 5));
 			}
 		}
 		if(event.getAfter() == GameState.ENDING) {
