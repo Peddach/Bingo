@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
+import com.github.peddach.bingoHost.arena.BingoTeam;
+import com.github.peddach.bingoHost.quest.Quest;
+import com.github.peddach.bingoHost.quest.QuestGui;
 import com.github.peddach.bingoHost.util.MessageUtil;
 
 public class BingoCommand implements CommandExecutor {
@@ -29,13 +32,47 @@ public class BingoCommand implements CommandExecutor {
 			return false;
 		}
 		if(args.length == 0) {
-			MessageUtil.sendMessage(player, "§cCommands: list, setGameState, delete");
+			MessageUtil.sendMessage(player, "§cCommands: list, BlocksToYml, gui");
 		}
 		if(args.length == 1) {
 			if(args[0].equalsIgnoreCase("list")) {
 				MessageUtil.sendMessage(player, "Arena | GameState | Players");
 				for(Arena arena : Arena.getArenas()) {
 					MessageUtil.sendMessage(player, arena.getName() + " | " + arena.getGameState() + " | " + arena.getPlayers().size());
+				}
+			}
+		}
+		if(args.length == 1 && args[0].equalsIgnoreCase("teams")) {
+			MessageUtil.sendMessage(player, "Teams: ");
+			for(Arena arena : Arena.getArenas()) {
+				for(Player i : arena.getPlayers()) {
+					if(i == player) {
+						for(int a = 0; a < arena.getTeams().length; a++) {
+							String string = " ";
+							for(Player p : arena.getTeams()[a].getMembers()) {
+								if(p == null) {
+									string = string + "null ";
+								}
+								else {
+									string = string + p.getName();
+								}
+							}
+							MessageUtil.sendMessage(player, a + " : " + string);
+						}
+					}
+				}
+			}
+		}
+		if(args.length == 1 && args[0].equalsIgnoreCase("quests")) {
+			for(Arena arena : Arena.getArenas()) {
+				if(arena.getPlayers().contains(player)) {
+					for(BingoTeam team : arena.getTeams()) {
+						if(team.checkIfPlayerIsMember(player)) {
+							for(Quest quest : team.getBoard().getQuest()) {
+								MessageUtil.sendMessage(player, quest.getType().name() + " : " + quest.getBlock().name());
+							}
+						}
+					}
 				}
 			}
 		}
@@ -68,6 +105,9 @@ public class BingoCommand implements CommandExecutor {
 				e.printStackTrace();
 			}
 			player.sendMessage("Blocks to yml sucess");
+		}
+		if(args.length == 1 && args[0].equalsIgnoreCase("gui")) {
+			QuestGui.openGuiForPlayer(player);
 		}
 		return false;
 

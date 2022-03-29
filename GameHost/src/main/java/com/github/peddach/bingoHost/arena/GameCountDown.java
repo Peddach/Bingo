@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.listener.LobbyDamageListener;
+import com.github.peddach.bingoHost.util.MessageUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -43,45 +44,41 @@ public class GameCountDown {
 	
 	private void showTitle(Player player, int countdown) {
 		if(countdown == 60) {
-			player.showTitle(titlebuilder("60", "Sekunden", 500, 1500, 500));
+			player.showTitle(MessageUtil.titlebuilder("60", "Sekunden", 500, 1500, 500));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
 		}
 		if(countdown == 30) {
-			player.showTitle(titlebuilder("30", "Sekunden", 500, 1500, 500));;
+			player.showTitle(MessageUtil.titlebuilder("30", "Sekunden", 500, 1500, 500));;
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
 		}
 		if(countdown == 10) {
-			player.showTitle(titlebuilder("10", "Sekunden", 500, 1500, 500));
+			player.showTitle(MessageUtil.titlebuilder("10", "Sekunden", 500, 1500, 500));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
 		}
 		if(countdown == 5) {
-			player.showTitle(titlebuilder("5", "Sekunden", 100, 1000, 100));
+			player.showTitle(MessageUtil.titlebuilder("5", "Sekunden", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 1);
 		}
 		if(countdown == 4) {
-			player.showTitle(titlebuilder("4", "Sekunden", 100, 1000, 100));
+			player.showTitle(MessageUtil.titlebuilder("4", "Sekunden", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 0.9F);
 		}
 		if(countdown == 3) {
-			player.showTitle(titlebuilder("3", "Sekunden", 100, 1000, 100));
+			player.showTitle(MessageUtil.titlebuilder("3", "Sekunden", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 0.8F);
 		}
 		if(countdown == 2) {
-			player.showTitle(titlebuilder("2", "Sekunden", 100, 1000, 100));
+			player.showTitle(MessageUtil.titlebuilder("2", "Sekunden", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 0.7F);
 		}
 		if(countdown == 1) {;
-			player.showTitle(titlebuilder("1", "Sekunde", 100, 1000, 100));
+			player.showTitle(MessageUtil.titlebuilder("1", "Sekunde", 100, 1000, 100));
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1, 0.6F);
 		}
 		if(countdown == 0) {
-			player.showTitle(titlebuilder("Bingo!", "Viel Glück", 500, 2500, 500));
-			player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 1, 1);
+			player.showTitle(MessageUtil.titlebuilder("Bingo!", "Viel Glück", 500, 2500, 500));
+			player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 2, 1);
 		}
-	}
-	
-	private Title titlebuilder(String title, String subtitle, int fadein, int stay, int fadeout) {
-		return Title.title(Component.text(title, NamedTextColor.GOLD), Component.text(subtitle, NamedTextColor.GRAY), Times.times(Duration.ofMillis(fadein), Duration.ofMillis(stay), Duration.ofMillis(fadeout)));
 	}
 	
 	public void startGame() {
