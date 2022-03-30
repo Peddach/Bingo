@@ -25,6 +25,7 @@ public class BingoTeam {
 			if(members[i] == null) {
 				members[i] = player;
 				found = true;
+				break;
 			}
 		}
 		return found;
@@ -42,7 +43,7 @@ public class BingoTeam {
 	public void removeMember(Player player) {
 		for(int i = 0; i < members.length; i++) {
 			if(members[i] == player) {
-				members[0] = null;
+				members[i] = null;
 			}
 		}
 	}

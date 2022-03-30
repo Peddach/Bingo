@@ -74,7 +74,7 @@ public class TeamGui {
 				if(arena.getTeams()[i].getMembers()[1] != null) {
 					lore.add(Component.text(arena.getTeams()[i].getMembers()[1].getName(), NamedTextColor.GRAY));
 				}
-				if(arena.getTeams()[i].getMembers()[0] != null && arena.getTeams()[i].getMembers()[1] != null) {
+				if(arena.getTeams()[i].getMembers()[0] == null && arena.getTeams()[i].getMembers()[1] == null) {
 					lore.add(Component.text("Leer", NamedTextColor.GRAY));
 				}
 				lore.add(Component.text(" "));
