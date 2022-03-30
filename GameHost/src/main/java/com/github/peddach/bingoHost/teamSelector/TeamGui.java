@@ -62,7 +62,7 @@ public class TeamGui {
 		}
 		if(arena.getMode() == ArenaMode.TEAM) {
 			for(int i = 0; i < arena.getTeams().length; i++) {
-				ItemStack item = new ItemStack(TeamUtil.teamMappingsBeds.get(i), i);
+				ItemStack item = new ItemStack(TeamUtil.teamMappingsBeds.get(i), 1);
 				Component name = Component.text(TeamUtil.teamMappingsName.get(i), NamedTextColor.GOLD);
 				final ItemMeta meta = item.getItemMeta();
 				meta.displayName(name);
