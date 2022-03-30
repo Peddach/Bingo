@@ -41,10 +41,6 @@ public class BlockList {
 		ArrayList<Material> matList = new ArrayList<>();
 		stringList.forEach(string -> matList.add(Material.valueOf(string)));
 		
-		for(Material mat : matList) {
-			GeneralSettings.plugin.getLogger().info(mat.name());
-		}
-		
 		return matList;
 		
 	}
