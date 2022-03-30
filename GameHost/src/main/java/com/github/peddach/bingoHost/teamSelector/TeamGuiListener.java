@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.github.peddach.bingoHost.arena.Arena;
@@ -57,10 +58,14 @@ public class TeamGuiListener implements Listener{
 			if(event.getSlot() >= 10 || event.getSlot() < 0) {
 				return;
 			}
+			if(event.getSlotType() == SlotType.QUICKBAR) {
+				return;
+			}
 			int slot = event.getSlot();
 			Player player = (Player) event.getWhoClicked();
 			if(arena.getTeams()[slot].checkIfPlayerIsMember(player)) {
 				MessageUtil.sendMessage(player, "§7Du hast das Team verlassen");
+				arena.getTeams()[slot].removeMember(player);
 				arena.getTeamGui().updateInv();
 				return;
 			}
