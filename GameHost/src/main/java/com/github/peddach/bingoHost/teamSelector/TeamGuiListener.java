@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.github.peddach.bingoHost.arena.Arena;
+import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 import com.github.peddach.bingoHost.util.MessageUtil;
@@ -58,15 +59,20 @@ public class TeamGuiListener implements Listener{
 			}
 			int slot = event.getSlot();
 			Player player = (Player) event.getWhoClicked();
+			if(arena.getTeams()[slot].checkIfPlayerIsMember(player)) {
+				MessageUtil.sendMessage(player, "§7Du hast das Team verlassen");
+				arena.getTeamGui().updateInv();
+				return;
+			}
 			if(arena.getTeams()[slot].isFull()) {
 				MessageUtil.sendMessage(player, "§cDas Team ist bereits voll");
 				arena.getTeamGui().updateInv();
 				return;
 			}
-			if(arena.getTeams()[slot].checkIfPlayerIsMember(player)) {
-				MessageUtil.sendMessage(player, "§7Du hast das Team verlassen");
-				arena.getTeamGui().updateInv();
-				return;
+			for(BingoTeam team : arena.getTeams()) {
+				if(team.checkIfPlayerIsMember(player)) {
+					team.removeMember(player);
+				}
 			}
 			arena.getTeams()[slot].addMember(player);
 			MessageUtil.sendMessage(player, "§7Du hast das Team betreten");
