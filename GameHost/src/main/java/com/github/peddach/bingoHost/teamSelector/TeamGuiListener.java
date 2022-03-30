@@ -54,7 +54,7 @@ public class TeamGuiListener implements Listener{
 				continue;
 			}
 			event.setCancelled(true);
-			if(event.getSlot() >= 10) {
+			if(event.getSlot() >= 10 || event.getSlot() < 0) {
 				return;
 			}
 			int slot = event.getSlot();
