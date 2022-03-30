@@ -1,7 +1,5 @@
 package com.github.peddach.bingoHost.arena;
 
-import java.util.Random;
-
 import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.quest.Quest;
@@ -13,11 +11,12 @@ public class BingoTeam {
 	private String name;
 
 	
-	public BingoTeam(int size, Quest[] quests, Arena arena) {
+	public BingoTeam(int size, Quest[] quests, Arena arena, String name) {
 		 members = new Player[size];
 		 board = new Board(quests, this);
 		 this.arena = arena;
-		 name = "Team-" + new Random().nextInt(500);
+		 this.name = name;
+		 
 	}
 	
 	public boolean addMember(Player player) {

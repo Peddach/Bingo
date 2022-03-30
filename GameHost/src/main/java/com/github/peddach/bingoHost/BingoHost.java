@@ -17,6 +17,7 @@ import com.github.peddach.bingoHost.listener.PlayerLeaveServerListener;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.quest.QuestGui;
 import com.github.peddach.bingoHost.quest.QuestListener;
+import com.github.peddach.bingoHost.teamSelector.TeamGuiListener;
 
 public class BingoHost extends JavaPlugin {
 
@@ -59,6 +60,7 @@ public class BingoHost extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
 		getServer().getPluginManager().registerEvents(new QuestListener(), this);
 		getServer().getPluginManager().registerEvents(new QuestGui(), this);
+		getServer().getPluginManager().registerEvents(new TeamGuiListener(), this);
 
 	}
 

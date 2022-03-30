@@ -23,6 +23,8 @@ import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.quest.BlockList;
 import com.github.peddach.bingoHost.quest.Quest;
 import com.github.peddach.bingoHost.quest.QuestType;
+import com.github.peddach.bingoHost.teamSelector.TeamGui;
+import com.github.peddach.bingoHost.teamSelector.TeamUtil;
 import com.github.peddach.bingoHost.util.InventoryUtil;
 import com.github.peddach.bingoHost.util.MessageUtil;
 import com.onarandombox.MultiverseCore.MultiverseCore;
@@ -45,6 +47,7 @@ public class Arena {
 	private int maxPlayers;
 	private GameCountDown countDown;
 	private Quest[] quests;
+	private TeamGui teamGui;
 
 	private static Location spawn = loadSpawnFromConfig();
 	private static ArrayList<Arena> arenas = new ArrayList<>();
@@ -74,13 +77,13 @@ public class Arena {
 
 		if (mode == ArenaMode.SINGLE) {
 			for (int i = 0; i < teams.length; i++) {
-				teams[i] = new BingoTeam(1, quests, this);
+				teams[i] = new BingoTeam(1, quests, this, TeamUtil.teamMappingsName.get(i));
 			}
 			maxPlayers = 9 * 1;
 		}
 		if (mode == ArenaMode.TEAM) {
 			for (int i = 0; i < teams.length; i++) {
-				teams[i] = new BingoTeam(2, quests, this);
+				teams[i] = new BingoTeam(2, quests, this, TeamUtil.teamMappingsName.get(i));
 			}
 			maxPlayers = 9 * 2;
 		}
@@ -89,6 +92,8 @@ public class Arena {
 		MySQLManager.addArena(this);
 
 		applyGameRules();
+		
+		teamGui = new TeamGui(this);
 
 	}
 
@@ -299,5 +304,9 @@ public class Arena {
 
 	public BingoTeam[] getTeams() {
 		return teams;
+	}
+
+	public TeamGui getTeamGui() {
+		return teamGui;
 	}
 }
