@@ -20,6 +20,10 @@ public class LobbyDamageListener implements Listener {
 	@EventHandler
 	private void onPlayerDamage(EntityDamageEvent event) {
 		if (event.getEntity()instanceof Player player) {
+			if(event.getEntity().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
+				event.setCancelled(true);
+				return;
+			}
 			if (!players.contains(player)) {
 				return;
 			}
@@ -43,6 +47,10 @@ public class LobbyDamageListener implements Listener {
 
 	@EventHandler
 	private void onPlayerBreak(BlockBreakEvent event) {
+		if(event.getPlayer().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
+			event.setCancelled(true);
+			return;
+		}
 		if (!players.contains(event.getPlayer())) {
 			return;
 		}
@@ -51,6 +59,10 @@ public class LobbyDamageListener implements Listener {
 	
 	@EventHandler
 	private void onPlayerPlace(BlockPlaceEvent event) {
+		if(event.getPlayer().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
+			event.setCancelled(true);
+			return;
+		}
 		if (!players.contains(event.getPlayer())) {
 			return;
 		}
