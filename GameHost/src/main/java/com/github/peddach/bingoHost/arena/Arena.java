@@ -121,6 +121,13 @@ public class Arena {
 			return;
 		}
 		players.remove(player);
+		for(BingoTeam team : teams) {
+			if(team.checkIfPlayerIsMember(player)) {
+				team.removeMember(player);
+				broadcastMessage(player.getName() + " hat das Spiel verlassen");
+				break;
+			}
+		}
 		PlayerLeaveArenaEvent event = new PlayerLeaveArenaEvent(this, player);
 		Bukkit.getPluginManager().callEvent(event);
 	}
@@ -253,7 +260,7 @@ public class Arena {
 			Title title = MessageUtil.titlebuilder(splayers, "hat gewonnen", 1000, 5000, 1000);
 			for (Player player : players) {
 				player.showTitle(title);
-				player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 1.5F, 1F);
+				player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 2F, 1F);
 			}
 			setGameState(GameState.ENDING);
 		}
