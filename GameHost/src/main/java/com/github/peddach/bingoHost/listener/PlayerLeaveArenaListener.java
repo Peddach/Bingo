@@ -14,6 +14,7 @@ public class PlayerLeaveArenaListener implements Listener{
 		MySQLManager.updateArena(event.getArena());
 		if(event.getArena().getPlayers().size() == 1 && event.getArena().getGameState() == GameState.INGAME) {
 			event.getArena().setGameState(GameState.ENDING);
+			event.getArena().getTeamGui().updateInv();
 		}
 		
 	}

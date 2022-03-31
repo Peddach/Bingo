@@ -1,10 +1,11 @@
 package com.github.peddach.bingoHost.arena;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.quest.Quest;
 import com.github.peddach.bingoHost.quest.QuestType;
-import com.github.peddach.bingoHost.util.MessageUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -78,6 +79,9 @@ public class Board {
 	private void successMessage(Material block) {
 		Component blockname = Component.translatable(block).color(TextColor.color(255, 255, 50));
 		Component message = Component.text(team.getName(), NamedTextColor.GRAY).append(Component.text(" hat die Aufgabe ").append(blockname).append(Component.text(" erfolgreich abgeschlossen", NamedTextColor.GRAY)));
+		for(Player player : team.getMembers()) {
+			player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1F, 1F);
+		}
 		team.getArena().broadcastMessage(message);
 	}
 

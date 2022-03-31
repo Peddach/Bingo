@@ -26,7 +26,7 @@ public class GameCountDown {
 			if(arena.getPlayers().size() <= 1) {
 				for(Player player : arena.getPlayers()) {
 					player.showTitle(Title.title(Component.text("Start", NamedTextColor.RED), Component.text("abgebrochen", NamedTextColor.GRAY), Times.times(Duration.ofMillis(500), Duration.ofMillis(4000), Duration.ofMillis(500))));
-					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 1);
+					player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1F, 1.2F);
 					arena.setCountDown(null);
 					Bukkit.getScheduler().cancelTask(taskID);
 				}
@@ -77,7 +77,7 @@ public class GameCountDown {
 		}
 		if(countdown == 0) {
 			player.showTitle(MessageUtil.titlebuilder("Bingo!", "Viel Glück", 500, 2500, 500));
-			player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 2, 1);
+			player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 100, 1.2F);
 		}
 	}
 	

@@ -1,11 +1,14 @@
 package com.github.peddach.bingoHost.listener;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
+import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.arena.ScheduledArenaDelete;
 import com.github.peddach.bingoHost.events.GameStateChangeEvent;
@@ -24,11 +27,21 @@ public class GameStateChangeListener implements Listener{
 		}
 		if(event.getAfter() == GameState.ENDING) {
 			new ScheduledArenaDelete(event.getArena());
+			Vector vector = new Vector(0, 4, 0);
 			for(Player player : event.getArena().getPlayers()) {
 				InventoryUtil.clearInvOfPlayer(player);
-				player.setAllowFlight(true);
-				player.setFlying(true);
+				player.setVelocity(vector);
 			}
+			Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
+				for(Player player : event.getArena().getPlayers()) {
+					if(!player.isOnline()) {
+						continue;
+					}
+					player.setAllowFlight(true);
+					player.setFlying(true);
+				}
+			}, 20);
+			
 		}	
 	}
 }

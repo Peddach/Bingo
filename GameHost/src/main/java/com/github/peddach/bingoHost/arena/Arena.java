@@ -66,8 +66,8 @@ public class Arena {
 		worldManager.addWorld(name + "nether", World.Environment.NETHER, null, WorldType.NORMAL, true, null);
 		nether = Bukkit.getWorld(name + "nether");
 
-		world.getWorldBorder().setSize(10000);
-		nether.getWorldBorder().setSize(10000);
+		world.getWorldBorder().setSize(3000);
+		nether.getWorldBorder().setSize(3000);
 
 		netherportals = (MultiverseNetherPortals) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-NetherPortals");
 		netherportals.addWorldLink(world.getName(), nether.getName(), PortalType.NETHER);
@@ -248,7 +248,7 @@ public class Arena {
 			Title title = MessageUtil.titlebuilder(team.getMembers()[0].getName(), "hat gewonnen", 1000, 5000, 1000);
 			for (Player player : players) {
 				player.showTitle(title);
-				player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 1.5F, 1F);
+				player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 100F, 1.2F);
 			}
 			setGameState(GameState.ENDING);
 		}
