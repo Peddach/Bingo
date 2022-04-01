@@ -14,6 +14,7 @@ import com.github.peddach.bingoHost.arena.ScheduledArenaDelete;
 import com.github.peddach.bingoHost.events.GameStateChangeEvent;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.InventoryUtil;
+import com.github.peddach.bingoHost.utilItems.BingoCard;
 
 public class GameStateChangeListener implements Listener{
 	
@@ -22,7 +23,8 @@ public class GameStateChangeListener implements Listener{
 		MySQLManager.updateArena(event.getArena());
 		if(event.getAfter() == GameState.INGAME) {
 			for(Player player : event.getArena().getPlayers()) {
-				player.getInventory().setItem(0, new ItemStack(Material.BREAD, 5));
+				player.getInventory().setItem(0, new ItemStack(Material.BREAD, 15));
+				player.getInventory().setItem(8, BingoCard.getItem());
 			}
 		}
 		if(event.getAfter() == GameState.ENDING) {

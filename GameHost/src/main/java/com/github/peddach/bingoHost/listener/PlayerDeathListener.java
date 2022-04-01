@@ -1,10 +1,14 @@
 package com.github.peddach.bingoHost.listener;
 
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
+import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import com.github.peddach.bingoHost.arena.Arena;
+import com.github.peddach.bingoHost.arena.GameState;
 
 public class PlayerDeathListener implements Listener{
 	
@@ -14,6 +18,18 @@ public class PlayerDeathListener implements Listener{
 		for(Arena arena : Arena.getArenas()) {
 			if(arena.getPlayers().contains(event.getPlayer())) {
 				arena.broadcastMessage("§7" + event.getPlayer().getName() + " §7ist gestorben");
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerRespawn(PlayerPostRespawnEvent event) {
+		for(Arena arena : Arena.getArenas()) {
+			if(arena.getPlayers().contains(event.getPlayer())) {
+				if(arena.getGameState() == GameState.INGAME) {
+					event.getPlayer().getInventory().setItem(0, new ItemStack(Material.BREAD, 10));
+					return;
+				}
 			}
 		}
 	}

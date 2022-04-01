@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerDropItemEvent;
 
 import com.github.peddach.bingoHost.arena.Arena;
 
@@ -67,6 +68,13 @@ public class LobbyDamageListener implements Listener {
 			return;
 		}
 		event.setCancelled(true);
+	}
+	
+	@EventHandler
+	private void onPlayerDrop(PlayerDropItemEvent event) {
+		if(event.getPlayer().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
+			event.setCancelled(true);
+		}
 	}
 
 }
