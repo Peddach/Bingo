@@ -2,6 +2,7 @@ package com.github.peddach.bingoHost.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,11 +10,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.github.peddach.bingoHost.GeneralSettings;
+import com.github.peddach.bingoHost.arena.ArenaMode;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.arena.ScheduledArenaDelete;
 import com.github.peddach.bingoHost.events.GameStateChangeEvent;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.InventoryUtil;
+import com.github.peddach.bingoHost.utilItems.BackpackItem;
 import com.github.peddach.bingoHost.utilItems.BingoCard;
 
 public class GameStateChangeListener implements Listener{
@@ -25,6 +28,10 @@ public class GameStateChangeListener implements Listener{
 			for(Player player : event.getArena().getPlayers()) {
 				player.getInventory().setItem(0, new ItemStack(Material.BREAD, 15));
 				player.getInventory().setItem(8, BingoCard.getItem());
+				if(event.getArena().getMode() == ArenaMode.TEAM) {
+					player.getInventory().setItem(9, BackpackItem.getItem());
+				}
+
 			}
 		}
 		if(event.getAfter() == GameState.ENDING) {
@@ -41,6 +48,7 @@ public class GameStateChangeListener implements Listener{
 					}
 					player.setAllowFlight(true);
 					player.setFlying(true);
+					player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 100F, 1.2F);
 				}
 			}, 20);
 			

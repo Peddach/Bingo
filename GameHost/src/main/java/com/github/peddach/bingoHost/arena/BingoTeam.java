@@ -1,14 +1,20 @@
 package com.github.peddach.bingoHost.arena;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import com.github.peddach.bingoHost.quest.Quest;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 
 public class BingoTeam {
 	private Player members[];
 	private Board board;
 	private Arena arena;
 	private String name;
+	private final Inventory backpack = Bukkit.createInventory(null, 2*9, Component.text("Rucksack").color(NamedTextColor.DARK_RED));
 
 	
 	public BingoTeam(int size, Quest[] quests, Arena arena, String name) {
@@ -85,6 +91,10 @@ public class BingoTeam {
 
 	public String getName() {
 		return name;
+	}
+
+	public Inventory getBackpack() {
+		return backpack;
 	}
 	
 }

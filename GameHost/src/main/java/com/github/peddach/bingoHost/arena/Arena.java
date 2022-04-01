@@ -248,7 +248,6 @@ public class Arena {
 			Title title = MessageUtil.titlebuilder(team.getMembers()[0].getName(), "hat gewonnen", 1000, 5000, 1000);
 			for (Player player : players) {
 				player.showTitle(title);
-				player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 100F, 1.2F);
 			}
 			setGameState(GameState.ENDING);
 		}
@@ -260,7 +259,6 @@ public class Arena {
 			Title title = MessageUtil.titlebuilder(splayers, "hat gewonnen", 1000, 5000, 1000);
 			for (Player player : players) {
 				player.showTitle(title);
-				player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 2F, 1F);
 			}
 			setGameState(GameState.ENDING);
 		}
