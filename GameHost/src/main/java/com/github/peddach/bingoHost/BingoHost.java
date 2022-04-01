@@ -19,6 +19,8 @@ import com.github.peddach.bingoHost.quest.QuestGui;
 import com.github.peddach.bingoHost.quest.QuestListener;
 import com.github.peddach.bingoHost.teamSelector.TeamGuiListener;
 import com.github.peddach.bingoHost.utilItems.BingoCard;
+import com.github.peddach.bingoHost.utilItems.LeaveItem;
+import com.github.peddach.bingoHost.utilItems.StartItem;
 
 public class BingoHost extends JavaPlugin {
 
@@ -63,7 +65,8 @@ public class BingoHost extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new QuestGui(), this);
 		getServer().getPluginManager().registerEvents(new TeamGuiListener(), this);
 		getServer().getPluginManager().registerEvents(new BingoCard(), this);
-
+		getServer().getPluginManager().registerEvents(new StartItem(), this);
+		getServer().getPluginManager().registerEvents(new LeaveItem(), this);
 	}
 
 	private void createArenas() {
