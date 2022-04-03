@@ -13,6 +13,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
 
 import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.GeneralSettings;
@@ -95,6 +96,14 @@ public class Arena {
 		
 		teamGui = new TeamGui(this);
 
+	}
+	
+	private void generateChunksAsync() {
+		for(int i = 0; i < 24; i++) {
+			int x = -12 + i;
+			int z = -12 + i;
+			world.getChunkAtAsync(x, z);
+		}
 	}
 
 	private void generateQuests() {

@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -51,6 +52,7 @@ public class BackpackItem implements Listener {
 				if (!team.checkIfPlayerIsMember(player)) {
 					continue;
 				}
+				player.closeInventory();
 				player.openInventory(team.getBackpack());
 				break;
 			}
@@ -69,6 +71,9 @@ public class BackpackItem implements Listener {
 		if (!event.getItem().equals(item)) {
 			return;
 		}
+		event.getItem().setType(Material.AIR);
+		event.getPlayer().getInventory().setItem(9, item);
+		event.getPlayer().updateInventory();
 		openBackPack(event.getPlayer());
 	}
 
@@ -80,6 +85,10 @@ public class BackpackItem implements Listener {
 		if (!event.getCurrentItem().equals(item)) {
 			return;
 		}
+		event.getCurrentItem().setType(Material.AIR);
+		event.getWhoClicked().getInventory().setItem(9, item);
+		Player p = (Player) event.getWhoClicked();
+		p.updateInventory();
 		openBackPack((Player) event.getWhoClicked());
 	}
 	
@@ -110,5 +119,17 @@ public class BackpackItem implements Listener {
 			}
 		}
 	}
-
+	
+	@EventHandler
+	public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
+		if(event.getItemDrop() == null) {
+			return;
+		}
+		if(event.getItemDrop().getItemStack() == null) {
+			return;
+		}
+		if(event.getItemDrop().getItemStack().equals(item)) {
+			event.setCancelled(true);
+		}
+	}
 }

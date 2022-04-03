@@ -14,7 +14,7 @@ public class BingoTeam {
 	private Board board;
 	private Arena arena;
 	private String name;
-	private final Inventory backpack = Bukkit.createInventory(null, 2*9, Component.text("Rucksack").color(NamedTextColor.DARK_RED));
+	private final Inventory backpack = Bukkit.createInventory(null, 9, Component.text("Rucksack").color(NamedTextColor.DARK_RED));
 
 	
 	public BingoTeam(int size, Quest[] quests, Arena arena, String name) {

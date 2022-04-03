@@ -22,6 +22,7 @@ import com.github.peddach.bingoHost.arena.Board;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 
 public class QuestGui implements Listener{
 	
@@ -54,9 +55,14 @@ public class QuestGui implements Listener{
 				ItemStack item = new ItemStack(board.getQuest()[i].getBlock(), 1);
 				if(board.getQuests()[i] == true) {
 					item.addUnsafeEnchantment(Enchantment.LURE, 1);
-					final ItemMeta itemMeta = item.getItemMeta();
-					itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-					item.setItemMeta(itemMeta);
+					item.editMeta(meta -> {
+						meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+						List<Component> lore = new ArrayList<>();
+						lore.add(Component.text(" "));
+						lore.add(Component.text("Erledigt").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
+						lore.add(Component.text(" "));
+						meta.lore(lore);
+					});
 				}
 				if(item.getType() == Material.AIR) {
 					item = errorItem("Fehler (Error: 58) " + i);

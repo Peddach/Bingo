@@ -80,6 +80,9 @@ public class Board {
 		Component blockname = Component.translatable(block).color(TextColor.color(255, 255, 50));
 		Component message = Component.text(team.getName(), NamedTextColor.GRAY).append(Component.text(" hat die Aufgabe ").append(blockname).append(Component.text(" erfolgreich abgeschlossen", NamedTextColor.GRAY)));
 		for(Player player : team.getMembers()) {
+			if(player == null) {
+				continue;
+			}
 			player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1F, 1F);
 		}
 		team.getArena().broadcastMessage(message);

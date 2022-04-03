@@ -1,98 +1,100 @@
 package com.github.peddach.bingoHost.quest;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.GameState;
-import com.github.peddach.bingoHost.events.InventoryChangeEvent;
+import com.github.peddach.bingoHost.util.MessageUtil;
 
 public class QuestListener implements Listener {
 
 	@EventHandler
 	public void onPickUp(EntityPickupItemEvent event) {
 		if (event.getEntity()instanceof Player player) {
-			Bukkit.getPluginManager().callEvent(new InventoryChangeEvent(event.getItem().getItemStack(), player));
+			if (checkIfItemIsAQuest(player, event.getItem().getItemStack())) {
+				event.getItem().getItemStack().setAmount(event.getItem().getItemStack().getAmount() - 1);
+			}
 		}
 	}
-	
+
 	@EventHandler
 	public void itemClickEvent(InventoryClickEvent event) {
-		if(QuestGui.getGuis().contains(event.getInventory())) {
+		if (QuestGui.getGuis().contains(event.getInventory())) {
 			return;
 		}
-		Bukkit.getPluginManager().callEvent(new InventoryChangeEvent(event.getCurrentItem(), (Player) event.getWhoClicked()));
+		if(event.getInventory().getType() == InventoryType.CRAFTING || event.getInventory().getType() == InventoryType.WORKBENCH) {
+			return;
+		}
+		if (checkIfItemIsAQuest((Player) event.getWhoClicked(), event.getCurrentItem())) {
+			event.getCurrentItem().setAmount(event.getCurrentItem().getAmount() - 1);
+			MessageUtil.sendMessage((Player) event.getWhoClicked(), "ClickEvent");
+		}
 	}
 
 	@EventHandler
 	public void onCraftEvent(CraftItemEvent event) {
-		Bukkit.getPluginManager().callEvent(new InventoryChangeEvent(event.getCurrentItem(), (Player) event.getWhoClicked()));
-	}
-	
-	@EventHandler
-	public void onMilkEvent(PlayerInteractEvent event) {
-		Bukkit.getPluginManager().callEvent(new InventoryChangeEvent(event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer()));
-		Bukkit.getPluginManager().callEvent(new InventoryChangeEvent(event.getPlayer().getInventory().getItemInOffHand(), event.getPlayer()));
+		if (!checkIfItemIsAQuest((Player) event.getWhoClicked(), event.getInventory().getResult())) {
+			return;
+		}
+		if(event.getClickedInventory() == null) {
+			return;
+		}
+		event.getClickedInventory().getItem(0).setAmount(event.getClickedInventory().getItem(0).getAmount() - 1);
 	}
 
 	@EventHandler
-	public void onInvChangeEvent(InventoryChangeEvent event) {
+	public void onMilkEvent(PlayerInteractEvent event) {
+		if (checkIfItemIsAQuest(event.getPlayer(), event.getItem())) {
+			event.getItem().setAmount(event.getItem().getAmount() - 1);
+		}
+	}
+
+	private boolean checkIfItemIsAQuest(Player player, ItemStack item) {
 		Arena arena = null;
 		BingoTeam team = null;
 		for (Arena i : Arena.getArenas()) {
-			if (i.getPlayers().contains(event.getPlayer())) {
+			if (i.getPlayers().contains(player)) {
 				arena = i;
 				for (BingoTeam ii : arena.getTeams()) {
-					if (ii.checkIfPlayerIsMember(event.getPlayer())) {
+					if (ii.checkIfPlayerIsMember(player)) {
 						team = ii;
 					}
 				}
 			}
 		}
 		if (arena == null || team == null) {
-			return;
+			return false;
 		}
 		if (arena.getGameState() != GameState.INGAME) {
-			return;
+			return false;
 		}
-		if(event.getItem() == null) {
-			return;
+		if (player == null) {
+			return false;
+		}
+		if (item == null) {
+			return false;
 		}
 		for (int i = 0; i < team.getBoard().getQuest().length; i++) {
 			if (team.getBoard().getQuest()[i].getType() == QuestType.BLOCK) {
-				if (team.getBoard().getQuest()[i].getBlock() == event.getItem().getType()) {
-					if(team.getBoard().getQuests()[i] == false) {
-						team.getBoard().setSucess(i);
-						removeItem(team.getBoard().getQuest()[i].getBlock(), event.getPlayer(), event.getItem());
-						return;
-					}
-				}
-			} 
-		}
-	}
-	
-	private void removeItem(Material material, Player player, ItemStack item) {
-		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
-			for(int i = 0; i < player.getInventory().getContents().length; i++) {
-				if(player.getInventory().getContents()[i] == null) {
+				if (team.getBoard().getQuest()[i].getBlock() != item.getType()) {
 					continue;
 				}
-				if(player.getInventory().getContents()[i].getType() == material) {
-					item.setAmount(item.getAmount() - 1);
-					player.getInventory().setItem(i, item);
-					break;
+				if (team.getBoard().getQuests()[i] == true) {
+					continue;
 				}
+				team.getBoard().setSucess(i);
+				return true;
 			}
-		}, 2);
+		}
+		return false;
 	}
 }

@@ -19,31 +19,29 @@ import com.github.peddach.bingoHost.util.InventoryUtil;
 import com.github.peddach.bingoHost.utilItems.BackpackItem;
 import com.github.peddach.bingoHost.utilItems.BingoCard;
 
-public class GameStateChangeListener implements Listener{
-	
+public class GameStateChangeListener implements Listener {
+
 	@EventHandler
 	public void onGameStateChangeEvent(GameStateChangeEvent event) {
 		MySQLManager.updateArena(event.getArena());
-		if(event.getAfter() == GameState.INGAME) {
-			for(Player player : event.getArena().getPlayers()) {
+		if (event.getAfter() == GameState.INGAME) {
+			for (Player player : event.getArena().getPlayers()) {
 				player.getInventory().setItem(0, new ItemStack(Material.BREAD, 15));
 				player.getInventory().setItem(8, BingoCard.getItem());
-				if(event.getArena().getMode() == ArenaMode.TEAM) {
-					player.getInventory().setItem(9, BackpackItem.getItem());
-				}
+				player.getInventory().setItem(9, BackpackItem.getItem());
 
 			}
 		}
-		if(event.getAfter() == GameState.ENDING) {
+		if (event.getAfter() == GameState.ENDING) {
 			new ScheduledArenaDelete(event.getArena());
 			Vector vector = new Vector(0, 4, 0);
-			for(Player player : event.getArena().getPlayers()) {
+			for (Player player : event.getArena().getPlayers()) {
 				InventoryUtil.clearInvOfPlayer(player);
 				player.setVelocity(vector);
 			}
 			Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
-				for(Player player : event.getArena().getPlayers()) {
-					if(!player.isOnline()) {
+				for (Player player : event.getArena().getPlayers()) {
+					if (!player.isOnline()) {
 						continue;
 					}
 					player.setAllowFlight(true);
@@ -51,7 +49,7 @@ public class GameStateChangeListener implements Listener{
 					player.playSound(player.getLocation(), Sound.EVENT_RAID_HORN, 100F, 1.2F);
 				}
 			}, 20);
-			
-		}	
+
+		}
 	}
 }
