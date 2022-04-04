@@ -95,17 +95,17 @@ public class Arena {
 		applyGameRules();
 		
 		teamGui = new TeamGui(this);
-
+		generateChunksAsync();
 	}
 	
 	private void generateChunksAsync() {
-		for(int i = 0; i < 24; i++) {
-			int x = -12 + i;
-			int z = -12 + i;
-			world.getChunkAtAsync(x, z);
+		for(int x = 0; x < 50; x++) {
+			for(int y = 0; y < 50; y++) {
+				world.getChunkAtAsync(-25 + x, -25 + y);
+			}
 		}
 	}
-
+	
 	private void generateQuests() {
 		quests = new Quest[25];
 		ArrayList<Material> blocks = new ArrayList<>(BlockList.getBlockList());
