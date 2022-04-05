@@ -14,6 +14,7 @@ import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.util.MessageUtil;
+import com.github.peddach.bingoHost.utilItems.BingoCard;
 
 public class QuestListener implements Listener {
 
@@ -89,6 +90,9 @@ public class QuestListener implements Listener {
 					continue;
 				}
 				if (team.getBoard().getQuests()[i] == true) {
+					continue;
+				}
+				if(BingoCard.getItem().equals(item)) {
 					continue;
 				}
 				team.getBoard().setSucess(i);

@@ -6,6 +6,7 @@ import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.ArenaMode;
 import com.github.peddach.bingoHost.command.BingoCommand;
 import com.github.peddach.bingoHost.command.StartCommand;
+import com.github.peddach.bingoHost.listener.AdvancementMessageListener;
 import com.github.peddach.bingoHost.listener.GameStateChangeListener;
 import com.github.peddach.bingoHost.listener.LobbyDamageListener;
 import com.github.peddach.bingoHost.listener.PlayerChatListener;
@@ -69,6 +70,7 @@ public class BingoHost extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new StartItem(), this);
 		getServer().getPluginManager().registerEvents(new LeaveItem(), this);
 		getServer().getPluginManager().registerEvents(new BackpackItem(), this);
+		getServer().getPluginManager().registerEvents(new AdvancementMessageListener(), this);
 	}
 
 	private void createArenas() {

@@ -7,12 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.github.peddach.bingoHost.GeneralSettings;
-import com.github.peddach.bingoHost.arena.ArenaMode;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.arena.ScheduledArenaDelete;
+import com.github.peddach.bingoHost.arena.TraderSpawner;
 import com.github.peddach.bingoHost.events.GameStateChangeEvent;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.InventoryUtil;
@@ -29,8 +31,9 @@ public class GameStateChangeListener implements Listener {
 				player.getInventory().setItem(0, new ItemStack(Material.BREAD, 15));
 				player.getInventory().setItem(8, BingoCard.getItem());
 				player.getInventory().setItem(9, BackpackItem.getItem());
-
+				player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 250, false, false));
 			}
+			new TraderSpawner(event.getArena());
 		}
 		if (event.getAfter() == GameState.ENDING) {
 			new ScheduledArenaDelete(event.getArena());

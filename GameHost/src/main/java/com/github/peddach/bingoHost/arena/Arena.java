@@ -67,7 +67,7 @@ public class Arena {
 		worldManager.addWorld(name + "nether", World.Environment.NETHER, null, WorldType.NORMAL, true, null);
 		nether = Bukkit.getWorld(name + "nether");
 
-		world.getWorldBorder().setSize(3000);
+		world.getWorldBorder().setSize(6000);
 		nether.getWorldBorder().setSize(3000);
 
 		netherportals = (MultiverseNetherPortals) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-NetherPortals");
@@ -91,17 +91,15 @@ public class Arena {
 
 		arenas.add(this);
 		MySQLManager.addArena(this);
-
 		applyGameRules();
-		
 		teamGui = new TeamGui(this);
 		generateChunksAsync();
 	}
 	
 	private void generateChunksAsync() {
-		for(int x = 0; x < 50; x++) {
-			for(int y = 0; y < 50; y++) {
-				world.getChunkAtAsync(-25 + x, -25 + y);
+		for(int x = 0; x < 25; x++) {
+			for(int y = 0; y < 25; y++) {
+				world.getChunkAtAsync(-12 + x, -12 + y);
 			}
 		}
 	}
@@ -121,6 +119,7 @@ public class Arena {
 		world.setGameRule(GameRule.DO_FIRE_TICK, false);
 		world.setGameRule(GameRule.KEEP_INVENTORY, false);
 		world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, true);
+		world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
 		world.setDifficulty(Difficulty.NORMAL);
 
 	}
