@@ -32,6 +32,10 @@ public class StartCommand implements CommandExecutor {
 						MessageUtil.sendMessage(player, "§cDu kannst jetzt nicht starten");
 						return false;
 					}
+					if(arena.getCountDown().isForceStarted()) {
+						MessageUtil.sendMessage(player, "§cDer Countdown wurde bereits verkürzt");
+						return false;
+					}
 					arena.getCountDown().setCountDown(11);
 					arena.broadcastMessage("§7Der Countdown wird verkürzt durch " + player.getName());				}
 			}

@@ -80,6 +80,10 @@ public class StartItem implements Listener {
 				MessageUtil.sendMessage(player, "§cDu kannst jetzt nicht starten");
 				return;
 			}
+			if(arena.getCountDown().isForceStarted()) {
+				MessageUtil.sendMessage(player, "§cDer Countdown wurde bereits verkürzt");
+				return;
+			}
 			arena.getCountDown().setCountDown(11);
 			arena.broadcastMessage("§7Der Countdown wird verkürzt durch " + player.getName());			
 		}

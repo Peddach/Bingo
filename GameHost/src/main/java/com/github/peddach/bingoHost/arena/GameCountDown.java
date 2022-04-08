@@ -19,6 +19,7 @@ public class GameCountDown {
 	private int taskID;
 	private Arena arena;		
 	int count = 60;
+	private boolean forceStarted;
 	
 	public GameCountDown(Arena arena) {
 		this.arena = arena;
@@ -95,9 +96,18 @@ public class GameCountDown {
 			return;
 		}
 		this.count = count;
+		forceStarted = true;
 	}
 	public int getCountDown() {
 		return count;
+	}
+
+	public boolean isForceStarted() {
+		return forceStarted;
+	}
+
+	public void setForceStarted(boolean forceStarted) {
+		this.forceStarted = forceStarted;
 	}
 
 }
