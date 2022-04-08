@@ -43,6 +43,7 @@ public class GameStateChangeListener implements Listener {
 			for (Player player : event.getArena().getPlayers()) {
 				InventoryUtil.clearInvOfPlayer(player);
 				player.setVelocity(vector);
+				player.getInventory().setItem(8, BingoCard.getItem());
 			}
 			Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
 				for (Player player : event.getArena().getPlayers()) {
