@@ -33,9 +33,11 @@ public class GameStateChangeListener implements Listener {
 				player.getInventory().setItem(9, BackpackItem.getItem());
 				player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 250, false, false));
 			}
+			event.getArena().schedulePvpEnable();
 			new TraderSpawner(event.getArena());
 		}
 		if (event.getAfter() == GameState.ENDING) {
+			event.getArena().setPvp(false);
 			new ScheduledArenaDelete(event.getArena());
 			Vector vector = new Vector(0, 4, 0);
 			for (Player player : event.getArena().getPlayers()) {

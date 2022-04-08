@@ -9,11 +9,9 @@ import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.PortalType;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
-import org.bukkit.generator.ChunkGenerator;
 
 import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.GeneralSettings;
@@ -33,6 +31,8 @@ import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseNetherPortals.MultiverseNetherPortals;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 
 public class Arena {
@@ -49,13 +49,15 @@ public class Arena {
 	private GameCountDown countDown;
 	private Quest[] quests;
 	private TeamGui teamGui;
+	private boolean pvp;
 
 	private static Location spawn = loadSpawnFromConfig();
 	private static ArrayList<Arena> arenas = new ArrayList<>();
 
 	public Arena(ArenaMode mode) {
 		this.mode = mode;
-
+		pvp = false;
+		
 		name = getRandomString();
 		gameState = GameState.WAITING;
 
@@ -94,6 +96,20 @@ public class Arena {
 		applyGameRules();
 		teamGui = new TeamGui(this);
 		generateChunksAsync();
+	}
+	
+	public void schedulePvpEnable() {
+		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
+			if(gameState == GameState.INGAME) {
+				broadcastMessage(Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" wird in 1 Minute aktiviert").color(NamedTextColor.GRAY)));
+			}
+		}, 20*60*2);
+		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
+			if(gameState == GameState.INGAME) {
+				pvp = true;
+				broadcastMessage(Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" ist nun aktiviert!").color(NamedTextColor.GRAY)));
+			}
+		}, 20*60*3);	//20 Ticks = 1 Sekunde; 1 Sekunde * 60 = 1 Minute; 1 Minute * 3 = 3 Minuten;
 	}
 	
 	private void generateChunksAsync() {
@@ -321,5 +337,13 @@ public class Arena {
 
 	public TeamGui getTeamGui() {
 		return teamGui;
+	}
+
+	public boolean isPvp() {
+		return pvp;
+	}
+
+	public void setPvp(boolean pvp) {
+		this.pvp = pvp;
 	}
 }

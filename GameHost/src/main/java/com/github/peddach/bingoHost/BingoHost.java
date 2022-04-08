@@ -15,6 +15,7 @@ import com.github.peddach.bingoHost.listener.PlayerJoinArenaListener;
 import com.github.peddach.bingoHost.listener.PlayerJoinServerListener;
 import com.github.peddach.bingoHost.listener.PlayerLeaveArenaListener;
 import com.github.peddach.bingoHost.listener.PlayerLeaveServerListener;
+import com.github.peddach.bingoHost.listener.PvpListener;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.quest.QuestGui;
 import com.github.peddach.bingoHost.quest.QuestListener;
@@ -71,6 +72,7 @@ public class BingoHost extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new LeaveItem(), this);
 		getServer().getPluginManager().registerEvents(new BackpackItem(), this);
 		getServer().getPluginManager().registerEvents(new AdvancementMessageListener(), this);
+		getServer().getPluginManager().registerEvents(new PvpListener(), this);
 	}
 
 	private void createArenas() {
