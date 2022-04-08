@@ -13,6 +13,9 @@ public class AdvancementMessageListener implements Listener {
 
 	@EventHandler
 	public void onPlayerAdvancement(PlayerAdvancementDoneEvent event) {
+		if(event.getAdvancement().getDisplay() == null) {
+			return;
+		}
 		if (!event.getAdvancement().getDisplay().doesAnnounceToChat()) {
 			return;
 		}
