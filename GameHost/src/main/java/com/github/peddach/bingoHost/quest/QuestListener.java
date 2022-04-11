@@ -21,7 +21,6 @@ public class QuestListener implements Listener {
 	@EventHandler
 	public void onPickUp(EntityPickupItemEvent event) {
 		if (event.getEntity()instanceof Player player) {
-			player.sendMessage("Checking Item");
 			if (checkIfItemIsAQuest(player, event.getItem().getItemStack())) {
 				ItemStack item = event.getItem().getItemStack();
 				item.setAmount(item.getAmount() - 1);
