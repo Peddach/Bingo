@@ -18,7 +18,8 @@ import com.github.peddach.bingoHost.listener.PlayerLeaveServerListener;
 import com.github.peddach.bingoHost.listener.PvpListener;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.quest.QuestGui;
-import com.github.peddach.bingoHost.quest.QuestListener;
+import com.github.peddach.bingoHost.quest.AdvancememtQuestListener;
+import com.github.peddach.bingoHost.quest.BlockQuestListener;
 import com.github.peddach.bingoHost.teamSelector.TeamGuiListener;
 import com.github.peddach.bingoHost.utilItems.BackpackItem;
 import com.github.peddach.bingoHost.utilItems.BingoCard;
@@ -64,15 +65,16 @@ public class BingoHost extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new LobbyDamageListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
-		getServer().getPluginManager().registerEvents(new QuestListener(), this);
+		getServer().getPluginManager().registerEvents(new BlockQuestListener(), this);
 		getServer().getPluginManager().registerEvents(new QuestGui(), this);
 		getServer().getPluginManager().registerEvents(new TeamGuiListener(), this);
 		getServer().getPluginManager().registerEvents(new BingoCard(), this);
 		getServer().getPluginManager().registerEvents(new StartItem(), this);
 		getServer().getPluginManager().registerEvents(new LeaveItem(), this);
 		getServer().getPluginManager().registerEvents(new BackpackItem(), this);
-		getServer().getPluginManager().registerEvents(new AdvancementMessageListener(), this);
+		//getServer().getPluginManager().registerEvents(new AdvancementMessageListener(), this);	DEPRECATED. Moved to AdvancementQuestListener
 		getServer().getPluginManager().registerEvents(new PvpListener(), this);
+		getServer().getPluginManager().registerEvents(new AdvancememtQuestListener(), this);
 	}
 
 	private void createArenas() {

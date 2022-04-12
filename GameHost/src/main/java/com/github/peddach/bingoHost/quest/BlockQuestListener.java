@@ -16,7 +16,7 @@ import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.util.MessageUtil;
 import com.github.peddach.bingoHost.utilItems.BingoCard;
 
-public class QuestListener implements Listener {
+public class BlockQuestListener implements Listener {
 
 	@EventHandler
 	public void onPickUp(EntityPickupItemEvent event) {

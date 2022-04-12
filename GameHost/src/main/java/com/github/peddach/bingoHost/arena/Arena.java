@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.PortalType;
 import org.bukkit.World;
 import org.bukkit.WorldType;
+import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.CloudNetAdapter;
@@ -19,6 +20,7 @@ import com.github.peddach.bingoHost.events.GameStateChangeEvent;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 import com.github.peddach.bingoHost.events.PlayerLeaveArenaEvent;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
+import com.github.peddach.bingoHost.quest.AdvancementList;
 import com.github.peddach.bingoHost.quest.BlockList;
 import com.github.peddach.bingoHost.quest.Quest;
 import com.github.peddach.bingoHost.quest.QuestType;
@@ -123,10 +125,19 @@ public class Arena {
 	private void generateQuests() {
 		quests = new Quest[25];
 		ArrayList<Material> blocks = new ArrayList<>(BlockList.getBlockList());
+		ArrayList<Advancement> advancements = new ArrayList<>(AdvancementList.getInstance().getAdvancements());
 		for (int i = 0; i < 25; i++) {
-			Material block = blocks.get(new Random().nextInt(blocks.size()));
-			blocks.remove(block);
-			quests[i] = new Quest(QuestType.BLOCK, block);
+			int randInt = new Random().nextInt(14);
+			if(randInt == 5) {
+				Advancement advancement = advancements.get(new Random().nextInt(advancements.size()));
+				advancements.remove(advancement);
+				quests[i] = new Quest(QuestType.ADCHIEVMENT, advancement);
+			}
+			else {
+				Material block = blocks.get(new Random().nextInt(blocks.size()));
+				blocks.remove(block);
+				quests[i] = new Quest(QuestType.BLOCK, block);
+			}
 		}
 	}
 
