@@ -72,12 +72,12 @@ public class QuestGui implements Listener {
 				inv.setItem(slots[i], item);
 			}
 			if (board.getQuest()[i].getType() == QuestType.ADCHIEVMENT) {
-				ItemStack item = new ItemStack(Material.IRON_SWORD, 1);
+				ItemStack item = new ItemStack(Material.DRAGON_EGG, 1);
 				final Advancement advancement = board.getQuest()[i].getAdvancement();
 				if (board.getQuests()[i] == true) {
 					item.addUnsafeEnchantment(Enchantment.LURE, 1);
 					item.editMeta(meta -> {
-						meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+						meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 						List<Component> lore = new ArrayList<>();
 						lore.add(Component.text(" "));
 						lore.add(Component.text("Erledigt").color(NamedTextColor.GREEN).decorate(TextDecoration.BOLD));
@@ -87,21 +87,16 @@ public class QuestGui implements Listener {
 						meta.displayName(Component.text("Advancement: ", NamedTextColor.GOLD).decorate(TextDecoration.BOLD).append(advancementName));
 					});
 				} else {
-					if (board.getQuest()[i].getAdvancement().getDisplay() == null) {
-						item = errorItem("§4Error 89");
-						inv.setItem(slots[i], item);
-						continue;
-					}
 					item.editMeta(meta -> {
-						Component advancementName = advancement.getDisplay().title().color(NamedTextColor.GRAY);
+						Component advancementName = Component.text(AdvancementList.getInstance().getAdvancementTitleMappings().get(advancement));
 						meta.displayName(Component.text("Advancement: ", NamedTextColor.GOLD).decorate(TextDecoration.BOLD).append(advancementName));
 						List<Component> lore = new ArrayList<>();
 						lore.add(Component.text(" "));
-						lore.add(advancement.getDisplay().description().color(NamedTextColor.GRAY).decorate(TextDecoration.ITALIC));
+						lore.add(Component.text(AdvancementList.getInstance().getAdvancementDescriptionMappings().get(advancement)).color(NamedTextColor.GRAY).decorate(TextDecoration.ITALIC));
 						lore.add(Component.text(" "));
 						meta.lore(lore);
-					});
-
+						meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+					});	
 				}
 				inv.setItem(slots[i], item);
 			}
