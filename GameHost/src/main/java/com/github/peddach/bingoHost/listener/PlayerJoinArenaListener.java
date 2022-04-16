@@ -14,6 +14,9 @@ import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.InventoryUtil;
 
 import io.papermc.paper.text.PaperComponents;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 
 public class PlayerJoinArenaListener implements Listener{
 	
@@ -36,5 +39,9 @@ public class PlayerJoinArenaListener implements Listener{
 			event.getArena().setCountDown(new GameCountDown(event.getArena()));
 		}
 		MySQLManager.updateArena(event.getArena());
+		Component title = Component.text("Bingo").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD);
+		Component description = Component.text("Samele Items oder Advancements welche auf deiner Bingokarte stehen. Der erste der 5 in einer Reihe abgeschlossen hat, gewinnt! Rechts-/Linkklicke ein Item um es abzuschließen.").color(NamedTextColor.GRAY);
+		event.getPlayer().sendMessage(title);
+		event.getPlayer().sendMessage(description);
 	}
 }
