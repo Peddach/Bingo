@@ -62,7 +62,7 @@ public class AdvancememtQuestListener implements Listener {
 		if (advancement.getDisplay() == null) {
 			return;
 		}
-		Component name = advancement.getDisplay().title().color(NamedTextColor.GOLD);
+		Component name = Component.text(AdvancementList.getInstance().getAdvancementTitleMappings().get(advancement)).color(NamedTextColor.GOLD);
 		Component message = Component.text(team.getName()).color(NamedTextColor.GRAY).append(Component.text(" hat das Advancement ").color(NamedTextColor.GRAY)).append(name).append(Component.text(" erhalten").color(NamedTextColor.GRAY));
 		arena.broadcastMessage(message);
 	}

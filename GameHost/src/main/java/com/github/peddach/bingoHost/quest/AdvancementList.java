@@ -17,6 +17,8 @@ public class AdvancementList {
 	
 	private static final AdvancementList advancementList = createInstance();
 	private final List<Advancement> advancementsList;
+	private final HashMap<Advancement, String> advancementTitleMappings;
+	private final HashMap<Advancement, String> advancementDescriptionMappings;
 	
 	public AdvancementList() {
 		YamlConfiguration config = new YamlConfiguration();
@@ -37,10 +39,21 @@ public class AdvancementList {
 			allAdvancementsAndKeys.put(advancement.getKey().getKey(), advancement);
 		}
 		List<Advancement> advancements = new ArrayList<>();
+		HashMap<Advancement, String> advancementTitleMappings = new HashMap<>();
+		HashMap<Advancement, String> advancementDescriptionMappings = new HashMap<>();
 		for(String string : stringList) {
-			advancements.add(allAdvancementsAndKeys.get(string));
+			String[] splittedString = string.split(" : ");
+			if(splittedString.length != 3) {
+				GeneralSettings.plugin.getLogger().warning("The Advancement is not well formatted: " + string);
+			}
+			Advancement advancement = allAdvancementsAndKeys.get(splittedString[0]);
+			advancements.add(advancement);
+			advancementTitleMappings.put(advancement, splittedString[1]);
+			advancementDescriptionMappings.put(advancement, splittedString[2]);
 		}
 		advancementsList = advancements;
+		this.advancementDescriptionMappings = advancementDescriptionMappings;
+		this.advancementTitleMappings = advancementTitleMappings;
 		
 	}
 	
@@ -54,5 +67,13 @@ public class AdvancementList {
 
 	public List<Advancement> getAdvancements() {
 		return advancementsList;
+	}
+
+	public HashMap<Advancement, String> getAdvancementTitleMappings() {
+		return advancementTitleMappings;
+	}
+
+	public HashMap<Advancement, String> getAdvancementDescriptionMappings() {
+		return advancementDescriptionMappings;
 	}
 }
