@@ -21,7 +21,7 @@ public class PlayerDeathListener implements Listener{
 			if(arena.getPlayers().contains(event.getPlayer())) {
 				arena.broadcastMessage("§7" + event.getPlayer().getName() + " §7ist gestorben");
 				for(Player player : arena.getPlayers()) {
-					player.playSound(player.getLocation(), Sound.ENTITY_PARROT_IMITATE_WITCH, 2F, 1);
+					player.playSound(player.getLocation(), Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 2F, 1);
 				}
 			}
 		}
