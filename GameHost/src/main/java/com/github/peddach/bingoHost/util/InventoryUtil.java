@@ -22,5 +22,7 @@ public class InventoryUtil {
 				progress.revokeCriteria(criteria);
 			}
 		}
+		player.setTotalExperience(0);
+		player.setExp(0);
 	}
 }
