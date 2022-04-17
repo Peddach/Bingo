@@ -40,7 +40,7 @@ public class PlayerJoinArenaListener implements Listener{
 		}
 		MySQLManager.updateArena(event.getArena());
 		Component title = Component.text("Bingo").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD);
-		Component description = Component.text("Samele Items oder Advancements welche auf deiner Bingokarte stehen. Der erste der 5 in einer Reihe abgeschlossen hat, gewinnt! Rechts-/Linkklicke ein Item um es abzuschließen.").color(NamedTextColor.GRAY);
+		Component description = Component.text("Sammel Items oder Advancements welche auf deiner Bingokarte stehen. Der erste, der 5 in einer Reihe abgeschlossen hat, gewinnt! Rechts-/Linksklicke ein Item um es abzuschließen.").color(NamedTextColor.GRAY);
 		event.getPlayer().sendMessage(" ");
 		event.getPlayer().sendMessage(title);
 		event.getPlayer().sendMessage(description);
