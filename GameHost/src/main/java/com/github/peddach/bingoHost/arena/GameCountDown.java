@@ -24,6 +24,7 @@ public class GameCountDown {
 	public GameCountDown(Arena arena) {
 		this.arena = arena;
 		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(GeneralSettings.plugin, () -> {
+			setXp();
 			if(arena.getPlayers().size() <= 1) {
 				for(Player player : arena.getPlayers()) {
 					player.showTitle(Title.title(Component.text("Start", NamedTextColor.RED), Component.text("abgebrochen", NamedTextColor.GRAY), Times.times(Duration.ofMillis(500), Duration.ofMillis(4000), Duration.ofMillis(500))));
@@ -41,6 +42,12 @@ public class GameCountDown {
 			}
 			count--;
 		}, 20, 20);
+	}
+	
+	private void setXp() {
+		for(Player player : arena.getPlayers()) {
+			player.setLevel(count);
+		}
 	}
 	
 	private void showTitle(Player player, int countdown) {
