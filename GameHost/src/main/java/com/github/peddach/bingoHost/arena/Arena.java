@@ -148,6 +148,7 @@ public class Arena {
 		world.setGameRule(GameRule.SHOW_DEATH_MESSAGES, true);
 		world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
 		world.setDifficulty(Difficulty.NORMAL);
+		nether.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
 
 	}
 
