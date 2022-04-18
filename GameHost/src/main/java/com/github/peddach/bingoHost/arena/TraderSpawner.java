@@ -26,6 +26,6 @@ public class TraderSpawner {
 	
 	public TraderSpawner(Arena arena) {
 		this.arena = arena;
-		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(GeneralSettings.plugin, task, 20*60*10, 20*60*10);
+		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(GeneralSettings.plugin, task, 20*60*15, 20*60*15);
 	}
 }
