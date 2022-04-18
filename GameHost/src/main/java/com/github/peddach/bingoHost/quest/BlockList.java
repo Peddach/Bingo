@@ -5,47 +5,59 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 import com.github.peddach.bingoHost.GeneralSettings;
 
 public class BlockList {
-
-	private static final ArrayList<Material> blockList = loadBlockList();
-
-	private static File blocksConfigFile;
-	private static FileConfiguration blocksConfig;
-
-	public static ArrayList<Material> loadBlockList() {
-		blocksConfigFile = new File(GeneralSettings.plugin.getDataFolder(), "blocks.yml");
-		
-		if (!blocksConfigFile.exists()) {
-			GeneralSettings.plugin.getLogger().warning("No blocks.yml found!");
-			Bukkit.getServer().getPluginManager().disablePlugin(GeneralSettings.plugin);
-		}
-
-		blocksConfig = new YamlConfiguration();
+	
+	private final static BlockList BLOCKLIST = new BlockList();
+	
+	private List<Material> allBlocks;
+	private List<Material> easyBlocks;
+	private List<Material> hardBlocks;
+	
+	private BlockList() {
+		File file = new File(GeneralSettings.plugin.getDataFolder(), "blocks.yml");
+		YamlConfiguration config = new YamlConfiguration();
 		try {
-			blocksConfig.load(blocksConfigFile);
+			config.load(file);
 		} catch (IOException | InvalidConfigurationException e) {
 			e.printStackTrace();
 		}
-		
-		List<?> objlist = blocksConfig.getList("Blocks");
-		ArrayList<String> stringList = new ArrayList<>();
-		objlist.forEach(object -> stringList.add((String)object));
-		ArrayList<Material> matList = new ArrayList<>();
-		stringList.forEach(string -> matList.add(Material.valueOf(string)));
-		
-		return matList;
-		
+		easyBlocks = loadList(config, "Leicht");
+		hardBlocks = loadList(config, "Schwer");
+		allBlocks = new ArrayList<>();
+		allBlocks.addAll(easyBlocks);
+		allBlocks.addAll(hardBlocks);		
+	}
+	
+	private List<Material> loadList(YamlConfiguration config, String listName) {
+		@Nullable List<?> objList = config.getList(listName);
+		List<String> stringList = new ArrayList<>();
+		objList.forEach(s -> stringList.add((String) s));
+		List<Material> materialList = new ArrayList<>();
+		stringList.forEach(s -> materialList.add(Material.valueOf(s)));
+		return materialList;
+	}
+	
+
+	public List<Material> getAllBlocks() {
+		return allBlocks;
 	}
 
-	public static ArrayList<Material> getBlockList() {
-		return blockList;
+	public List<Material> getEasyBlocks() {
+		return easyBlocks;
+	}
+
+	public List<Material> getHardBlocks() {
+		return hardBlocks;
+	}
+
+	public static BlockList getInstance() {
+		return BLOCKLIST;
 	}
 }
