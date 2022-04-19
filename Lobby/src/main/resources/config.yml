@@ -4,3 +4,13 @@ Database:
    User: Bingo
    Password: password
    Database: Bingo
+PortalSingle:
+   X1: -6
+   Z1: 90
+   X2: -7
+   Z2: 90
+PortalTeam:
+   X1: -4
+   Z1: 90
+   X2: -3
+   Z2: 90

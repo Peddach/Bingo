@@ -6,6 +6,7 @@ import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoLobby.commands.BingoLobbyCommand;
 import com.github.peddach.bingoLobby.join.ArenaData;
+import com.github.peddach.bingoLobby.listener.EnterPortalListener;
 
 public class BingoLobby extends JavaPlugin {
 	
@@ -27,6 +28,8 @@ public class BingoLobby extends JavaPlugin {
 		
 		this.getCommand("BingoLobby").setExecutor(new BingoLobbyCommand());
 		this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+		
+		getServer().getPluginManager().registerEvents(new EnterPortalListener(), this);
 		
 		ArenaData.init();
 	}
