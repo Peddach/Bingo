@@ -24,6 +24,7 @@ import com.github.peddach.bingoHost.quest.AdvancementList;
 import com.github.peddach.bingoHost.quest.BlockList;
 import com.github.peddach.bingoHost.quest.Quest;
 import com.github.peddach.bingoHost.quest.QuestType;
+import com.github.peddach.bingoHost.scoreboard.ScoreboardManager;
 import com.github.peddach.bingoHost.teamSelector.TeamGui;
 import com.github.peddach.bingoHost.teamSelector.TeamUtil;
 import com.github.peddach.bingoHost.util.InventoryUtil;
@@ -52,6 +53,8 @@ public class Arena {
 	private Quest[] quests;
 	private TeamGui teamGui;
 	private boolean pvp;
+	private ArenaGameTimeCounter arenaGameTimeCounter;
+	private ScoreboardManager scoreboardManager;
 
 	private static Location spawn = loadSpawnFromConfig();
 	private static ArrayList<Arena> arenas = new ArrayList<>();
@@ -92,7 +95,8 @@ public class Arena {
 			}
 			maxPlayers = 9 * 2;
 		}
-
+		arenaGameTimeCounter = new ArenaGameTimeCounter(this);
+		scoreboardManager = new ScoreboardManager(this);
 		arenas.add(this);
 		MySQLManager.addArena(this);
 		applyGameRules();
@@ -163,6 +167,7 @@ public class Arena {
 		if (!players.contains(player)) {
 			return;
 		}
+		scoreboardManager.removePlayer(player);
 		players.remove(player);
 		for(BingoTeam team : teams) {
 			if(team.checkIfPlayerIsMember(player)) {
@@ -179,6 +184,7 @@ public class Arena {
 		if (players.size() == maxPlayers) {
 			return false;
 		}
+		scoreboardManager.addPlayer(player);
 		players.add(player);
 
 		PlayerJoinArenaEvent event = new PlayerJoinArenaEvent(this, player);
@@ -202,7 +208,7 @@ public class Arena {
 
 		MySQLManager.deleteArena(name);
 		arenas.remove(this);
-
+		scoreboardManager.deleteScordboardManager();
 		for (Player player : players) {
 			CloudNetAdapter.sendPlayerToLobbyTask(player);
 		}
@@ -364,5 +370,9 @@ public class Arena {
 
 	public void setPvp(boolean pvp) {
 		this.pvp = pvp;
+	}
+
+	public ArenaGameTimeCounter getArenaGameTimeCounter() {
+		return arenaGameTimeCounter;
 	}
 }
