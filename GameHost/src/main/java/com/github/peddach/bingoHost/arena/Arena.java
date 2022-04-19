@@ -128,14 +128,14 @@ public class Arena {
 		ArrayList<Material> easyblocks = new ArrayList<>(BlockList.getInstance().getEasyBlocks());
 		ArrayList<Advancement> advancements = new ArrayList<>(AdvancementList.getInstance().getAdvancements());
 		for (int i = 0; i < 25; i++) {
-			int randInt = new Random().nextInt(14);
-			if(randInt == 6) {
+			int randInt = new Random().nextInt(25);
+			if(randInt == 6 || randInt == 7 || randInt == 8) {
 				Advancement advancement = advancements.get(new Random().nextInt(advancements.size()));
 				advancements.remove(advancement);
 				quests[i] = new Quest(QuestType.ADCHIEVMENT, advancement);
 				continue;
 			}
-			if(randInt <= 5) {
+			if(randInt <= 4) {
 				Material block = hardblocks.get(new Random().nextInt(hardblocks.size()));
 				hardblocks.remove(block);
 				quests[i] = new Quest(QuestType.BLOCK, block);
