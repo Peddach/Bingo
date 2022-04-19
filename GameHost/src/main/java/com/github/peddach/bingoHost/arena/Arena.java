@@ -184,6 +184,9 @@ public class Arena {
 		if (players.size() == maxPlayers) {
 			return false;
 		}
+		if(gameState == GameState.INGAME || gameState == GameState.ENDING) {
+			return false;
+		}
 		scoreboardManager.addPlayer(player);
 		players.add(player);
 
