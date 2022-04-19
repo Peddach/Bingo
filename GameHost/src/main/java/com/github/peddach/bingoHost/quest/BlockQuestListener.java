@@ -21,6 +21,7 @@ public class BlockQuestListener implements Listener {
 		if (checkIfItemIsAQuest(event.getPlayer(), event.getItem())) {
 			event.getItem().setAmount(event.getItem().getAmount() - 1);
 			event.setCancelled(true);
+			event.getPlayer().updateInventory();
 		}
 	}
 

@@ -73,8 +73,8 @@ public class BackpackItem implements Listener {
 		}
 		event.getItem().setType(Material.AIR);
 		event.getPlayer().getInventory().setItem(9, item);
-		event.getPlayer().updateInventory();
 		openBackPack(event.getPlayer());
+		event.getPlayer().updateInventory();
 	}
 
 	@EventHandler
@@ -87,9 +87,9 @@ public class BackpackItem implements Listener {
 		}
 		event.getCurrentItem().setType(Material.AIR);
 		event.getWhoClicked().getInventory().setItem(9, item);
+		openBackPack((Player) event.getWhoClicked());
 		Player p = (Player) event.getWhoClicked();
 		p.updateInventory();
-		openBackPack((Player) event.getWhoClicked());
 	}
 	
 	@EventHandler
