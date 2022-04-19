@@ -26,7 +26,7 @@ public class TeamUtil implements Listener {
 		mappings.put(4, "Grün");
 		mappings.put(5, "Hellblau");
 		mappings.put(6, "Gelb");
-		mappings.put(7, "Braun");
+		mappings.put(7, "Magenta");
 		mappings.put(8, "Hellgrün");
 		mappings.put(9, "Pink");
 		return mappings;
@@ -41,7 +41,7 @@ public class TeamUtil implements Listener {
 		mappings.put(4, Material.GREEN_BED);
 		mappings.put(5, Material.LIGHT_BLUE_BED);
 		mappings.put(6, Material.YELLOW_BED);
-		mappings.put(7, Material.BROWN_BED);
+		mappings.put(7, Material.MAGENTA_BED);
 		mappings.put(8, Material.LIME_BED);
 		mappings.put(9, Material.PINK_BED);
 		return mappings;
