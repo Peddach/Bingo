@@ -7,6 +7,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import com.github.peddach.bingoHost.arena.Arena;
@@ -33,6 +35,7 @@ public class PlayerDeathListener implements Listener{
 			if(arena.getPlayers().contains(event.getPlayer())) {
 				if(arena.getGameState() == GameState.INGAME) {
 					event.getPlayer().getInventory().setItem(0, new ItemStack(Material.BREAD, 10));
+					event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 250, false, false));
 					return;
 				}
 			}
