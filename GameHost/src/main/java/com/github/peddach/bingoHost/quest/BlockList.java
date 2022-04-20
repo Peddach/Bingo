@@ -31,7 +31,7 @@ public class BlockList {
 		}
 		easyBlocks = loadList(config, "Leicht");
 		hardBlocks = loadList(config, "Schwer");
-		hardBlocks = loadList(config, "Mittel");
+		normalBlocks = loadList(config, "Mittel");
 		allBlocks = new ArrayList<>();
 		allBlocks.addAll(easyBlocks);
 		allBlocks.addAll(hardBlocks);
