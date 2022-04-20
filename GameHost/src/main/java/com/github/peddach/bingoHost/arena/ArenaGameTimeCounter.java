@@ -24,6 +24,10 @@ public class ArenaGameTimeCounter {
 	
 	public String getTimeAsString() {
 		LocalTime timeOfDay = LocalTime.ofSecondOfDay(seconds);
-		return timeOfDay.toString();
+		String timeString = timeOfDay.toString();
+		if(timeString.split(":").length != 3) {
+			timeString = timeString + ":00";	//add the seconds when its extactly ex. 2 Minutes (00:02:00 instead of 00:02)
+		}
+		return timeString;
 	}
 }
