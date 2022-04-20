@@ -80,10 +80,10 @@ public class BingoCard implements Listener{
 			if(!arena.getPlayers().contains((Player)event.getWhoClicked())) {
 				continue;
 			}
-			QuestGui.openGuiForPlayer((Player)event.getWhoClicked());
 			event.setCancelled(true);
 			Player p = (Player) event.getWhoClicked();
 			p.updateInventory();
+			QuestGui.openGuiForPlayer(p);
 			break;
 		}
 	}

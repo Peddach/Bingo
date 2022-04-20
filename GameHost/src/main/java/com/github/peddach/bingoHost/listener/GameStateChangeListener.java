@@ -32,6 +32,7 @@ public class GameStateChangeListener implements Listener {
 				player.getInventory().setItem(8, BingoCard.getItem());
 				player.getInventory().setItem(9, BackpackItem.getItem());
 				player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 250, false, false));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 20*60*3, 1, false, false));
 			}
 			event.getArena().schedulePvpEnable();
 			new TraderSpawner(event.getArena());

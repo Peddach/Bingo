@@ -3,6 +3,7 @@ package com.github.peddach.bingoHost.utilItems;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -17,6 +18,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
+import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.GameState;
@@ -26,7 +28,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 
 public class BackpackItem implements Listener {
 
-	private static final ItemStack item = createBackpackItem();
+	private static final ItemStack ITEM = createBackpackItem();
 
 	private static ItemStack createBackpackItem() {
 		ItemStack item = new ItemStack(Material.CHEST);
@@ -53,14 +55,17 @@ public class BackpackItem implements Listener {
 					continue;
 				}
 				player.closeInventory();
+				Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
+					player.updateInventory();
+				}, 1);
 				player.openInventory(team.getBackpack());
-				break;
+				break; 
 			}
 		}
 	}
 	
 	public static ItemStack getItem() {
-		return item;
+		return ITEM;
 	}
 
 	@EventHandler
@@ -68,13 +73,14 @@ public class BackpackItem implements Listener {
 		if (event.getItem() == null) {
 			return;
 		}
-		if (!event.getItem().equals(item)) {
+		if (!event.getItem().equals(ITEM)) {
 			return;
 		}
-		event.getItem().setType(Material.AIR);
-		event.getPlayer().getInventory().setItem(9, item);
+		event.setCancelled(true);
 		openBackPack(event.getPlayer());
-		event.getPlayer().updateInventory();
+		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
+			event.getPlayer().updateInventory();
+		}, 1);
 	}
 
 	@EventHandler
@@ -82,20 +88,22 @@ public class BackpackItem implements Listener {
 		if (event.getCurrentItem() == null) {
 			return;
 		}
-		if (!event.getCurrentItem().equals(item)) {
+		if (!event.getCurrentItem().equals(ITEM)) {
 			return;
 		}
+		event.setCancelled(true);
 		event.getCurrentItem().setType(Material.AIR);
-		event.getWhoClicked().getInventory().setItem(9, item);
-		openBackPack((Player) event.getWhoClicked());
+		event.getWhoClicked().getInventory().setItem(9, ITEM);
 		Player p = (Player) event.getWhoClicked();
 		p.updateInventory();
+		openBackPack(p);
+
 	}
 	
 	@EventHandler
 	public void onPlayerPickUpEvent(EntityPickupItemEvent event) {
 		if(event.getEntity() instanceof Player player) {
-			if(event.getItem().getItemStack().equals(item)) {
+			if(event.getItem().getItemStack().equals(ITEM)) {
 				event.setCancelled(true);
 			}
 		}
@@ -103,8 +111,8 @@ public class BackpackItem implements Listener {
 	
 	@EventHandler
 	public void onPlayerDeathEvent(PlayerDeathEvent event){
-		if(event.getDrops().contains(item)) {
-			event.getDrops().remove(item);
+		if(event.getDrops().contains(ITEM)) {
+			event.getDrops().remove(ITEM);
 		}
 	}
 	
@@ -113,7 +121,7 @@ public class BackpackItem implements Listener {
 		for(Arena arena : Arena.getArenas()) {
 			if(arena.getPlayers().contains(event.getPlayer())) {
 				if(arena.getGameState() == GameState.INGAME) {
-					event.getPlayer().getInventory().setItem(9, item);
+					event.getPlayer().getInventory().setItem(9, ITEM);
 					break;
 				}
 			}
@@ -128,7 +136,7 @@ public class BackpackItem implements Listener {
 		if(event.getItemDrop().getItemStack() == null) {
 			return;
 		}
-		if(event.getItemDrop().getItemStack().equals(item)) {
+		if(event.getItemDrop().getItemStack().equals(ITEM)) {
 			event.setCancelled(true);
 		}
 	}
