@@ -14,21 +14,13 @@ import com.github.peddach.bingoHost.util.MessageUtil;
 
 public class ArenaData {
 	private static ArrayList<ArenaObject> allArenas = new ArrayList<>();
-	private static ArrayList<ArenaObject> visibleArenas = new ArrayList<>();
 	private static ArenaObject currentSignleArena;
 	private static ArenaObject currentTeamArena;
 	
 	private static Runnable pull = () -> {
 		allArenas = MySQLManager.readArenas();
-		chooseNewCurrenQuickJoinArenaSingle();
-		chooseNewCurrenQuickJoinArenaTeam();
-		visibleArenas = new ArrayList<>(allArenas);
-		if(currentSignleArena != null) {
-			visibleArenas.remove(currentSignleArena);
-		}
-		if(currentTeamArena != null) {
-			visibleArenas.remove(currentTeamArena);
-		}
+		checkCurrentSingleArenaAndChoose();
+		checkCurrentTeamArenaAndChoose();
 	};
 	
 	public static void init() {
@@ -44,18 +36,29 @@ public class ArenaData {
 		});
 	}
 	
-	private static void chooseNewCurrenQuickJoinArenaSingle() {
-		for(ArenaObject arenaObj : allArenas) {
-			if(currentSignleArena != null) {
-				if(currentSignleArena.getName().equalsIgnoreCase(arenaObj.getName())) {
-					if(currentSignleArena.getGamestate() == GameState.WAITING || currentSignleArena.getGamestate() == GameState.STARTING) {
-						return;
-					}
-				}
-			}
+	private static void checkCurrentSingleArenaAndChoose() {
+		if(currentSignleArena == null) {
+			chooseNewSingleArena();
+			return;
 		}
 		for(ArenaObject arena : allArenas) {
-			if(arena.getPlayers() == 0 && arena.getGamestate() == GameState.WAITING && arena.getMode() == ArenaMode.SINGLE) {
+			if(arena.getName().equalsIgnoreCase(currentSignleArena.getName())) {
+				currentSignleArena = arena;
+				break;
+			}
+		}
+		if(!allArenas.contains(currentSignleArena)) {
+			chooseNewSingleArena();
+			return;
+		}
+		if(currentSignleArena.getGamestate() == GameState.INGAME || currentSignleArena.getGamestate() == GameState.ENDING) {
+			chooseNewSingleArena();
+		}
+	}
+	
+	private static void chooseNewSingleArena() {
+		for(ArenaObject arena : allArenas) {
+			if(arena.getMode() == ArenaMode.SINGLE && (arena.getGamestate() == GameState.STARTING || arena.getGamestate() == GameState.WAITING)) {
 				currentSignleArena = arena;
 				return;
 			}
@@ -64,18 +67,29 @@ public class ArenaData {
 		showWarning(ArenaMode.SINGLE);
 	}
 	
-	private static void chooseNewCurrenQuickJoinArenaTeam() {
-		for(ArenaObject arenaObj : allArenas) {
-			if(currentTeamArena != null) {
-				if(currentTeamArena.getName().equalsIgnoreCase(arenaObj.getName())) {
-					if(currentTeamArena.getGamestate() == GameState.WAITING || currentTeamArena.getGamestate() == GameState.STARTING) {
-						return;
-					}
-				}
-			}
+	private static void checkCurrentTeamArenaAndChoose() {
+		if(currentTeamArena == null) {
+			chooseNewTeamArena();
+			return;
 		}
 		for(ArenaObject arena : allArenas) {
-			if(arena.getPlayers() <= 1 && arena.getGamestate() == GameState.WAITING && arena.getMode() == ArenaMode.TEAM) {
+			if(arena.getName().equalsIgnoreCase(currentTeamArena.getName())) {
+				currentTeamArena = arena;
+				break;
+			}
+		}
+		if(!allArenas.contains(currentTeamArena)) {
+			chooseNewTeamArena();
+			return;
+		}
+		if(currentTeamArena.getGamestate() == GameState.INGAME || currentTeamArena.getGamestate() == GameState.ENDING) {
+			chooseNewTeamArena();
+		}
+	}
+	
+	private static void chooseNewTeamArena() {
+		for(ArenaObject arena : allArenas) {
+			if(arena.getMode() == ArenaMode.TEAM && (arena.getGamestate() == GameState.STARTING || arena.getGamestate() == GameState.WAITING)) {
 				currentTeamArena = arena;
 				return;
 			}
@@ -84,9 +98,6 @@ public class ArenaData {
 		showWarning(ArenaMode.TEAM);
 	}
 	
-	public static ArrayList<ArenaObject> getArenas() {
-		return visibleArenas;
-	}
 	public static ArenaObject getCurrentSignleArena() {
 		return currentSignleArena;
 	}

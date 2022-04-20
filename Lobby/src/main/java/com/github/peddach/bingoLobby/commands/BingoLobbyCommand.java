@@ -34,15 +34,8 @@ public class BingoLobbyCommand implements CommandExecutor {
 			}
 			return false;
 		}
-		if (args.length == 1 && args[0].equalsIgnoreCase("ListVisible")) {
-			MessageUtil.sendMessage(player, "§7Alle sichbaren Arenen:");
-			for (ArenaObject arena : ArenaData.getArenas()) {
-				MessageUtil.sendMessage(player, arena.getName() + " | " + arena.getGamestate().name() + " | " + arena.getPlayers());
-			}
-			return false;
-		}
-		if (args.length == 1 && args[0].equalsIgnoreCase("ListAll")) {
-			MessageUtil.sendMessage(player, "§7Alle Arenen (auch eigentlich unsichtbare):");
+		if (args.length == 1 && args[0].equalsIgnoreCase("List")) {
+			MessageUtil.sendMessage(player, "§7Alle Arenen:");
 			for (ArenaObject arena : ArenaData.getAllArenas()) {
 				MessageUtil.sendMessage(player, arena.getName() + " | " + arena.getGamestate().name() + " | " + arena.getPlayers());
 			}
