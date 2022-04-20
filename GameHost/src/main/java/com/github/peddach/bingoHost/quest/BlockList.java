@@ -18,6 +18,7 @@ public class BlockList {
 	
 	private List<Material> allBlocks;
 	private List<Material> easyBlocks;
+	private List<Material> normalBlocks;
 	private List<Material> hardBlocks;
 	
 	private BlockList() {
@@ -30,9 +31,11 @@ public class BlockList {
 		}
 		easyBlocks = loadList(config, "Leicht");
 		hardBlocks = loadList(config, "Schwer");
+		hardBlocks = loadList(config, "Mittel");
 		allBlocks = new ArrayList<>();
 		allBlocks.addAll(easyBlocks);
-		allBlocks.addAll(hardBlocks);		
+		allBlocks.addAll(hardBlocks);
+		allBlocks.addAll(normalBlocks);
 	}
 	
 	private List<Material> loadList(YamlConfiguration config, String listName) {
@@ -55,6 +58,10 @@ public class BlockList {
 
 	public List<Material> getHardBlocks() {
 		return hardBlocks;
+	}
+	
+	public List<Material> getNormalBlocks() {
+		return normalBlocks;
 	}
 
 	public static BlockList getInstance() {

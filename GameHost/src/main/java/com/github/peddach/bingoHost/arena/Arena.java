@@ -130,6 +130,7 @@ public class Arena {
 		quests = new Quest[25];
 		ArrayList<Material> hardblocks = new ArrayList<>(BlockList.getInstance().getHardBlocks());
 		ArrayList<Material> easyblocks = new ArrayList<>(BlockList.getInstance().getEasyBlocks());
+		ArrayList<Material> normalblocks = new ArrayList<>(BlockList.getInstance().getNormalBlocks());
 		ArrayList<Advancement> advancements = new ArrayList<>(AdvancementList.getInstance().getAdvancements());
 		for (int i = 0; i < 25; i++) {
 			int randInt = new Random().nextInt(25);
@@ -139,9 +140,15 @@ public class Arena {
 				quests[i] = new Quest(QuestType.ADCHIEVMENT, advancement);
 				continue;
 			}
-			if(randInt <= 4) {
+			if(randInt <= 3) {
 				Material block = hardblocks.get(new Random().nextInt(hardblocks.size()));
 				hardblocks.remove(block);
+				quests[i] = new Quest(QuestType.BLOCK, block);
+				continue;
+			}
+			if(randInt >= 18) {
+				Material block = normalblocks.get(new Random().nextInt(normalblocks.size()));
+				normalblocks.remove(block);
 				quests[i] = new Quest(QuestType.BLOCK, block);
 				continue;
 			}
