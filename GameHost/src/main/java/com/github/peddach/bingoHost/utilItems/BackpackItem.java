@@ -34,7 +34,7 @@ public class BackpackItem implements Listener {
 	private static final ItemStack ITEM = createBackpackItem();
 
 	private static ItemStack createBackpackItem() {
-		ItemStack item = new ItemStack(Material.CHEST);
+		ItemStack item = new ItemStack(Material.BLUE_SHULKER_BOX);
 		item.addUnsafeEnchantment(Enchantment.ARROW_FIRE, 1);
 		item.editMeta(meta -> {
 			meta.displayName(Component.text("Rucksack").color(NamedTextColor.GOLD));
