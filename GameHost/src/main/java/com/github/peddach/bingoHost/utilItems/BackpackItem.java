@@ -9,9 +9,12 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent.Reason;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -54,16 +57,19 @@ public class BackpackItem implements Listener {
 				if (!team.checkIfPlayerIsMember(player)) {
 					continue;
 				}
-				player.closeInventory();
+				if (player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().equals(team.getBackpack())) {
+					return;
+				}
+				player.closeInventory(Reason.OPEN_NEW);
 				Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
 					player.updateInventory();
+					player.openInventory(team.getBackpack());
 				}, 1);
-				player.openInventory(team.getBackpack());
-				break; 
+				break;
 			}
 		}
 	}
-	
+
 	public static ItemStack getItem() {
 		return ITEM;
 	}
@@ -93,51 +99,68 @@ public class BackpackItem implements Listener {
 		}
 		event.setCancelled(true);
 		event.getCurrentItem().setType(Material.AIR);
-		event.getWhoClicked().getInventory().setItem(9, ITEM);
+		event.getWhoClicked().getInventory().setItem(7, ITEM);
 		Player p = (Player) event.getWhoClicked();
 		p.updateInventory();
 		openBackPack(p);
 
 	}
-	
+
 	@EventHandler
 	public void onPlayerPickUpEvent(EntityPickupItemEvent event) {
-		if(event.getEntity() instanceof Player player) {
-			if(event.getItem().getItemStack().equals(ITEM)) {
+		if (event.getEntity()instanceof Player player) {
+			if (event.getItem().getItemStack().equals(ITEM)) {
 				event.setCancelled(true);
 			}
 		}
 	}
-	
+
 	@EventHandler
-	public void onPlayerDeathEvent(PlayerDeathEvent event){
-		if(event.getDrops().contains(ITEM)) {
+	public void onPlayerDeathEvent(PlayerDeathEvent event) {
+		if (event.getDrops().contains(ITEM)) {
 			event.getDrops().remove(ITEM);
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerRespawnEvent(PlayerPostRespawnEvent event) {
-		for(Arena arena : Arena.getArenas()) {
-			if(arena.getPlayers().contains(event.getPlayer())) {
-				if(arena.getGameState() == GameState.INGAME) {
-					event.getPlayer().getInventory().setItem(9, ITEM);
+		for (Arena arena : Arena.getArenas()) {
+			if (arena.getPlayers().contains(event.getPlayer())) {
+				if (arena.getGameState() == GameState.INGAME) {
+					event.getPlayer().getInventory().setItem(7, ITEM);
 					break;
 				}
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
-		if(event.getItemDrop() == null) {
+		if (event.getItemDrop() == null) {
 			return;
 		}
-		if(event.getItemDrop().getItemStack() == null) {
+		if (event.getItemDrop().getItemStack() == null) {
 			return;
 		}
-		if(event.getItemDrop().getItemStack().equals(ITEM)) {
+		if (event.getItemDrop().getItemStack().equals(ITEM)) {
 			event.setCancelled(true);
 		}
+	}
+
+	@EventHandler
+	public void onPlayerCloseInv(InventoryCloseEvent event) {
+		Player player = (Player) event.getPlayer();
+		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
+			player.updateInventory();
+		}, 1);
+	}
+
+	@EventHandler
+	public void onPlayerPlaceEvent(BlockPlaceEvent event) {
+		if (!event.getItemInHand().equals(ITEM)) {
+			return;
+		}
+		event.setCancelled(true);
+		openBackPack(event.getPlayer());
 	}
 }
