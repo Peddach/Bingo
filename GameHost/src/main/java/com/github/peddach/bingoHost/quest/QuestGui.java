@@ -16,11 +16,14 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.Board;
+import com.github.peddach.bingoHost.util.MessageUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -130,7 +133,22 @@ public class QuestGui implements Listener {
 	public void onPlayerInteractEvent(InventoryClickEvent event) {
 		if (guis.contains(event.getInventory())) {
 			event.setCancelled(true);
+			if(event.getRawSlot() < 5*9) {
+				openRecipeForPlayer(event.getCurrentItem(), (Player) event.getWhoClicked());
+			}
 		}
+	}
+	
+	private void openRecipeForPlayer(ItemStack item, Player player) {
+		if(item == null || item.getType() == Material.DRAGON_EGG || item.getType() == Material.AIR) {
+			return;
+		}
+		List<Recipe> recipeList = Bukkit.getServer().getRecipesFor(item);
+		if(recipeList.isEmpty()) {
+			MessageUtil.sendMessage(player, Component.text("Das Item ").color(NamedTextColor.GRAY).append(item.displayName().color(NamedTextColor.GOLD).append(Component.text(" besitzt kein Rezept").color(NamedTextColor.GRAY))));
+			return;
+		}
+		new RecipeShow(player, recipeList.get(0));
 	}
 
 	public static List<Inventory> getGuis() {
