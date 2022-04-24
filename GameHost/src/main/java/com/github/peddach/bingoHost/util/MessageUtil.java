@@ -31,4 +31,5 @@ public class MessageUtil {
 	public static Title titlebuilder(String title, String subtitle, int fadein, int stay, int fadeout) {
 		return Title.title(Component.text(title, NamedTextColor.GOLD), Component.text(subtitle, NamedTextColor.GRAY), Times.times(Duration.ofMillis(fadein), Duration.ofMillis(stay), Duration.ofMillis(fadeout)));
 	}
+	
 }

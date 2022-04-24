@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.quest.Quest;
 import com.github.peddach.bingoHost.quest.QuestType;
+import com.github.peddach.bingoHost.teamSelector.TeamUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -78,7 +79,8 @@ public class Board {
 	
 	private void successMessage(Material block) {
 		Component blockname = Component.translatable(block).color(TextColor.color(255, 255, 50));
-		Component message = Component.text(team.getName(), NamedTextColor.GRAY).append(Component.text(" hat die Aufgabe ").append(blockname).append(Component.text(" erfolgreich abgeschlossen", NamedTextColor.GRAY)));
+		TextColor teamcolor = TextColor.fromCSSHexString(TeamUtil.teamMappingsNamedTextColor.get(team.getNumber()));
+		Component message = Component.text(team.getName(), teamcolor).append(Component.text(" hat die Aufgabe ").color(NamedTextColor.GRAY).append(blockname).append(Component.text(" erfolgreich abgeschlossen", NamedTextColor.GRAY)));
 		for(Player player : team.getMembers()) {
 			if(player == null) {
 				continue;

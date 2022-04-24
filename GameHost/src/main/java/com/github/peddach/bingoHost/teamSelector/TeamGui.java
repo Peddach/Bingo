@@ -14,6 +14,7 @@ import com.github.peddach.bingoHost.arena.ArenaMode;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 
 public class TeamGui {
 	
@@ -36,7 +37,7 @@ public class TeamGui {
 		if(arena.getMode() == ArenaMode.SINGLE) {
 			for(int i = 0; i < arena.getTeams().length; i++) {
 				ItemStack item = new ItemStack(TeamUtil.teamMappingsBeds.get(i), 1);
-				Component name = Component.text(TeamUtil.teamMappingsName.get(i), NamedTextColor.GOLD);
+				Component name = Component.text(TeamUtil.teamMappingsName.get(i)).color(TextColor.fromCSSHexString(TeamUtil.teamMappingsNamedTextColor.get(i)));
 				final ItemMeta meta = item.getItemMeta();
 				meta.displayName(name);
 				if(arena.getTeams()[i].getMembers()[0] == null) {
@@ -63,7 +64,7 @@ public class TeamGui {
 		if(arena.getMode() == ArenaMode.TEAM) {
 			for(int i = 0; i < arena.getTeams().length; i++) {
 				ItemStack item = new ItemStack(TeamUtil.teamMappingsBeds.get(i), 1);
-				Component name = Component.text(TeamUtil.teamMappingsName.get(i), NamedTextColor.GOLD);
+				Component name = Component.text(TeamUtil.teamMappingsName.get(i)).color(TextColor.fromCSSHexString(TeamUtil.teamMappingsNamedTextColor.get(i)));
 				final ItemMeta meta = item.getItemMeta();
 				meta.displayName(name);
 				List<Component> lore = new ArrayList<>();

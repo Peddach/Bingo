@@ -14,8 +14,9 @@ import net.kyori.adventure.text.format.NamedTextColor;
 
 public class TeamUtil implements Listener {
 
-	public static HashMap<Integer, String> teamMappingsName = loadTeamNameMappings();
-	public static HashMap<Integer, Material> teamMappingsBeds = loadTeamBedMappings();
+	public static final HashMap<Integer, String> teamMappingsName = loadTeamNameMappings();
+	public static final HashMap<Integer, Material> teamMappingsBeds = loadTeamBedMappings();
+	public static final HashMap<Integer, String> teamMappingsNamedTextColor = loadTeamNamedTextColor();
 
 	private static HashMap<Integer, String> loadTeamNameMappings() {
 		HashMap<Integer, String> mappings = new HashMap<>();
@@ -29,6 +30,21 @@ public class TeamUtil implements Listener {
 		mappings.put(7, "Magenta");
 		mappings.put(8, "Hellgrün");
 		mappings.put(9, "Pink");
+		return mappings;
+	}
+
+	private static HashMap<Integer, String> loadTeamNamedTextColor() {
+		HashMap<Integer, String> mappings = new HashMap<>();
+		mappings.put(0, "#e36e1b");
+		mappings.put(1, "#7313bd");
+		mappings.put(2, "#1316bd");
+		mappings.put(3, "#a30707");
+		mappings.put(4, "#2e7d0c");
+		mappings.put(5, "#0aa2cc");
+		mappings.put(6, "#ccbf0a");
+		mappings.put(7, "#a12a97");
+		mappings.put(8, "#1cd40f");
+		mappings.put(9, "#db469b");
 		return mappings;
 	}
 

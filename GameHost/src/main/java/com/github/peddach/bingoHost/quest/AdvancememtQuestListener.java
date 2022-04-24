@@ -9,9 +9,11 @@ import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.GameState;
+import com.github.peddach.bingoHost.teamSelector.TeamUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 
 public class AdvancememtQuestListener implements Listener {
 
@@ -63,7 +65,8 @@ public class AdvancememtQuestListener implements Listener {
 			return;
 		}
 		Component name = Component.text(AdvancementList.getInstance().getAdvancementTitleMappings().get(advancement)).color(NamedTextColor.GOLD);
-		Component message = Component.text(team.getName()).color(NamedTextColor.GRAY).append(Component.text(" hat das Advancement ").color(NamedTextColor.GRAY)).append(name).append(Component.text(" erhalten").color(NamedTextColor.GRAY));
+		TextColor teamcolor = TextColor.fromCSSHexString(TeamUtil.teamMappingsNamedTextColor.get(team.getNumber()));
+		Component message = Component.text(team.getName()).color(teamcolor).append(Component.text(" hat das Advancement ").color(NamedTextColor.GRAY)).append(name).append(Component.text(" erhalten").color(NamedTextColor.GRAY));
 		arena.broadcastMessage(message);
 	}
 

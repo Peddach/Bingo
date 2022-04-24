@@ -85,13 +85,13 @@ public class Arena {
 
 		if (mode == ArenaMode.SINGLE) {
 			for (int i = 0; i < teams.length; i++) {
-				teams[i] = new BingoTeam(1, quests, this, TeamUtil.teamMappingsName.get(i));
+				teams[i] = new BingoTeam(1, quests, this, TeamUtil.teamMappingsName.get(i), i);
 			}
 			maxPlayers = 9 * 1;
 		}
 		if (mode == ArenaMode.TEAM) {
 			for (int i = 0; i < teams.length; i++) {
-				teams[i] = new BingoTeam(2, quests, this, TeamUtil.teamMappingsName.get(i));
+				teams[i] = new BingoTeam(2, quests, this, TeamUtil.teamMappingsName.get(i), i);
 			}
 			maxPlayers = 9 * 2;
 		}

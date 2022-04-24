@@ -14,15 +14,16 @@ public class BingoTeam {
 	private Board board;
 	private Arena arena;
 	private String name;
+	private final int number;
 	private final Inventory backpack = Bukkit.createInventory(null, 9, Component.text("Rucksack").color(NamedTextColor.DARK_RED));
 
 	
-	public BingoTeam(int size, Quest[] quests, Arena arena, String name) {
+	public BingoTeam(int size, Quest[] quests, Arena arena, String name, int number) {
 		 members = new Player[size];
 		 board = new Board(quests, this);
 		 this.arena = arena;
 		 this.name = name;
-		 
+		 this.number = number;
 	}
 	
 	public boolean addMember(Player player) {
@@ -95,6 +96,10 @@ public class BingoTeam {
 
 	public Inventory getBackpack() {
 		return backpack;
+	}
+
+	public int getNumber() {
+		return number;
 	}
 	
 }
