@@ -10,6 +10,9 @@ import com.github.peddach.bingoHost.util.MessageUtil;
 import com.github.peddach.bingoLobby.join.ArenaData;
 import com.github.peddach.bingoLobby.join.PlayerConnector;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+
 public class BingoLobbyCommand implements CommandExecutor {
 
 	@Override
@@ -46,6 +49,17 @@ public class BingoLobbyCommand implements CommandExecutor {
 				new PlayerConnector(args[1], player);
 			} else {
 				MessageUtil.sendMessage(player, "§cNutze: join [arena]");
+			}
+			return false;
+		}
+		if(args.length == 1 && args[0].equalsIgnoreCase("ping")) {
+			if(ArenaData.getPinglist().contains(player)) {
+				MessageUtil.sendMessage(player, Component.text("Du wurdest von der Pingliste entfernt").color(NamedTextColor.GRAY));
+				ArenaData.getPinglist().remove(player);
+			}
+			else {
+				MessageUtil.sendMessage(player, Component.text("Du wurdest zur Pingliste hinzugefügt").color(NamedTextColor.GRAY));
+				ArenaData.getPinglist().add(player);
 			}
 			return false;
 		}

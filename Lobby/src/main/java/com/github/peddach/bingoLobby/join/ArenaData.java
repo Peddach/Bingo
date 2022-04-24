@@ -14,6 +14,7 @@ import com.github.peddach.bingoHost.util.MessageUtil;
 
 public class ArenaData {
 	private static ArrayList<ArenaObject> allArenas = new ArrayList<>();
+	private static final ArrayList<Player> PINGLIST = new ArrayList<>();
 	private static ArenaObject currentSignleArena;
 	private static ArenaObject currentTeamArena;
 	
@@ -29,7 +30,7 @@ public class ArenaData {
 	private static void showWarning(ArenaMode mode) {
 		Bukkit.getScheduler().runTask(GeneralSettings.plugin, ()->{
 			for(Player player : Bukkit.getOnlinePlayers()) {
-				if(player.hasPermission("Bingo.admin")) {
+				if(player.hasPermission("Bingo.admin") && PINGLIST.contains(player)) {
 					MessageUtil.sendMessage(player, "§cKeine freie Quickjoin arena gefunden: " + mode.name());
 				}
 			}
@@ -106,5 +107,8 @@ public class ArenaData {
 	}
 	public static ArrayList<ArenaObject> getAllArenas(){
 		return allArenas;
+	}
+	public static ArrayList<Player> getPinglist() {
+		return PINGLIST;
 	}
 }
