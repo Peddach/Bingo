@@ -14,6 +14,7 @@ import com.github.peddach.bingoHost.listener.PlayerJoinArenaListener;
 import com.github.peddach.bingoHost.listener.PlayerJoinServerListener;
 import com.github.peddach.bingoHost.listener.PlayerLeaveArenaListener;
 import com.github.peddach.bingoHost.listener.PlayerLeaveServerListener;
+import com.github.peddach.bingoHost.listener.PortalToOverworldListener;
 import com.github.peddach.bingoHost.listener.PvpListener;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.quest.QuestGui;
@@ -75,6 +76,7 @@ public class BingoHost extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PvpListener(), this);
 		getServer().getPluginManager().registerEvents(new AdvancememtQuestListener(), this);
 		getServer().getPluginManager().registerEvents(new RecipeShow(), this);
+		getServer().getPluginManager().registerEvents(new PortalToOverworldListener(), this);
 	}
 
 	private void createArenas() {
