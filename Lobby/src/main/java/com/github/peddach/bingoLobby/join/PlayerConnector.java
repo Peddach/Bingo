@@ -11,6 +11,7 @@ import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.MessageUtil;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.viaversion.viaversion.api.Via;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,13 +20,13 @@ import net.kyori.adventure.text.format.TextDecoration;
 public class PlayerConnector {
 	
 	private static ArrayList<Player> tempBlackList = new ArrayList<>();
-
+	
 	public PlayerConnector(String arena, Player player) {
 		if(tempBlackList.contains(player)) {
 			return;
 		}
 		addToBlackList(player);
-		if(player.getProtocolVersion() < 758) {
+		if(Via.getAPI().getPlayerVersion(player.getUniqueId()) < 758) {
 			MessageUtil.sendMessage(player, Component.text("Du nutzt nicht die neuste Version von Minecraft! Bingo unterstützt nur die Version 1.18.2").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD, TextDecoration.ITALIC));
 			return;
 		}

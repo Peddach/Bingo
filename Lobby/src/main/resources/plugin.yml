@@ -3,6 +3,8 @@ main: com.github.peddach.bingoLobby.BingoLobby
 author: Professor_Sam
 version: ${project.version}
 api-version: 1.18
+depends:
+   - "ViaVersion"
 commands:
    BingoLobby:
       description: Manage BingoLobby
