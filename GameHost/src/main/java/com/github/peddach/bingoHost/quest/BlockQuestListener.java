@@ -1,13 +1,11 @@
 package com.github.peddach.bingoHost.quest;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.GameState;
@@ -23,9 +21,6 @@ public class BlockQuestListener implements Listener {
 		if (checkIfItemIsAQuest(event.getPlayer(), event.getItem())) {
 			event.getItem().setAmount(event.getItem().getAmount() - 1);
 			event.setCancelled(true);
-			Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, ()-> {
-				event.getPlayer().updateInventory();
-			}, 1);
 		}
 	}
 

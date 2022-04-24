@@ -63,7 +63,6 @@ public class BingoCard implements Listener{
 			}
 			QuestGui.openGuiForPlayer(event.getPlayer());
 			event.setCancelled(true);
-			event.getPlayer().updateInventory();
 			break;
 		}
 	}
@@ -82,7 +81,6 @@ public class BingoCard implements Listener{
 			}
 			event.setCancelled(true);
 			Player p = (Player) event.getWhoClicked();
-			p.updateInventory();
 			QuestGui.openGuiForPlayer(p);
 			break;
 		}

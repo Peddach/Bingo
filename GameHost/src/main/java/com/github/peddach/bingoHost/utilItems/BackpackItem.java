@@ -62,7 +62,6 @@ public class BackpackItem implements Listener {
 				}
 				player.closeInventory(Reason.OPEN_NEW);
 				Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
-					player.updateInventory();
 					player.openInventory(team.getBackpack());
 				}, 1);
 				break;
@@ -84,9 +83,6 @@ public class BackpackItem implements Listener {
 		}
 		event.setCancelled(true);
 		openBackPack(event.getPlayer());
-		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
-			event.getPlayer().updateInventory();
-		}, 1);
 	}
 
 	@EventHandler
@@ -101,7 +97,6 @@ public class BackpackItem implements Listener {
 		event.getCurrentItem().setType(Material.AIR);
 		event.getWhoClicked().getInventory().setItem(7, ITEM);
 		Player p = (Player) event.getWhoClicked();
-		p.updateInventory();
 		openBackPack(p);
 
 	}
@@ -145,14 +140,6 @@ public class BackpackItem implements Listener {
 		if (event.getItemDrop().getItemStack().equals(ITEM)) {
 			event.setCancelled(true);
 		}
-	}
-
-	@EventHandler
-	public void onPlayerCloseInv(InventoryCloseEvent event) {
-		Player player = (Player) event.getPlayer();
-		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
-			player.updateInventory();
-		}, 1);
 	}
 
 	@EventHandler
