@@ -12,6 +12,10 @@ import com.github.peddach.bingoHost.util.MessageUtil;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+
 public class PlayerConnector {
 	
 	private static ArrayList<Player> tempBlackList = new ArrayList<>();
@@ -21,6 +25,10 @@ public class PlayerConnector {
 			return;
 		}
 		addToBlackList(player);
+		if(player.getProtocolVersion() < 758) {
+			MessageUtil.sendMessage(player, Component.text("Du nutzt nicht die neuste Version von Minecraft! Bingo unterstützt nur die Version 1.18.2").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD, TextDecoration.ITALIC));
+			return;
+		}
 		for(ArenaObject arenaObj : ArenaData.getAllArenas()) {
 			if(arenaObj.getName().equalsIgnoreCase(arena)) {
 				Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
