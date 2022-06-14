@@ -28,7 +28,7 @@ public class BingoLobbyCommand implements CommandExecutor {
 			if (ArenaData.getCurrentSignleArena() == null) {
 				MessageUtil.sendMessage(player, "§cSingle null");
 			} else {
-				MessageUtil.sendMessage(player, "§cSinge: " + ArenaData.getCurrentSignleArena().getName());
+				MessageUtil.sendMessage(player, "§cSingle: " + ArenaData.getCurrentSignleArena().getName());
 			}
 			if (ArenaData.getCurrentTeamArena() == null) {
 				MessageUtil.sendMessage(player, "§cTeam null");
