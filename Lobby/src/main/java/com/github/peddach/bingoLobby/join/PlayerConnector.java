@@ -26,8 +26,8 @@ public class PlayerConnector {
 			return;
 		}
 		addToBlackList(player);
-		if(Via.getAPI().getPlayerVersion(player.getUniqueId()) < 758) {
-			MessageUtil.sendMessage(player, Component.text("Du nutzt nicht die neuste Version von Minecraft! Bingo unterstützt nur die Version 1.18.2").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD, TextDecoration.ITALIC));
+		if(Via.getAPI().getPlayerVersion(player.getUniqueId()) < 759) {
+			MessageUtil.sendMessage(player, Component.text("Du nutzt nicht die neuste Version von Minecraft! Bingo unterstützt nur die Version 1.19").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD, TextDecoration.ITALIC));
 			return;
 		}
 		for(ArenaObject arenaObj : ArenaData.getAllArenas()) {
