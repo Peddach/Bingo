@@ -2,7 +2,7 @@ name: BingoLobby
 main: com.github.peddach.bingoLobby.BingoLobby
 author: Professor_Sam
 version: ${project.version}
-api-version: 1.18
+api-version: 1.19
 depends:
    - "ViaVersion"
 commands:
