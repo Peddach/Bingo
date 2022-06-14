@@ -22,7 +22,10 @@ import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.quest.Quest;
 import com.github.peddach.bingoHost.quest.QuestGui;
+import com.github.peddach.bingoHost.quest.QuestType;
 import com.github.peddach.bingoHost.util.MessageUtil;
+
+import net.kyori.adventure.text.Component;
 
 public class BingoCommand implements CommandExecutor {
 
@@ -36,7 +39,7 @@ public class BingoCommand implements CommandExecutor {
 			return false;
 		}
 		if (args.length == 0) {
-			MessageUtil.sendMessage(player, "§cCommands: list, BlocksToYml, gui");
+			MessageUtil.sendMessage(player, "§cCommands: list, BlocksToYml, gui, teams, quests, AdvancementsToYml");
 		}
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("list")) {
@@ -72,7 +75,12 @@ public class BingoCommand implements CommandExecutor {
 					for (BingoTeam team : arena.getTeams()) {
 						if (team.checkIfPlayerIsMember(player)) {
 							for (Quest quest : team.getBoard().getQuest()) {
-								MessageUtil.sendMessage(player, quest.getType().name() + " : " + quest.getBlock().name());
+								if(quest.getType() == QuestType.BLOCK) {
+									MessageUtil.sendMessage(player, quest.getType().name() + " : " + quest.getBlock().name());
+								}
+								if(quest.getType() == QuestType.ADCHIEVMENT) {
+									MessageUtil.sendMessage(player, Component.text(quest.getType().name() + " : ").append(quest.getAdvancement().getDisplay().title()));
+								}
 							}
 						}
 					}
