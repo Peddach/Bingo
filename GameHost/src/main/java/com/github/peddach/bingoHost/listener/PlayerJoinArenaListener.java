@@ -13,7 +13,6 @@ import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.InventoryUtil;
 
-import io.papermc.paper.text.PaperComponents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -23,7 +22,7 @@ public class PlayerJoinArenaListener implements Listener{
 	@EventHandler
 	public void onPlayerJoinArenaEvent(PlayerJoinArenaEvent event) {
 		event.getPlayer().teleport(Arena.getSpawn());
-		event.getArena().broadcastMessage(PaperComponents.plainTextSerializer().serialize(event.getPlayer().displayName()) + " &7ist dem Spiel beigetreten");
+		event.getArena().broadcastMessage(event.getPlayer().displayName().append(Component.text(" ist dem Spiel beigetreten!").color(NamedTextColor.GRAY)));
 		InventoryUtil.clearInvOfPlayer(event.getPlayer());
 		for(Player i : event.getArena().getPlayers()) {
 			i.showPlayer(GeneralSettings.plugin, event.getPlayer());
