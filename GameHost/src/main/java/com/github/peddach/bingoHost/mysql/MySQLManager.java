@@ -74,6 +74,7 @@ public class MySQLManager {
 		String setup;
 		try (InputStream in = setupFile) {
 			setup = new String(in.readAllBytes());
+			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw e;
