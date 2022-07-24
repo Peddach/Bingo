@@ -38,42 +38,54 @@ public class Board {
 		//Horizontal
 		if(quests[0] && quests[1] && quests[2] && quests[3] && quests[4]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[5] && quests[6] && quests[7] && quests[8] && quests[9]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[10] && quests[11] && quests[12] && quests[13] && quests[14]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[15] && quests[16] && quests[17] && quests[18] && quests[19]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[20] && quests[21] && quests[22] && quests[23] && quests[24]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		//Vertically
 		if(quests[0] && quests[5] && quests[10] && quests[15] && quests[20]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[1] && quests[6] && quests[11] && quests[16] && quests[21]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[2] && quests[7] && quests[12] && quests[17] && quests[22]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[3] && quests[8] && quests[13] && quests[18] && quests[23]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[4] && quests[9] && quests[14] && quests[19] && quests[24]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		
 		//Cross
 		if(quests[0] && quests[6] && quests[12] && quests[18] && quests[24]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 		if(quests[4] && quests[8] && quests[12] && quests[16] && quests[20]) {
 			team.getArena().setWinner(team);
+			return;
 		}
 	}
 	
