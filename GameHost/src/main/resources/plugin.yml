@@ -4,6 +4,8 @@ author: Professor_Sam
 softdepend:
 - Multiverse-Core
 - Multiverse-NetherPortals
+depend:
+   - TurtleServer
 version: ${project.version}
 api-version: 1.19
 commands:
