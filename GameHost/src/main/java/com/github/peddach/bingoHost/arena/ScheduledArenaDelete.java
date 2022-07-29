@@ -1,5 +1,7 @@
 package com.github.peddach.bingoHost.arena;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -15,10 +17,12 @@ public class ScheduledArenaDelete {
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(GeneralSettings.plugin, () -> {
 			for(Player player : arena.getPlayers()) {
 				if(count >= 1) {
-					MessageUtil.sendMessage(player, "§cDer Server stoppt in &6" + count + " §cSekunden");
+					GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Der Server stoppt in ").color(NamedTextColor.RED)
+							.append(Component.text(count).color(NamedTextColor.GOLD))
+							.append(Component.text(" Sekunden").color(NamedTextColor.RED)));
 				}
 				else {
-					MessageUtil.sendMessage(player, "§cDer Server stoppt jetzt! Du wirst zurück in die Lobby teleportiert");
+					GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Der Server stoppt jetzt! Du wirst zurück in die Lobby teleportiert").color(NamedTextColor.RED));
 				}
 			}
 			if(count == 0) {

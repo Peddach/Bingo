@@ -1,5 +1,7 @@
 package com.github.peddach.bingoHost.arena;
 
+import com.github.peddach.bingoHost.GeneralSettings;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -99,7 +101,7 @@ public class Board {
 			}
 			player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1F, 1F);
 		}
-		team.getArena().broadcastMessage(message);
+		GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(team.getArena().getPlayers()), message);
 	}
 
 	public Quest[] getQuest() {

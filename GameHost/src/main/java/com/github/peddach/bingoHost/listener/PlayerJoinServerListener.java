@@ -1,5 +1,7 @@
 package com.github.peddach.bingoHost.listener;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,7 +43,7 @@ public class PlayerJoinServerListener implements Listener{
 					return;
 				}
 			}
-			MessageUtil.sendMessage(player, "&cFehler beim Laden der Daten!");
+			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Fehler beim Laden der Spielerdaten! Bitte kontaktiere das Team, wenn dies ein Fehler sein sollte").color(NamedTextColor.RED));
 			CloudNetAdapter.sendPlayerToLobbyTask(player);
 		});
 	}

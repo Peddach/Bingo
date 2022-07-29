@@ -32,6 +32,11 @@
 			<id>cloudnet-releases</id>
 			<url>https://repo.cloudnetservice.eu/repository/releases/</url>
 		</repository>
+		<repository>
+			<id>Petropia</id>
+			<name>Petropia Maven Repo</name>
+			<url>https://repo.petropia.de/releases</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -40,6 +45,11 @@
 			<artifactId>paper-api</artifactId>
 			<version>1.19-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.petropia</groupId>
+			<artifactId>TurtleServer</artifactId>
+			<version>1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>

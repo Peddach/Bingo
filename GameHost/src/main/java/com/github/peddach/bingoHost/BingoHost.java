@@ -1,6 +1,6 @@
 package com.github.peddach.bingoHost;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import de.petropia.turtleServer.api.PetropiaPlugin;
 
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.ArenaMode;
@@ -27,7 +27,7 @@ import com.github.peddach.bingoHost.utilItems.BingoCard;
 import com.github.peddach.bingoHost.utilItems.LeaveItem;
 import com.github.peddach.bingoHost.utilItems.StartItem;
 
-public class BingoHost extends JavaPlugin {
+public class BingoHost extends PetropiaPlugin {
 
 	@Override
 	public void onEnable() {

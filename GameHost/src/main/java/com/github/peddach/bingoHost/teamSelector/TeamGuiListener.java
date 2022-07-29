@@ -1,5 +1,8 @@
 package com.github.peddach.bingoHost.teamSelector;
 
+import com.github.peddach.bingoHost.GeneralSettings;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -64,13 +67,13 @@ public class TeamGuiListener implements Listener{
 			int slot = event.getSlot();
 			Player player = (Player) event.getWhoClicked();
 			if(arena.getTeams()[slot].checkIfPlayerIsMember(player)) {
-				MessageUtil.sendMessage(player, "§7Du hast das Team verlassen");
+				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Du hast das Team verlassen").color(NamedTextColor.GRAY));
 				arena.getTeams()[slot].removeMember(player);
 				arena.getTeamGui().updateInv();
 				return;
 			}
 			if(arena.getTeams()[slot].isFull()) {
-				MessageUtil.sendMessage(player, "§cDas Team ist bereits voll");
+				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Das Team ist bereits voll").color(NamedTextColor.RED));
 				arena.getTeamGui().updateInv();
 				return;
 			}
@@ -80,7 +83,7 @@ public class TeamGuiListener implements Listener{
 				}
 			}
 			arena.getTeams()[slot].addMember(player);
-			MessageUtil.sendMessage(player, "§7Du hast das Team betreten");
+			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Du hast das Team betreten").color(NamedTextColor.GRAY));
 			arena.getTeamGui().updateInv();
 			return;
 		}

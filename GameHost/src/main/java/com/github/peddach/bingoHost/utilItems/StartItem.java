@@ -3,6 +3,8 @@ package com.github.peddach.bingoHost.utilItems;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.peddach.bingoHost.GeneralSettings;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
@@ -73,19 +75,19 @@ public class StartItem implements Listener {
 				continue;
 			}
 			if(arena.getCountDown() == null) {
-				MessageUtil.sendMessage(player, "§cEs läuft grade kein Countdown");
+				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Es läuft grade kein Countdown").color(NamedTextColor.RED));
 				return;
 			}
 			if(arena.getCountDown().getCountDown() < 10) {
-				MessageUtil.sendMessage(player, "§cDu kannst jetzt nicht starten");
+				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Du kannst jetzt nicht starten").color(NamedTextColor.RED));
 				return;
 			}
 			if(arena.getCountDown().isForceStarted()) {
-				MessageUtil.sendMessage(player, "§cDer Countdown wurde bereits verkürzt");
+				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Der Countdown wurde bereits verkürzt").color(NamedTextColor.RED));
 				return;
 			}
 			arena.getCountDown().setCountDown(11);
-			arena.broadcastMessage("§7Der Countdown wird verkürzt durch " + player.getName());			
+			GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(arena.getPlayers()), player.displayName().append(Component.text(" hat den Countdown verkürzt").color(NamedTextColor.GRAY)));
 		}
 	}
 

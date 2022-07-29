@@ -1,5 +1,9 @@
 package com.github.peddach.bingoHost.listener;
 
+import com.github.peddach.bingoHost.GeneralSettings;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -21,7 +25,7 @@ public class PlayerDeathListener implements Listener{
 		event.deathMessage(null);
 		for(Arena arena : Arena.getArenas()) {
 			if(arena.getPlayers().contains(event.getPlayer())) {
-				arena.broadcastMessage("§7" + event.getPlayer().getName() + " §7ist gestorben");
+				GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(arena.getPlayers()), event.getPlayer().displayName().append(Component.text(" ist gestorben").color(NamedTextColor.GRAY)));
 				for(Player player : arena.getPlayers()) {
 					player.playSound(player.getLocation(), Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 2F, 1);
 				}

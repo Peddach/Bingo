@@ -2,6 +2,7 @@ package com.github.peddach.bingoLobby.listener;
 
 import java.util.ArrayList;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,7 +41,7 @@ public class EnterPortalListener implements Listener {
 		}
 		addToblackList(player);
 		if (ArenaData.getCurrentSignleArena() == null) {
-			MessageUtil.sendMessage(player, Component.text("Es ist grade keine Arena frei! Bitte warte einen Moment und informiere später das Team"));
+			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Es ist grade keine Arena frei! Bitte warte einen Moment und informiere später das Team").color(NamedTextColor.RED));
 			return;
 		}
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 10, 5, false, false));
@@ -65,7 +66,7 @@ public class EnterPortalListener implements Listener {
 		}
 		addToblackList(player);
 		if (ArenaData.getCurrentTeamArena() == null) {
-			MessageUtil.sendMessage(player, Component.text("Es ist grade keine Arena frei! Bitte warte einen Moment und informiere später das Team"));
+			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Es ist grade keine Arena frei! Bitte warte einen Moment und informiere später das Team").color(NamedTextColor.RED));
 			return;
 		}
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 10, 5, false, false));

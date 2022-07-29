@@ -2,6 +2,8 @@ package com.github.peddach.bingoLobby.join;
 
 import java.util.ArrayList;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -31,7 +33,7 @@ public class ArenaData {
 		Bukkit.getScheduler().runTask(GeneralSettings.plugin, ()->{
 			for(Player player : Bukkit.getOnlinePlayers()) {
 				if(player.hasPermission("Bingo.admin") && PINGLIST.contains(player)) {
-					MessageUtil.sendMessage(player, "§cKeine freie Quickjoin arena gefunden: " + mode.name());
+					GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Keine freie Quickjoin arena gefunden: " + mode.name()).color(NamedTextColor.RED));
 				}
 			}
 		});

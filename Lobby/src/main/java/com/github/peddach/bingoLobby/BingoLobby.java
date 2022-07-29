@@ -1,6 +1,6 @@
 package com.github.peddach.bingoLobby;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import de.petropia.turtleServer.api.PetropiaPlugin;
 
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
@@ -8,7 +8,7 @@ import com.github.peddach.bingoLobby.commands.BingoLobbyCommand;
 import com.github.peddach.bingoLobby.join.ArenaData;
 import com.github.peddach.bingoLobby.listener.EnterPortalListener;
 
-public class BingoLobby extends JavaPlugin {
+public class BingoLobby extends PetropiaPlugin {
 	
 	@Override
 	public void onEnable() {

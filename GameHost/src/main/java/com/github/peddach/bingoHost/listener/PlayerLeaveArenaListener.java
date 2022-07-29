@@ -1,5 +1,7 @@
 package com.github.peddach.bingoHost.listener;
 
+import com.github.peddach.bingoHost.GeneralSettings;
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -30,7 +32,9 @@ public class PlayerLeaveArenaListener implements Listener{
 						teamsWithPlayers++;
 					}
 				}
-				event.getArena().broadcastMessage(Component.text("Es sind noch ").color(NamedTextColor.GRAY).append(Component.text(teamsWithPlayers).color(NamedTextColor.GOLD)).append(Component.text(" Teams übrig").color(NamedTextColor.GRAY)));
+				GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(event.getArena().getPlayers()), Component.text("Es sind noch ").color(NamedTextColor.GRAY)
+						.append(Component.text(teamsWithPlayers).color(NamedTextColor.GOLD))
+						.append(Component.text(" Teams übrig").color(NamedTextColor.GRAY)));
 				if(teamsWithPlayers <= 1) {
 					event.getArena().setGameState(GameState.ENDING);
 				}

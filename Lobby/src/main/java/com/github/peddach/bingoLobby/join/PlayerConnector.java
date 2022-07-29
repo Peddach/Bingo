@@ -27,7 +27,7 @@ public class PlayerConnector {
 		}
 		addToBlackList(player);
 		if(Via.getAPI().getPlayerVersion(player.getUniqueId()) < 759) {
-			MessageUtil.sendMessage(player, Component.text("Du nutzt nicht die neuste Version von Minecraft! Bingo unterstützt nur die Version 1.19").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD, TextDecoration.ITALIC));
+			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Du nutzt nicht die neuste Version von Minecraft! Bingo unterstützt nur die Version 1.19").color(NamedTextColor.DARK_RED).decorate(TextDecoration.BOLD, TextDecoration.ITALIC));
 			return;
 		}
 		for(ArenaObject arenaObj : ArenaData.getAllArenas()) {
@@ -42,7 +42,7 @@ public class PlayerConnector {
 				return;
 			}
 		}
-		MessageUtil.sendMessage(player, "§cKeine Arena gefunden: " + arena);
+		GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Keine Arena gefunden: " + arena).color(NamedTextColor.RED));
 	}
 	
 	private static void addToBlackList(Player player) {

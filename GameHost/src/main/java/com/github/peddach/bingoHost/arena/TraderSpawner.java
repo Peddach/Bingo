@@ -1,5 +1,6 @@
 package com.github.peddach.bingoHost.arena;
 
+import net.kyori.adventure.audience.Audience;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public class TraderSpawner {
 			Bukkit.getScheduler().cancelTask(taskID);
 			return;
 		}
-		arena.broadcastMessage(Component.text("Ein Trader ist bei dir gespawned!").color(NamedTextColor.GRAY));
+		GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(arena.getPlayers()), Component.text("Ein Trader ist bei dir gespawned!").color(NamedTextColor.GRAY));
 		for(Player player : arena.getPlayers()) {
 			player.getWorld().spawnEntity(player.getLocation(), EntityType.WANDERING_TRADER);
 		}

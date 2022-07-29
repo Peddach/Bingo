@@ -3,6 +3,7 @@ package com.github.peddach.bingoHost.quest;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.peddach.bingoHost.GeneralSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.advancement.Advancement;
@@ -143,7 +144,7 @@ public class QuestGui implements Listener {
 		}
 		List<Recipe> recipeList = Bukkit.getServer().getRecipesFor(item);
 		if(recipeList.isEmpty()) {
-			MessageUtil.sendMessage(player, Component.text("Das Item ").color(NamedTextColor.GRAY).append(item.displayName().color(NamedTextColor.GOLD).append(Component.text(" besitzt kein Rezept").color(NamedTextColor.GRAY))));
+			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Das Item ").color(NamedTextColor.GRAY).append(item.displayName().color(NamedTextColor.GOLD).append(Component.text(" besitzt kein Rezept").color(NamedTextColor.GRAY))));
 			return;
 		}
 		new RecipeShow(player, recipeList.get(0));
