@@ -1,5 +1,8 @@
 package com.github.peddach.bingoHost.arena;
 
+import com.github.peddach.bingoHost.teamSelector.TeamUtil;
+import de.petropia.turtleServer.server.prefix.PrefixManager;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -32,6 +35,7 @@ public class BingoTeam {
 			if(members[i] == null) {
 				members[i] = player;
 				found = true;
+				PrefixManager.getInstance().setPlayerNameColor(TextColor.fromCSSHexString(TeamUtil.teamMappingsNamedTextColor.get(number)), player);
 				break;
 			}
 		}
@@ -51,6 +55,7 @@ public class BingoTeam {
 		for(int i = 0; i < members.length; i++) {
 			if(members[i] == player) {
 				members[i] = null;
+				PrefixManager.getInstance().resetPlayerNameColor(player);
 			}
 		}
 	}
