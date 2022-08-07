@@ -23,7 +23,7 @@ public class PlayerJoinArenaListener implements Listener{
 	@EventHandler
 	public void onPlayerJoinArenaEvent(PlayerJoinArenaEvent event) {
 		event.getPlayer().teleport(Arena.getSpawn());
-		GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(event.getArena().getPlayers()), event.getPlayer().displayName().append(Component.text(" ist dem Spiel beigetreten!").color(NamedTextColor.GRAY)));
+		GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(event.getArena().getPlayers()), event.getPlayer().displayName().append(Component.text(" ist dem Spiel beigetreten!").color(NamedTextColor.GRAY)));
 		InventoryUtil.clearInvOfPlayer(event.getPlayer());
 		for(Player i : event.getArena().getPlayers()) {
 			i.showPlayer(GeneralSettings.plugin, event.getPlayer());

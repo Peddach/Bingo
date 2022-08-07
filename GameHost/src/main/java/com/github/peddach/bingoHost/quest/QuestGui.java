@@ -144,7 +144,7 @@ public class QuestGui implements Listener {
 		}
 		List<Recipe> recipeList = Bukkit.getServer().getRecipesFor(item);
 		if(recipeList.isEmpty()) {
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Das Item ").color(NamedTextColor.GRAY).append(item.displayName().color(NamedTextColor.GOLD).append(Component.text(" besitzt kein Rezept").color(NamedTextColor.GRAY))));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Das Item ").color(NamedTextColor.GRAY).append(item.displayName().color(NamedTextColor.GOLD).append(Component.text(" besitzt kein Rezept").color(NamedTextColor.GRAY))));
 			return;
 		}
 		new RecipeShow(player, recipeList.get(0));

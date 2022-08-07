@@ -101,7 +101,7 @@ public class Board {
 			}
 			player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1F, 1F);
 		}
-		GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(team.getArena().getPlayers()), message);
+		GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(team.getArena().getPlayers()), message);
 	}
 
 	public Quest[] getQuest() {

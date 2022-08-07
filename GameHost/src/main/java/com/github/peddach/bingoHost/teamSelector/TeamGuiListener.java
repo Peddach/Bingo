@@ -67,13 +67,13 @@ public class TeamGuiListener implements Listener{
 			int slot = event.getSlot();
 			Player player = (Player) event.getWhoClicked();
 			if(arena.getTeams()[slot].checkIfPlayerIsMember(player)) {
-				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Du hast das Team verlassen").color(NamedTextColor.GRAY));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Du hast das Team verlassen").color(NamedTextColor.GRAY));
 				arena.getTeams()[slot].removeMember(player);
 				arena.getTeamGui().updateInv();
 				return;
 			}
 			if(arena.getTeams()[slot].isFull()) {
-				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Das Team ist bereits voll").color(NamedTextColor.RED));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Das Team ist bereits voll").color(NamedTextColor.RED));
 				arena.getTeamGui().updateInv();
 				return;
 			}
@@ -83,7 +83,7 @@ public class TeamGuiListener implements Listener{
 				}
 			}
 			arena.getTeams()[slot].addMember(player);
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Du hast das Team betreten").color(NamedTextColor.GRAY));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Du hast das Team betreten").color(NamedTextColor.GRAY));
 			arena.getTeamGui().updateInv();
 			return;
 		}

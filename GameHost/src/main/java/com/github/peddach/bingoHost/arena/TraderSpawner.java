@@ -19,7 +19,7 @@ public class TraderSpawner {
 			Bukkit.getScheduler().cancelTask(taskID);
 			return;
 		}
-		GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(arena.getPlayers()), Component.text("Ein Trader ist bei dir gespawned!").color(NamedTextColor.GRAY));
+		GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(arena.getPlayers()), Component.text("Ein Trader ist bei dir gespawned!").color(NamedTextColor.GRAY));
 		for(Player player : arena.getPlayers()) {
 			player.getWorld().spawnEntity(player.getLocation(), EntityType.WANDERING_TRADER);
 		}

@@ -33,7 +33,7 @@ public class ArenaData {
 		Bukkit.getScheduler().runTask(GeneralSettings.plugin, ()->{
 			for(Player player : Bukkit.getOnlinePlayers()) {
 				if(player.hasPermission("Bingo.admin") && PINGLIST.contains(player)) {
-					GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Keine freie Quickjoin arena gefunden: " + mode.name()).color(NamedTextColor.RED));
+					GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Keine freie Quickjoin arena gefunden: " + mode.name()).color(NamedTextColor.RED));
 				}
 			}
 		});

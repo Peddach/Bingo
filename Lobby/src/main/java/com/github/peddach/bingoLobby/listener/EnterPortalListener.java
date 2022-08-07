@@ -41,7 +41,7 @@ public class EnterPortalListener implements Listener {
 		}
 		addToblackList(player);
 		if (ArenaData.getCurrentSignleArena() == null) {
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Es ist grade keine Arena frei! Bitte warte einen Moment und informiere später das Team").color(NamedTextColor.RED));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Es ist grade keine Arena frei! Bitte warte einen Moment und informiere später das Team").color(NamedTextColor.RED));
 			return;
 		}
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 10, 5, false, false));
@@ -66,7 +66,7 @@ public class EnterPortalListener implements Listener {
 		}
 		addToblackList(player);
 		if (ArenaData.getCurrentTeamArena() == null) {
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Es ist grade keine Arena frei! Bitte warte einen Moment und informiere später das Team").color(NamedTextColor.RED));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Es ist grade keine Arena frei! Bitte warte einen Moment und informiere später das Team").color(NamedTextColor.RED));
 			return;
 		}
 		player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 10, 5, false, false));

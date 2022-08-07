@@ -75,19 +75,19 @@ public class StartItem implements Listener {
 				continue;
 			}
 			if(arena.getCountDown() == null) {
-				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Es läuft grade kein Countdown").color(NamedTextColor.RED));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Es läuft grade kein Countdown").color(NamedTextColor.RED));
 				return;
 			}
 			if(arena.getCountDown().getCountDown() < 10) {
-				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Du kannst jetzt nicht starten").color(NamedTextColor.RED));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Du kannst jetzt nicht starten").color(NamedTextColor.RED));
 				return;
 			}
 			if(arena.getCountDown().isForceStarted()) {
-				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Der Countdown wurde bereits verkürzt").color(NamedTextColor.RED));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Der Countdown wurde bereits verkürzt").color(NamedTextColor.RED));
 				return;
 			}
 			arena.getCountDown().setCountDown(11);
-			GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(arena.getPlayers()), player.displayName().append(Component.text(" hat den Countdown verkürzt").color(NamedTextColor.GRAY)));
+			GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(arena.getPlayers()), player.displayName().append(Component.text(" hat den Countdown verkürzt").color(NamedTextColor.GRAY)));
 		}
 	}
 

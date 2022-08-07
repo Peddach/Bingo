@@ -108,13 +108,13 @@ public class Arena {
 	public void schedulePvpEnable() {
 		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
 			if(gameState == GameState.INGAME) {
-				GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(players), Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" wird in 1 Minute aktiviert").color(NamedTextColor.GRAY)));
+				GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(players), Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" wird in 1 Minute aktiviert").color(NamedTextColor.GRAY)));
 			}
 		}, 20*60*2);
 		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
 			if(gameState == GameState.INGAME) {
 				pvp = true;
-				GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(players), Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" ist nun aktiviert!").color(NamedTextColor.GRAY)));
+				GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(players), Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" ist nun aktiviert!").color(NamedTextColor.GRAY)));
 			}
 		}, 20*60*3);	//20 Ticks = 1 Sekunde; 1 Sekunde * 60 = 1 Minute; 1 Minute * 3 = 3 Minuten;
 	}
@@ -180,7 +180,7 @@ public class Arena {
 		for(BingoTeam team : teams) {
 			if(team.checkIfPlayerIsMember(player)) {
 				team.removeMember(player);
-				GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(players), player.displayName().append(Component.text(" hat das Spiel verlassen").color(NamedTextColor.GRAY)));
+				GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(players), player.displayName().append(Component.text(" hat das Spiel verlassen").color(NamedTextColor.GRAY)));
 				break;
 			}
 		}
@@ -275,7 +275,7 @@ public class Arena {
 			player.teleportAsync(spawn);
 			player.setBedSpawnLocation(spawn, true);
 			InventoryUtil.clearInvOfPlayer(player);
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Du wirst gleich teleportiert").color(NamedTextColor.GREEN));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Du wirst gleich teleportiert").color(NamedTextColor.GREEN));
 		}
 		world.setTime(6000);
 	}

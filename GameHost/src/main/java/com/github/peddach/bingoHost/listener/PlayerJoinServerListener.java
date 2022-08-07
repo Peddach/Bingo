@@ -43,7 +43,7 @@ public class PlayerJoinServerListener implements Listener{
 					return;
 				}
 			}
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Fehler beim Laden der Spielerdaten! Bitte kontaktiere das Team, wenn dies ein Fehler sein sollte").color(NamedTextColor.RED));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Fehler beim Laden der Spielerdaten! Bitte kontaktiere das Team, wenn dies ein Fehler sein sollte").color(NamedTextColor.RED));
 			CloudNetAdapter.sendPlayerToLobbyTask(player);
 		});
 	}

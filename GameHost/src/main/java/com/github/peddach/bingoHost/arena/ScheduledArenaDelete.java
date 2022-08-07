@@ -17,12 +17,12 @@ public class ScheduledArenaDelete {
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(GeneralSettings.plugin, () -> {
 			for(Player player : arena.getPlayers()) {
 				if(count >= 1) {
-					GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Der Server stoppt in ").color(NamedTextColor.RED)
+					GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Der Server stoppt in ").color(NamedTextColor.RED)
 							.append(Component.text(count).color(NamedTextColor.GOLD))
 							.append(Component.text(" Sekunden").color(NamedTextColor.RED)));
 				}
 				else {
-					GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Der Server stoppt jetzt! Du wirst zurück in die Lobby teleportiert").color(NamedTextColor.RED));
+					GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Der Server stoppt jetzt! Du wirst zurück in die Lobby teleportiert").color(NamedTextColor.RED));
 				}
 			}
 			if(count == 0) {

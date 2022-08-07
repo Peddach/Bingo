@@ -25,7 +25,7 @@ public class PlayerDeathListener implements Listener{
 		event.deathMessage(null);
 		for(Arena arena : Arena.getArenas()) {
 			if(arena.getPlayers().contains(event.getPlayer())) {
-				GeneralSettings.plugin.getMessageSender().broadcastMessage(Audience.audience(arena.getPlayers()), event.getPlayer().displayName().append(Component.text(" ist gestorben").color(NamedTextColor.GRAY)));
+				GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(arena.getPlayers()), event.getPlayer().displayName().append(Component.text(" ist gestorben").color(NamedTextColor.GRAY)));
 				for(Player player : arena.getPlayers()) {
 					player.playSound(player.getLocation(), Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 2F, 1);
 				}

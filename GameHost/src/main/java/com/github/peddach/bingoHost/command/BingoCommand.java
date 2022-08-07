@@ -40,18 +40,18 @@ public class BingoCommand implements CommandExecutor {
 			return false;
 		}
 		if (args.length == 0) {
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Commands: list, BlocksToYml, gui, teams, quests, AdvancementsToYml").color(NamedTextColor.GRAY));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Commands: list, BlocksToYml, gui, teams, quests, AdvancementsToYml").color(NamedTextColor.GRAY));
 		}
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("list")) {
-				GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Arena | GameState | Players").color(NamedTextColor.GRAY));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Arena | GameState | Players").color(NamedTextColor.GRAY));
 				for (Arena arena : Arena.getArenas()) {
-					GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text(arena.getName() + " | " + arena.getGameState() + " | " + arena.getPlayers().size()).color(NamedTextColor.GRAY));
+					GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text(arena.getName() + " | " + arena.getGameState() + " | " + arena.getPlayers().size()).color(NamedTextColor.GRAY));
 				}
 			}
 		}
 		if (args.length == 1 && args[0].equalsIgnoreCase("teams")) {
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Teams: ").color(NamedTextColor.GRAY));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Teams: ").color(NamedTextColor.GRAY));
 			for (Arena arena : Arena.getArenas()) {
 				for (Player i : arena.getPlayers()) {
 					if (i == player) {
@@ -64,7 +64,7 @@ public class BingoCommand implements CommandExecutor {
 									string = string + p.getName();
 								}
 							}
-							GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text(a + " : " + string).color(NamedTextColor.GRAY));
+							GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text(a + " : " + string).color(NamedTextColor.GRAY));
 						}
 					}
 				}
@@ -77,10 +77,10 @@ public class BingoCommand implements CommandExecutor {
 						if (team.checkIfPlayerIsMember(player)) {
 							for (Quest quest : team.getBoard().getQuest()) {
 								if(quest.getType() == QuestType.BLOCK) {
-									GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text(quest.getType().name() + " : " + quest.getBlock().name()).color(NamedTextColor.GRAY));
+									GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text(quest.getType().name() + " : " + quest.getBlock().name()).color(NamedTextColor.GRAY));
 								}
 								if(quest.getType() == QuestType.ADCHIEVMENT) {
-									GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text(quest.getType().name() + " : ").append(quest.getAdvancement().getDisplay().title()));
+									GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text(quest.getType().name() + " : ").append(quest.getAdvancement().getDisplay().title()));
 								}
 							}
 						}
@@ -144,7 +144,7 @@ public class BingoCommand implements CommandExecutor {
 					e.printStackTrace();
 				}
 			});
-			GeneralSettings.plugin.getMessageSender().sendMessage(player, Component.text("Advancements erfolgreich konvertiert").color(NamedTextColor.GREEN));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Advancements erfolgreich konvertiert").color(NamedTextColor.GREEN));
 		}
 		return false;
 
