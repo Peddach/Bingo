@@ -24,7 +24,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 
 public class RecipeShow implements Listener{
 	
-	private static List<Inventory> invs = new ArrayList<>();
+	private static final List<Inventory> invs = new ArrayList<>();
 	
 	public RecipeShow() {
 		
@@ -62,7 +62,6 @@ public class RecipeShow implements Listener{
 			player.openInventory(inv);
 			invs.add(inv);
 		}
-		
 	}
 	
 	private Inventory createInv(InventoryType invType) {
