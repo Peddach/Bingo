@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>de.petropia</groupId>
 			<artifactId>TurtleServer</artifactId>
-			<version>1.1.1</version>
+			<version>1.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>io.papermc.paper</groupId>
@@ -50,7 +50,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.29</version>
+			<version>8.0.31</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.peddach</groupId>
