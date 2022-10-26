@@ -22,7 +22,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.Board;
-import com.github.peddach.bingoHost.util.MessageUtil;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -30,7 +29,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 
 public class QuestGui implements Listener {
 
-	private static List<Inventory> guis = new ArrayList<>();
+	private static final List<Inventory> guis = new ArrayList<>();
 
 	public static void openGuiForPlayer(Player player) {
 		Board board = null;
@@ -57,7 +56,7 @@ public class QuestGui implements Listener {
 			}
 			if (board.getQuest()[i].getType() == QuestType.BLOCK) {
 				ItemStack item = new ItemStack(board.getQuest()[i].getBlock(), 1);
-				if (board.getQuests()[i] == true) {
+				if (board.getQuests()[i]) {
 					item.addUnsafeEnchantment(Enchantment.LURE, 1);
 					item.editMeta(meta -> {
 						meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -104,13 +103,11 @@ public class QuestGui implements Listener {
 			}
 		}
 		openAndRegist(player, inv);
-		return;
 	}
 
 	private static void openAndRegist(Player player, Inventory inv) {
 		player.openInventory(inv);
 		guis.add(inv);
-		return;
 	}
 
 	private static ItemStack errorItem(String msg) {
@@ -123,9 +120,7 @@ public class QuestGui implements Listener {
 
 	@EventHandler
 	public void onPlayerClose(InventoryCloseEvent event) {
-		if (guis.contains(event.getInventory())) {
-			guis.remove(event.getInventory());
-		}
+		guis.remove(event.getInventory());
 	}
 
 	@EventHandler
@@ -148,9 +143,5 @@ public class QuestGui implements Listener {
 			return;
 		}
 		new RecipeShow(player, recipeList.get(0));
-	}
-
-	public static List<Inventory> getGuis() {
-		return guis;
 	}
 }
