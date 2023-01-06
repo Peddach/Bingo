@@ -22,7 +22,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 public class MySQLManager {
 	private static MysqlDataSource datasource;
 	private static InputStream setupFile;
-	private static String version = "1_1_1";
+	private static final String version = "1_1_1";
 
 	public static Boolean setup() {
 		GeneralSettings.plugin.getLogger().info("§2Starting Database Setup");
@@ -38,7 +38,7 @@ public class MySQLManager {
 
 	private static void connect() throws SQLException {
 
-		if (GeneralSettings.plugin.getConfig().getBoolean("debug") == true) {
+		if (GeneralSettings.plugin.getConfig().getBoolean("debug")) {
 			GeneralSettings.plugin.getLogger().info("MySqlCredentails [Host: " + GeneralSettings.config.getString("Database.Host") + " Port: " + GeneralSettings.config.getInt("Database.Port") + " Database: " + GeneralSettings.config.getString("Database.Database") + " User: "
 					+ GeneralSettings.config.getString("Database.User") + " Password: " + GeneralSettings.config.getString("Database.Password") + "]");
 		}
@@ -74,7 +74,6 @@ public class MySQLManager {
 		String setup;
 		try (InputStream in = setupFile) {
 			setup = new String(in.readAllBytes());
-			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw e;
@@ -119,6 +118,7 @@ public class MySQLManager {
 				stmt.setInt(4, arena.getPlayers().size());
 				stmt.setString(5, GeneralSettings.servername);
 				stmt.execute();
+				GeneralSettings.plugin.getLogger().info("Added " + arena.getName() + " to Database!");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -179,11 +179,7 @@ public class MySQLManager {
 			if (resultSet.next()) {
 				arenaname = resultSet.getString("ArenaName");
 			}
-			if (arenaname == null) {
-				return null;
-			} else {
-				return arenaname;
-			}
+			return arenaname;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

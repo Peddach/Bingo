@@ -3,15 +3,10 @@ package com.github.peddach.bingoHost.arena;
 import java.util.ArrayList;
 import java.util.Random;
 
+import de.petropia.turtleServer.api.worlds.WorldManager;
 import net.kyori.adventure.audience.Audience;
-import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.GameRule;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.PortalType;
-import org.bukkit.World;
-import org.bukkit.WorldType;
+import net.kyori.adventure.util.TriState;
+import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 
@@ -30,35 +25,31 @@ import com.github.peddach.bingoHost.teamSelector.TeamGui;
 import com.github.peddach.bingoHost.teamSelector.TeamUtil;
 import com.github.peddach.bingoHost.util.InventoryUtil;
 import com.github.peddach.bingoHost.util.MessageUtil;
-import com.onarandombox.MultiverseCore.MultiverseCore;
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
-import com.onarandombox.MultiverseNetherPortals.MultiverseNetherPortals;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 
+
 public class Arena {
-	private ArenaMode mode;
-	private ArrayList<Player> players = new ArrayList<>();
-	private BingoTeam[] teams = new BingoTeam[9];
+	private final ArenaMode mode;
+	private final ArrayList<Player> players = new ArrayList<>();
+	private final BingoTeam[] teams = new BingoTeam[9];
 	private GameState gameState;
-	private String name;
-	private World world;
-	private World nether;
-	private MVWorldManager worldManager;
-	private MultiverseNetherPortals netherportals;
+	private final String name;
+	private final World world;
+	private final World nether;
 	private int maxPlayers;
 	private GameCountDown countDown;
 	private Quest[] quests;
-	private TeamGui teamGui;
+	private final TeamGui teamGui;
 	private boolean pvp;
 	private ArenaGameTimeCounter arenaGameTimeCounter;
-	private ScoreboardManager scoreboardManager;
+	private final ScoreboardManager scoreboardManager;
 
-	private static Location spawn = loadSpawnFromConfig();
-	private static ArrayList<Arena> arenas = new ArrayList<>();
+	private static final Location SPAWN = loadSpawnFromConfig();
+	private static final ArrayList<Arena> ARENAS = new ArrayList<>();
 
 	public Arena(ArenaMode mode) {
 		this.mode = mode;
@@ -67,20 +58,23 @@ public class Arena {
 		name = getRandomString();
 		gameState = GameState.WAITING;
 
-		MultiverseCore mvCore = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
-		worldManager = mvCore.getMVWorldManager();
-
-		worldManager.addWorld(name + "world", World.Environment.NORMAL, null, WorldType.NORMAL, true, null);
-		world = Bukkit.getWorld(name + "world");
-		worldManager.addWorld(name + "nether", World.Environment.NETHER, null, WorldType.NORMAL, true, null);
-		nether = Bukkit.getWorld(name + "nether");
-
-		world.getWorldBorder().setSize(6000);
-		nether.getWorldBorder().setSize(3000);
-
-		netherportals = (MultiverseNetherPortals) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-NetherPortals");
-		netherportals.addWorldLink(world.getName(), nether.getName(), PortalType.NETHER);
-		netherportals.addWorldLink(nether.getName(), world.getName(), PortalType.NETHER);
+		WorldCreator worldCreator = new WorldCreator(name + "_world");
+		worldCreator.environment(World.Environment.NORMAL);
+		worldCreator.generateStructures(true);
+		worldCreator.keepSpawnLoaded(TriState.FALSE);
+		worldCreator.type(WorldType.NORMAL);
+		worldCreator.generateStructures(true);
+		world = worldCreator.createWorld();
+		WorldCreator netherCreator = new WorldCreator(name + "_nether");
+		netherCreator.environment(World.Environment.NETHER);
+		netherCreator.generateStructures(true);
+		netherCreator.keepSpawnLoaded(TriState.FALSE);
+		netherCreator.type(WorldType.NORMAL);
+		netherCreator.generateStructures(true);
+		nether = netherCreator.createWorld();
+		world.getWorldBorder().setSize(4000);
+		nether.getWorldBorder().setSize(1000);
+		WorldManager.linkWorlds(world, nether);
 
 		generateQuests();
 
@@ -88,43 +82,38 @@ public class Arena {
 			for (int i = 0; i < teams.length; i++) {
 				teams[i] = new BingoTeam(1, quests, this, TeamUtil.teamMappingsName.get(i), i);
 			}
-			maxPlayers = 9 * 1;
+			maxPlayers = 9;
 		}
 		if (mode == ArenaMode.TEAM) {
 			for (int i = 0; i < teams.length; i++) {
 				teams[i] = new BingoTeam(2, quests, this, TeamUtil.teamMappingsName.get(i), i);
 			}
-			maxPlayers = 9 * 2;
+			maxPlayers = 18;
 		}
 		arenaGameTimeCounter = new ArenaGameTimeCounter(this);
 		scoreboardManager = new ScoreboardManager(this);
-		arenas.add(this);
-		MySQLManager.addArena(this);
-		applyGameRules();
 		teamGui = new TeamGui(this);
-		generateChunksAsync();
+		applyGameRules();
+		GeneralSettings.plugin.getLogger().info("Starting to pregenerate: " + name);
+		WorldManager.generate(world, 250, true).thenAccept(sucess -> {
+			GeneralSettings.plugin.getLogger().info("Pregeneration done for: " + name);
+			ARENAS.add(this);
+			MySQLManager.addArena(this);
+		});
 	}
 	
 	public void schedulePvpEnable() {
 		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
 			if(gameState == GameState.INGAME) {
-				GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(players), Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" wird in 1 Minute aktiviert").color(NamedTextColor.GRAY)));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(Audience.audience(players), Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" wird in 1 Minute aktiviert").color(NamedTextColor.GRAY)));
 			}
 		}, 20*60*2);
 		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
 			if(gameState == GameState.INGAME) {
 				pvp = true;
-				GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(players), Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" ist nun aktiviert!").color(NamedTextColor.GRAY)));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(Audience.audience(players), Component.text("PvP").color(NamedTextColor.RED).decorate(TextDecoration.ITALIC).append(Component.text(" ist nun aktiviert!").color(NamedTextColor.GRAY)));
 			}
 		}, 20*60*3);	//20 Ticks = 1 Sekunde; 1 Sekunde * 60 = 1 Minute; 1 Minute * 3 = 3 Minuten;
-	}
-	
-	private void generateChunksAsync() {
-		for(int x = 0; x < 25; x++) {
-			for(int y = 0; y < 25; y++) {
-				world.getChunkAtAsync(-12 + x, -12 + y);
-			}
-		}
 	}
 	
 	private void generateQuests() {
@@ -156,7 +145,6 @@ public class Arena {
 			Material block = easyblocks.get(new Random().nextInt(easyblocks.size()));
 			easyblocks.remove(block);
 			quests[i] = new Quest(QuestType.BLOCK, block);
-			continue;
 		}
 	}
 
@@ -180,7 +168,7 @@ public class Arena {
 		for(BingoTeam team : teams) {
 			if(team.checkIfPlayerIsMember(player)) {
 				team.removeMember(player);
-				GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(players), player.displayName().append(Component.text(" hat das Spiel verlassen").color(NamedTextColor.GRAY)));
+				GeneralSettings.plugin.getMessageUtil().sendMessage(Audience.audience(players), player.displayName().append(Component.text(" hat das Spiel verlassen").color(NamedTextColor.GRAY)));
 				break;
 			}
 		}
@@ -218,17 +206,15 @@ public class Arena {
 	public void delete() {
 
 		MySQLManager.deleteArena(name);
-		arenas.remove(this);
+		ARENAS.remove(this);
 		scoreboardManager.deleteScordboardManager();
 		for (Player player : players) {
 			CloudNetAdapter.sendPlayerToLobbyTask(player);
 		}
 		Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
-			netherportals.removeWorldLink(world.getName(), nether.getName(), PortalType.NETHER);
-			netherportals.removeWorldLink(nether.getName(), world.getName(), PortalType.NETHER);
-			worldManager.deleteWorld(world.getName());
-			worldManager.deleteWorld(nether.getName());
-		}, 60);
+			WorldManager.deleteLocalWorld(world);
+			WorldManager.deleteLocalWorld(nether);
+		}, 60L);
 	}
 
 	public void spreadPlayers() {
@@ -262,7 +248,6 @@ public class Arena {
 					if(teams[i].getMembers()[1] == null) {
 						teams[i].addMember(playerWithoutTeam.get(p));
 						playerWithoutTeam.remove(p);
-						continue;
 					}
 				}
 			}
@@ -286,9 +271,7 @@ public class Arena {
 		int targetStringLength = 5;
 		Random random = new Random();
 
-		String generatedString = random.ints(leftLimit, rightLimit + 1).limit(targetStringLength).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-
-		return generatedString;
+		return random.ints(leftLimit, rightLimit + 1).limit(targetStringLength).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 	}
 
 	public void setWinner(BingoTeam team) {
@@ -314,7 +297,7 @@ public class Arena {
 	}
 
 	public static ArrayList<Arena> getArenas() {
-		return arenas;
+		return ARENAS;
 	}
 
 	public GameState getGameState() {
@@ -332,7 +315,7 @@ public class Arena {
 	}
 
 	public static Location getSpawn() {
-		return spawn;
+		return SPAWN;
 	}
 
 	public String getName() {
