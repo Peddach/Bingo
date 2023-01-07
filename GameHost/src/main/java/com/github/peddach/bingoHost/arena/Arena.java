@@ -103,7 +103,7 @@ public class Arena {
             this.teams = new BingoTeam[4];
             for (int i = 0; i < this.teams.length; i++)
                 this.teams[i] = new BingoTeam(2, this.quests, this, TeamUtil.teamMappingsName.get(i), i);
-            this.maxPlayers = 18;
+            this.maxPlayers = 8;
         } else {
             this.teams = null;
             throw new IllegalArgumentException("Unkown Arena mode");
