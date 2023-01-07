@@ -14,7 +14,6 @@ import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
-import com.github.peddach.bingoHost.util.MessageUtil;
 
 public class TeamGuiListener implements Listener{
 	
@@ -32,7 +31,7 @@ public class TeamGuiListener implements Listener{
 		if(!(event.getArena().getGameState() == GameState.WAITING || event.getArena().getGameState() == GameState.STARTING)) {
 			return;
 		}
-		event.getPlayer().getInventory().setItem(0, TeamUtil.getTeamItem());
+		event.getPlayer().getInventory().setItem(0, TeamUtil.getChooseTeamItem());
 	}
 	
 	@EventHandler
@@ -40,7 +39,7 @@ public class TeamGuiListener implements Listener{
 		if(event.getItem() == null) {
 			return;
 		}
-		if(!event.getItem().equals(TeamUtil.getTeamItem())) {
+		if(!event.getItem().equals(TeamUtil.getChooseTeamItem())) {
 			return;
 		}
 		for(Arena arena : Arena.getArenas()) {
@@ -58,7 +57,7 @@ public class TeamGuiListener implements Listener{
 				continue;
 			}
 			event.setCancelled(true);
-			if(event.getSlot() >= 10 || event.getSlot() < 0) {
+			if(event.getSlot() >= arena.getTeams().length || event.getSlot() < 0) {
 				return;
 			}
 			if(event.getSlotType() == SlotType.QUICKBAR) {

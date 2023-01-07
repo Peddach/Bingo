@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
-import com.github.peddach.bingoHost.arena.ArenaMode;
 import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.arena.GameState;
 
@@ -17,8 +16,8 @@ import fr.mrmicky.fastboard.FastBoard;
 
 public class ScoreboardManager {
 	
-	private HashMap<Player, FastBoard> playerBoardMap = new HashMap<>();
-	private int taskID;
+	private final HashMap<Player, FastBoard> playerBoardMap = new HashMap<>();
+	private final int taskID;
 	
 	public ScoreboardManager(final Arena arena) {
 		Runnable updateTask = () -> {
@@ -33,19 +32,16 @@ public class ScoreboardManager {
 				}
 			}
 			if(arena.getGameState() == GameState.STARTING){
-				int maxPlayer = 9;
-				if(arena.getMode() == ArenaMode.TEAM) {
-					maxPlayer = 18;
-				}
-				int secoundToStart = 60;
+				int maxPlayer = arena.getMaxPlayers();
+				int secondToStart = 60;
 				if(arena.getCountDown() != null) {
-					secoundToStart = arena.getCountDown().getCountDown() + 1;
+					secondToStart = arena.getCountDown().getCountDown() + 1;
 				}
 				for(FastBoard fastboard : playerBoardMap.values()) {
 					fastboard.updateLines(
 							" ",
 							"§a§lSpielstart",
-							"§7>> " + secoundToStart + " Sekunden",
+							"§7>> " + secondToStart + " Sekunden",
 							" ",
 							"§a§lSpieler",
 							"§7>> " + arena.getPlayers().size() + "/" + maxPlayer
@@ -62,9 +58,7 @@ public class ScoreboardManager {
 						List<String> lines = new ArrayList<>();
 						lines.add(" ");
 						lines.add("§a§lDeine Aufgaben");
-						for(String string : getQuestRowsFromTeam(team)) {
-							lines.add(string);
-						}
+						lines.addAll(getQuestRowsFromTeam(team));
 						lines.add(" ");
 						lines.add("§a§lZeit");
 						lines.add("§7>> " + arena.getArenaGameTimeCounter().getTimeAsString());

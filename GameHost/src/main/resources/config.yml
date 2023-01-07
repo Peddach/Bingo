@@ -5,7 +5,8 @@ Database:
    User: Bingo
    Password: password
    Database: Bingo
-Arenas: 9
+Arenas: 4
+Pregenerate: 250
 Spawn:
    X: 100
    Y: 100

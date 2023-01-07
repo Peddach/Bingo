@@ -13,10 +13,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 
 public class BingoTeam {
-	private Player members[];
-	private Board board;
-	private Arena arena;
-	private String name;
+	private final Player[] members;
+	private final Board board;
+	private final Arena arena;
+	private final String name;
 	private final int number;
 	private final Inventory backpack = Bukkit.createInventory(null, 9, Component.text("Rucksack").color(NamedTextColor.DARK_RED));
 
@@ -63,6 +63,15 @@ public class BingoTeam {
 	public boolean isFull() {
 		for(int i = 0; i < members.length; i++) {
 			if(members[i] == null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isEmpty(){
+		for (Player member : members) {
+			if (member != null) {
 				return false;
 			}
 		}
