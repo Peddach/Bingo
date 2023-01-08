@@ -24,7 +24,6 @@ import com.github.peddach.bingoHost.arena.BingoTeam;
 import com.github.peddach.bingoHost.quest.Quest;
 import com.github.peddach.bingoHost.quest.QuestGui;
 import com.github.peddach.bingoHost.quest.QuestType;
-import com.github.peddach.bingoHost.util.MessageUtil;
 
 import net.kyori.adventure.text.Component;
 
@@ -32,10 +31,9 @@ public class BingoCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (sender instanceof Player == false) {
+		if (!(sender instanceof Player player)) {
 			return false;
 		}
-		Player player = (Player) sender;
 		if (!player.hasPermission("Bingo.admin")) {
 			return false;
 		}
