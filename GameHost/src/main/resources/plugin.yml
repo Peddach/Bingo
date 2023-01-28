@@ -1,6 +1,7 @@
 name: Bingo
 main: com.github.peddach.bingoHost.BingoHost
 author: Professor_Sam
+load: STARTUP
 softdepend:
 - Multiverse-Core
 - Multiverse-NetherPortals

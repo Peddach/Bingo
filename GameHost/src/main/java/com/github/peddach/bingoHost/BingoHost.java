@@ -1,21 +1,12 @@
 package com.github.peddach.bingoHost;
 
+import com.github.peddach.bingoHost.listener.*;
 import de.petropia.turtleServer.api.PetropiaPlugin;
 
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.ArenaMode;
 import com.github.peddach.bingoHost.command.BingoCommand;
 import com.github.peddach.bingoHost.command.StartCommand;
-import com.github.peddach.bingoHost.listener.GameStateChangeListener;
-import com.github.peddach.bingoHost.listener.LobbyDamageListener;
-import com.github.peddach.bingoHost.listener.PlayerChatListener;
-import com.github.peddach.bingoHost.listener.PlayerDeathListener;
-import com.github.peddach.bingoHost.listener.PlayerJoinArenaListener;
-import com.github.peddach.bingoHost.listener.PlayerJoinServerListener;
-import com.github.peddach.bingoHost.listener.PlayerLeaveArenaListener;
-import com.github.peddach.bingoHost.listener.PlayerLeaveServerListener;
-import com.github.peddach.bingoHost.listener.PortalToOverworldListener;
-import com.github.peddach.bingoHost.listener.PvpListener;
 import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.quest.QuestGui;
 import com.github.peddach.bingoHost.quest.RecipeShow;
@@ -26,17 +17,28 @@ import com.github.peddach.bingoHost.utilItems.BackpackItem;
 import com.github.peddach.bingoHost.utilItems.BingoCard;
 import com.github.peddach.bingoHost.utilItems.LeaveItem;
 import com.github.peddach.bingoHost.utilItems.StartItem;
+import org.bukkit.Bukkit;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.util.Properties;
 
 public class BingoHost extends PetropiaPlugin {
-
 	@Override
 	public void onEnable() {
+		GeneralSettings.plugin = this;
+		copyDatapack();
+		Bukkit.getScheduler().runTask(this, this::onEnablePostWorld);
+	}
 
+	private void onEnablePostWorld(){
 		saveDefaultConfig();
 		saveConfig();
 		reloadConfig();
 
-		GeneralSettings.plugin = this;
 		GeneralSettings.config = getConfig();
 		GeneralSettings.servername = CloudNetAdapter.getServerInstanceName();
 		GeneralSettings.setupFile = getResource("dbsetup.sql");
@@ -77,6 +79,35 @@ public class BingoHost extends PetropiaPlugin {
 		getServer().getPluginManager().registerEvents(new AdvancememtQuestListener(), this);
 		getServer().getPluginManager().registerEvents(new RecipeShow(), this);
 		getServer().getPluginManager().registerEvents(new PortalToOverworldListener(), this);
+	}
+
+	private void copyDatapack(){
+		//Load default world name from server.properties
+		this.getLogger().info("Loading Datapack");
+		String levelName;
+		try (InputStream inputStream = new FileInputStream(new File(Bukkit.getPluginsFolder().getParentFile(), "server.properties"))) {
+			Properties properties = new Properties();
+			properties.load(inputStream);
+			levelName = properties.getProperty("level-name");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		if(levelName == null || levelName.isBlank() || levelName.isEmpty()){
+			this.getLogger().warning("Can't load server.properties");
+			return;
+		}
+		File datapackDir = new File(new File(Bukkit.getWorldContainer(), levelName), "datapacks");
+		datapackDir.mkdirs();
+		try(InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("Bingo.zip")){
+			if(inputStream == null){
+				GeneralSettings.plugin.getLogger().warning("Can not load Bingo.zip datapack from resources!");
+				return;
+			}
+			Files.copy(inputStream, new File(datapackDir, "Bingo.zip").toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void createArenas() {

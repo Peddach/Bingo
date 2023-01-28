@@ -32,7 +32,7 @@ public class PlayerLeaveArenaListener implements Listener{
 						teamsWithPlayers++;
 					}
 				}
-				GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(event.getArena().getPlayers()), Component.text("Es sind noch ").color(NamedTextColor.GRAY)
+				GeneralSettings.plugin.getMessageUtil().sendMessage(Audience.audience(event.getArena().getPlayers()), Component.text("Es sind noch ").color(NamedTextColor.GRAY)
 						.append(Component.text(teamsWithPlayers).color(NamedTextColor.GOLD))
 						.append(Component.text(" Teams übrig").color(NamedTextColor.GRAY)));
 				if(teamsWithPlayers <= 1) {
