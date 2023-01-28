@@ -3,6 +3,8 @@ package com.github.peddach.bingoHost.utilItems;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.peddach.bingoHost.GeneralSettings;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -80,15 +82,16 @@ public class BingoCard implements Listener{
 				continue;
 			}
 			event.setCancelled(true);
-			Player p = (Player) event.getWhoClicked();
-			QuestGui.openGuiForPlayer(p);
+			event.getWhoClicked().setItemOnCursor(null);
+			final Player p = (Player) event.getWhoClicked();
+			Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> QuestGui.openGuiForPlayer(p),1L);
 			break;
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerPickUpEvent(EntityPickupItemEvent event) {
-		if(event.getEntity() instanceof Player player) {
+		if(event.getEntity() instanceof Player) {
 			if(event.getItem().getItemStack().equals(item)) {
 				event.setCancelled(true);
 			}
@@ -97,9 +100,7 @@ public class BingoCard implements Listener{
 	
 	@EventHandler
 	public void onPlayerDeathEvent(PlayerDeathEvent event){
-		if(event.getDrops().contains(item)) {
-			event.getDrops().remove(item);
-		}
+		event.getDrops().remove(item);
 	}
 	
 	@EventHandler

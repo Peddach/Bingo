@@ -56,13 +56,12 @@ public class BackpackItem implements Listener {
 				if (!team.checkIfPlayerIsMember(player)) {
 					continue;
 				}
-				if (player.getOpenInventory() != null && player.getOpenInventory().getTopInventory().equals(team.getBackpack())) {
+				player.getOpenInventory();
+				if (player.getOpenInventory().getTopInventory().equals(team.getBackpack())) {
 					return;
 				}
 				player.closeInventory(Reason.OPEN_NEW);
-				Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
-					player.openInventory(team.getBackpack());
-				}, 1);
+				Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> player.openInventory(team.getBackpack()), 1);
 				break;
 			}
 		}
@@ -96,13 +95,14 @@ public class BackpackItem implements Listener {
 		event.getCurrentItem().setType(Material.AIR);
 		event.getWhoClicked().getInventory().setItem(7, ITEM);
 		Player p = (Player) event.getWhoClicked();
+		p.setItemOnCursor(null);
 		openBackPack(p);
 
 	}
 
 	@EventHandler
 	public void onPlayerPickUpEvent(EntityPickupItemEvent event) {
-		if (event.getEntity()instanceof Player player) {
+		if (event.getEntity()instanceof Player) {
 			if (event.getItem().getItemStack().equals(ITEM)) {
 				event.setCancelled(true);
 			}
@@ -111,9 +111,7 @@ public class BackpackItem implements Listener {
 
 	@EventHandler
 	public void onPlayerDeathEvent(PlayerDeathEvent event) {
-		if (event.getDrops().contains(ITEM)) {
-			event.getDrops().remove(ITEM);
-		}
+		event.getDrops().remove(ITEM);
 	}
 
 	@EventHandler
