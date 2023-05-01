@@ -33,12 +33,11 @@
 			<url>https://repo.cloudnetservice.eu/repository/releases/</url>
 		</repository>
 		<repository>
-			<id>Petropia</id>
+			<id>petropia</id>
 			<name>Petropia Maven Repo</name>
-			<url>https://repo.petropia.de/releases</url>
+			<url>https://repo.petropia.net/releases</url>
 		</repository>
 	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>io.papermc.paper</groupId>

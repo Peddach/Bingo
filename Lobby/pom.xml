@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.github.peddach</groupId>
 		<artifactId>Bingo</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 
 	<properties>
@@ -22,17 +22,17 @@
 
 	<repositories>
 		<repository>
-			<id>viaversion-repo</id>
-			<url>https://repo.viaversion.com</url>
-		</repository>
-		<repository>
 			<id>papermc</id>
 			<url>https://papermc.io/repo/repository/maven-public/</url>
 		</repository>
 		<repository>
-			<id>Petropia</id>
+			<id>viaversion-repo</id>
+			<url>https://repo.viaversion.com</url>
+		</repository>
+		<repository>
+			<id>petropia</id>
 			<name>Petropia Maven Repo</name>
-			<url>https://repo.petropia.de/releases</url>
+			<url>https://repo.petropia.net/releases</url>
 		</repository>
 	</repositories>
 	<dependencies>
