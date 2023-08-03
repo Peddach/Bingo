@@ -1,5 +1,6 @@
 package com.github.peddach.bingoHost.listener;
 
+import com.github.peddach.bingoHost.ArenaPublishHelper;
 import net.kyori.adventure.audience.Audience;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,7 +12,6 @@ import com.github.peddach.bingoHost.arena.ArenaMode;
 import com.github.peddach.bingoHost.arena.GameCountDown;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
-import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.InventoryUtil;
 
 import net.kyori.adventure.text.Component;
@@ -23,7 +23,7 @@ public class PlayerJoinArenaListener implements Listener{
 	@EventHandler
 	public void onPlayerJoinArenaEvent(PlayerJoinArenaEvent event) {
 		event.getPlayer().teleport(Arena.getSpawn());
-		GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(event.getArena().getPlayers()), event.getPlayer().displayName().append(Component.text(" ist dem Spiel beigetreten!").color(NamedTextColor.GRAY)));
+		GeneralSettings.plugin.getMessageUtil().sendMessage(Audience.audience(event.getArena().getPlayers()), event.getPlayer().displayName().append(Component.text(" ist dem Spiel beigetreten!").color(NamedTextColor.GRAY)));
 		InventoryUtil.clearInvOfPlayer(event.getPlayer());
 		for(Player i : event.getArena().getPlayers()) {
 			i.showPlayer(GeneralSettings.plugin, event.getPlayer());
@@ -38,7 +38,7 @@ public class PlayerJoinArenaListener implements Listener{
 		if(event.getArena().getPlayers().size() == 3 && event.getArena().getMode() == ArenaMode.TEAM) {
 			event.getArena().setCountDown(new GameCountDown(event.getArena()));
 		}
-		MySQLManager.updateArena(event.getArena());
+		ArenaPublishHelper.publishArena(event.getArena());
 		Component title = Component.text("Bingo").color(NamedTextColor.GOLD).decorate(TextDecoration.BOLD);
 		Component description = Component.text("Sammel Items oder Advancements welche auf deiner Bingokarte stehen. Der erste, der 5 in einer Reihe abgeschlossen hat, gewinnt! Rechts-/Linksklicke ein Item um es abzuschließen.").color(NamedTextColor.GRAY);
 		event.getPlayer().sendMessage(" ");

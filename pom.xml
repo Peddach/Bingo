@@ -13,6 +13,5 @@
 	</properties>
 	<modules>
 		<module>GameHost</module>
-		<module>Lobby</module>
 	</modules>
 </project>

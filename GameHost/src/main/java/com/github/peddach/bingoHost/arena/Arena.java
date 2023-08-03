@@ -1,11 +1,11 @@
 package com.github.peddach.bingoHost.arena;
 
+import com.github.peddach.bingoHost.ArenaPublishHelper;
 import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.events.GameStateChangeEvent;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 import com.github.peddach.bingoHost.events.PlayerLeaveArenaEvent;
-import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.quest.AdvancementList;
 import com.github.peddach.bingoHost.quest.BlockList;
 import com.github.peddach.bingoHost.quest.Quest;
@@ -23,7 +23,6 @@ import java.util.Random;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.TriState;
@@ -116,7 +115,7 @@ public class Arena {
         WorldManager.generate(this.world, GeneralSettings.config.getInt("Pregenerate"), true).thenAccept(sucess -> {
             GeneralSettings.plugin.getLogger().info("Pregeneration done for: " + this.name);
             ARENAS.add(this);
-            MySQLManager.addArena(this);
+            ArenaPublishHelper.publishArena(this);
         });
     }
 
@@ -210,7 +209,7 @@ public class Arena {
     }
 
     public void delete() {
-        MySQLManager.deleteArena(this.name);
+        GeneralSettings.plugin.getCloudNetAdapter().publishArenaDelete(name);
         ARENAS.remove(this);
         this.scoreboardManager.deleteScordboardManager();
         for (Player player : this.players)

@@ -11,12 +11,27 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
-import com.github.peddach.bingoHost.mysql.MySQLManager;
-import com.github.peddach.bingoHost.util.MessageUtil;
+
+import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerJoinServerListener implements Listener{
 	
-	
+	private final HashMap<UUID, String> joiningPlayers = new HashMap<>();
+
+	public PlayerJoinServerListener(){
+		GeneralSettings.plugin.getCloudNetAdapter().setJoinRequestResolver((id, uuid) -> {
+			for(Arena arena : Arena.getArenas()){
+				if(arena.getName().equals(id) && arena.getPlayers().size() < arena.getMaxPlayers()){
+					joiningPlayers.put(uuid, id);
+					Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> joiningPlayers.remove(uuid), 20*6);
+					return true;
+				}
+			}
+			return false;
+		});
+	}
+
 	@EventHandler
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
 		event.joinMessage(null);
@@ -24,28 +39,25 @@ public class PlayerJoinServerListener implements Listener{
 			event.getPlayer().hidePlayer(GeneralSettings.plugin, p);
 			p.hidePlayer(GeneralSettings.plugin, event.getPlayer());
 		}
-		Bukkit.getScheduler().runTaskAsynchronously(GeneralSettings.plugin, () -> {
-			String arena = MySQLManager.readPlayerTeleport(event.getPlayer());
-			MySQLManager.deletePlayerFromTeleport(event.getPlayer().getName());
-			joinPlayerArenaIfExistsSync(event.getPlayer(), arena);
-		});
-	}
-	
-	private void joinPlayerArenaIfExistsSync(Player player, String arena) {
-		Bukkit.getScheduler().runTask(GeneralSettings.plugin, () -> {
-			for(Arena i : Arena.getArenas()) {
-				if(i.getName().equalsIgnoreCase(arena)) {
-					if(!i.addPlayer(player)) {
-						player.sendMessage("&cDas Spiel welchem du versuchst beizutreten ist voll oder schon gestartet!");
-						CloudNetAdapter.sendPlayerToLobbyTask(player);
-					}
-					LobbyDamageListener.players.add(player);
+		String arena = joiningPlayers.get(event.getPlayer().getUniqueId());
+		if(arena == null){
+			GeneralSettings.plugin.getMessageUtil().sendMessage(event.getPlayer(), Component.text("Das hat nicht geklappt!", NamedTextColor.RED));
+			GeneralSettings.plugin.getCloudNetAdapter().sendPlayerToLobby(event.getPlayer());
+			return;
+		}
+		joiningPlayers.remove(event.getPlayer().getUniqueId());
+		for(Arena i : Arena.getArenas()) {
+			if(i.getName().equalsIgnoreCase(arena)) {
+				if(!i.addPlayer(event.getPlayer())) {
+					event.getPlayer().sendMessage("&cDas Spiel welchem du versuchst beizutreten ist voll oder schon gestartet!");
+					CloudNetAdapter.sendPlayerToLobbyTask(event.getPlayer());
 					return;
 				}
+				LobbyDamageListener.players.add(event.getPlayer());
+				return;
 			}
-			GeneralSettings.plugin.getMessageUtil().sendMessage(player, Component.text("Fehler beim Laden der Spielerdaten! Bitte kontaktiere das Team, wenn dies ein Fehler sein sollte").color(NamedTextColor.RED));
-			CloudNetAdapter.sendPlayerToLobbyTask(player);
-		});
+		}
+
 	}
 
 }

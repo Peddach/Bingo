@@ -1,5 +1,6 @@
 package com.github.peddach.bingoHost.listener;
 
+import com.github.peddach.bingoHost.ArenaPublishHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -16,7 +17,6 @@ import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.arena.ScheduledArenaDelete;
 import com.github.peddach.bingoHost.arena.TraderSpawner;
 import com.github.peddach.bingoHost.events.GameStateChangeEvent;
-import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.util.InventoryUtil;
 import com.github.peddach.bingoHost.utilItems.BackpackItem;
 import com.github.peddach.bingoHost.utilItems.BingoCard;
@@ -25,7 +25,7 @@ public class GameStateChangeListener implements Listener {
 
 	@EventHandler
 	public void onGameStateChangeEvent(GameStateChangeEvent event) {
-		MySQLManager.updateArena(event.getArena());
+		ArenaPublishHelper.publishArena(event.getArena());
 		if (event.getAfter() == GameState.INGAME) {
 			for (Player player : event.getArena().getPlayers()) {
 				player.getInventory().setItem(0, new ItemStack(Material.BREAD, 15));

@@ -1,22 +1,12 @@
 package com.github.peddach.bingoHost;
 
+import com.github.peddach.bingoHost.listener.*;
 import de.petropia.turtleServer.api.PetropiaPlugin;
 
 import com.github.peddach.bingoHost.arena.Arena;
 import com.github.peddach.bingoHost.arena.ArenaMode;
 import com.github.peddach.bingoHost.command.BingoCommand;
 import com.github.peddach.bingoHost.command.StartCommand;
-import com.github.peddach.bingoHost.listener.GameStateChangeListener;
-import com.github.peddach.bingoHost.listener.LobbyDamageListener;
-import com.github.peddach.bingoHost.listener.PlayerChatListener;
-import com.github.peddach.bingoHost.listener.PlayerDeathListener;
-import com.github.peddach.bingoHost.listener.PlayerJoinArenaListener;
-import com.github.peddach.bingoHost.listener.PlayerJoinServerListener;
-import com.github.peddach.bingoHost.listener.PlayerLeaveArenaListener;
-import com.github.peddach.bingoHost.listener.PlayerLeaveServerListener;
-import com.github.peddach.bingoHost.listener.PortalToOverworldListener;
-import com.github.peddach.bingoHost.listener.PvpListener;
-import com.github.peddach.bingoHost.mysql.MySQLManager;
 import com.github.peddach.bingoHost.quest.QuestGui;
 import com.github.peddach.bingoHost.quest.RecipeShow;
 import com.github.peddach.bingoHost.quest.AdvancememtQuestListener;
@@ -39,13 +29,7 @@ public class BingoHost extends PetropiaPlugin {
 		GeneralSettings.plugin = this;
 		GeneralSettings.config = getConfig();
 		GeneralSettings.servername = CloudNetAdapter.getServerInstanceName();
-		GeneralSettings.setupFile = getResource("dbsetup.sql");
 
-		if (!MySQLManager.setup()) {
-			getLogger().warning("Could not Connect to database!!!");
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
 		registerListener();
 		createArenas();
 		getCommand("Bingo").setExecutor(new BingoCommand());
@@ -54,7 +38,7 @@ public class BingoHost extends PetropiaPlugin {
 
 	@Override
 	public void onDisable() {
-		MySQLManager.purgeDatabase();
+		Arena.getArenas().forEach(a -> getCloudNetAdapter().publishArenaDelete(a.getName()));
 	}
 
 	private void registerListener() {
@@ -77,6 +61,7 @@ public class BingoHost extends PetropiaPlugin {
 		getServer().getPluginManager().registerEvents(new AdvancememtQuestListener(), this);
 		getServer().getPluginManager().registerEvents(new RecipeShow(), this);
 		getServer().getPluginManager().registerEvents(new PortalToOverworldListener(), this);
+		getServer().getPluginManager().registerEvents(new ArenaRepublishListener(), this);
 	}
 
 	private void createArenas() {
