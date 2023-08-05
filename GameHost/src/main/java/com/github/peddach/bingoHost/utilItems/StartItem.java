@@ -1,10 +1,12 @@
 package com.github.peddach.bingoHost.utilItems;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.peddach.bingoHost.GeneralSettings;
+import com.github.peddach.bingoHost.arena.Arena;
+import com.github.peddach.bingoHost.arena.GameState;
+import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
@@ -16,13 +18,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 
-import com.github.peddach.bingoHost.arena.Arena;
-import com.github.peddach.bingoHost.arena.GameState;
-import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
-import com.github.peddach.bingoHost.util.MessageUtil;
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StartItem implements Listener {
 	private static final ItemStack item = createStartItem();
@@ -87,7 +84,7 @@ public class StartItem implements Listener {
 				return;
 			}
 			arena.getCountDown().setCountDown(11);
-			GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(arena.getPlayers()), player.displayName().append(Component.text(" hat den Countdown verkürzt").color(NamedTextColor.GRAY)));
+			GeneralSettings.plugin.getMessageUtil().sendMessage(Audience.audience(arena.getPlayers()), player.displayName().append(Component.text(" hat den Countdown verkürzt").color(NamedTextColor.GRAY)));
 		}
 	}
 

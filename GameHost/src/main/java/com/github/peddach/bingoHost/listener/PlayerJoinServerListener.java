@@ -8,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.arena.Arena;
 
@@ -50,7 +49,7 @@ public class PlayerJoinServerListener implements Listener{
 			if(i.getName().equalsIgnoreCase(arena)) {
 				if(!i.addPlayer(event.getPlayer())) {
 					event.getPlayer().sendMessage("&cDas Spiel welchem du versuchst beizutreten ist voll oder schon gestartet!");
-					CloudNetAdapter.sendPlayerToLobbyTask(event.getPlayer());
+					GeneralSettings.plugin.getCloudNetAdapter().sendPlayerToLobby(event.getPlayer());
 					return;
 				}
 				LobbyDamageListener.players.add(event.getPlayer());

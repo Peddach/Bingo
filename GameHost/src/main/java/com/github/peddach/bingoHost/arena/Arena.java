@@ -1,7 +1,6 @@
 package com.github.peddach.bingoHost.arena;
 
 import com.github.peddach.bingoHost.ArenaPublishHelper;
-import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.GeneralSettings;
 import com.github.peddach.bingoHost.events.GameStateChangeEvent;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
@@ -213,7 +212,7 @@ public class Arena {
         ARENAS.remove(this);
         this.scoreboardManager.deleteScordboardManager();
         for (Player player : this.players)
-            CloudNetAdapter.sendPlayerToLobbyTask(player);
+            GeneralSettings.plugin.getCloudNetAdapter().sendPlayerToLobby(player);
         Bukkit.getScheduler().runTaskLater(GeneralSettings.plugin, () -> {
             WorldManager.deleteLocalWorld(this.world);
             WorldManager.deleteLocalWorld(this.nether);

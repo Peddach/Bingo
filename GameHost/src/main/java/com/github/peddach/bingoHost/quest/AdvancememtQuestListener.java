@@ -59,7 +59,6 @@ public class AdvancememtQuestListener implements Listener {
 				return;
 			}
 		}
-		return;
 	}
 
 	private void announceAdvancements(Advancement advancement, Arena arena, BingoTeam team) {
@@ -69,7 +68,7 @@ public class AdvancememtQuestListener implements Listener {
 		Component name = Component.text(AdvancementList.getInstance().getAdvancementTitleMappings().get(advancement)).color(NamedTextColor.GOLD);
 		TextColor teamcolor = TextColor.fromCSSHexString(TeamUtil.teamMappingsNamedTextColor.get(team.getNumber()));
 		Component message = Component.text(team.getName()).color(teamcolor).append(Component.text(" hat das Advancement ").color(NamedTextColor.GRAY)).append(name).append(Component.text(" erhalten").color(NamedTextColor.GRAY));
-		GeneralSettings.plugin.getMessageUtil().broadcastMessage(Audience.audience(arena.getPlayers()), message);
+		GeneralSettings.plugin.getMessageUtil().sendMessage(Audience.audience(arena.getPlayers()), message);
 	}
 
 }

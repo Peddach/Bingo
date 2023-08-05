@@ -28,7 +28,7 @@ public class BingoHost extends PetropiaPlugin {
 
 		GeneralSettings.plugin = this;
 		GeneralSettings.config = getConfig();
-		GeneralSettings.servername = CloudNetAdapter.getServerInstanceName();
+		GeneralSettings.servername = getCloudNetAdapter().getServerInstanceName();
 
 		registerListener();
 		createArenas();

@@ -3,6 +3,7 @@ package com.github.peddach.bingoHost.utilItems;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.peddach.bingoHost.GeneralSettings;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
@@ -14,7 +15,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 
-import com.github.peddach.bingoHost.CloudNetAdapter;
 import com.github.peddach.bingoHost.arena.GameState;
 import com.github.peddach.bingoHost.events.PlayerJoinArenaEvent;
 
@@ -50,7 +50,7 @@ public class LeaveItem implements Listener{
 		if(!event.getItem().equals(item)) {
 			return;
 		}
-		CloudNetAdapter.sendPlayerToLobbyTask(event.getPlayer());
+		GeneralSettings.plugin.getCloudNetAdapter().sendPlayerToLobby(event.getPlayer());
 	}
 	
 	@EventHandler
@@ -61,7 +61,7 @@ public class LeaveItem implements Listener{
 		if(!event.getCurrentItem().equals(item)) {
 			return;
 		}
-		CloudNetAdapter.sendPlayerToLobbyTask((Player) event.getWhoClicked());
+		GeneralSettings.plugin.getCloudNetAdapter().sendPlayerToLobby((Player) event.getWhoClicked());
 	}
 	
 	@EventHandler
